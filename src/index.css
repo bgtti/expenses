@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+}
+
+*{
+  font-family: 'Lato',
+    sans-serif;
+}
+
+:root{
+  --cGray: rgb(59, 59, 59); 
+  --cLightGray: rgb(203, 203, 203);
+}
