@@ -15,3 +15,16 @@ border-radius: 5px;
 padding: 10px 10px;
 }
 
+/* ExpenseIcon */
+.ExpenseItem-Icon{
+    width: 20px;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+
+    /* change filter color later */
+    .ExpenseItem-Icon:hover {
+        filter: invert(63%) sepia(77%) saturate(818%) hue-rotate(1deg) brightness(107%) contrast(104%);
+    }
+}

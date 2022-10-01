@@ -1,0 +1,9 @@
+.AddButton{
+    margin: 10px 0;
+    background-color: rgba(6, 105, 82, 0.702);
+    padding: 5px;
+    border: none;
+    border: 2px solid var(--cGray);
+    border-radius: 5px;
+    cursor: pointer;
+}
