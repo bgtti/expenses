@@ -9,7 +9,7 @@ const ExpensesData = [
         type: "Utilities"
     },
     {
-        id: 'ex1',
+        id: 'ex2',
         exDate: new Date("2022, 10, 05"),
         exNr: "22-10-002",
         exDescription: "Electricity bill",
@@ -18,7 +18,7 @@ const ExpensesData = [
         type: "Utilities"
     },
     {
-        id: 'ex1',
+        id: 'ex3',
         exDate: new Date("2022, 10, 10"),
         exNr: "22-10-003",
         exDescription: "Electricity bill",
@@ -26,7 +26,15 @@ const ExpensesData = [
         project: "Project 1",
         type: "Utilities"
     },
-
+    {
+        id: 'ex4',
+        exDate: new Date("2022, 09, 10"),
+        exNr: "22-09-001",
+        exDescription: "Electricity bill",
+        exAmount: 200.00,
+        project: "Project 1",
+        type: "Utilities"
+    },
 ]
 
 export default ExpensesData

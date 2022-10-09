@@ -10,4 +10,7 @@ body {
 :root{
   --cGray: rgb(59, 59, 59); 
   --cLightGray: rgb(203, 203, 203);
+  --cSalmon:#fc6c57;
+  --cPurple: #6053ff;
+  --cFilterSalmon: invert(53%) sepia(73%) saturate(1644%) hue-rotate(325deg) brightness(100%) contrast(98%);
 }

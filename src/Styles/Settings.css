@@ -1,0 +1,29 @@
+
+.Settings-List {
+    list-style-type: none; 
+    margin: 0;
+    padding: 0;
+}
+
+.Settings-ListItem {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+}
+.Settings-ListBullet{
+    width: 5px;
+    height: 5px;
+    background-color: var(--cSalmon);
+    border-radius: 50%;
+}
+.Settings-Icon{
+    width: 15px;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .Settings-Icon:hover {
+        filter: var(--cFilterSalmon);
+    }
+}
