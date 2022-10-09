@@ -18,3 +18,7 @@
 .ModalAddExpense-AddExpenseBtn{
     cursor: pointer;
 }
+
+.modalAddExpenseHidden{
+    display: none;
+}
