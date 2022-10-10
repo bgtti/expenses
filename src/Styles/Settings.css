@@ -21,6 +21,16 @@
     width: 15px;
     cursor: pointer;
 }
+.Settings-AddBtn{
+    background-color: var(--cSalmon);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px;
+}
+.Settings-AddBtnIcon{
+    width: 15px;
+}
 
 @media (hover: hover) {
     .Settings-Icon:hover {

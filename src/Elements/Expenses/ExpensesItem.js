@@ -17,6 +17,7 @@ function ExpenseItem(props) {
             <td>{props.exAmount}</td>
             <td>{props.project}</td>
             <td>{props.type}</td>
+            <td>{props.account}</td>
             <td onClick={clickHandler} role="button"><img src={editIcon} alt="edit element" className="ExpenseItem-Icon" /></td>
             <td role="button"><img src={trashIcon} alt="delete element" className="ExpenseItem-Icon" /></td>
         </tr>

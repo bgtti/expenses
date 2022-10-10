@@ -113,8 +113,8 @@ function ModalAddExpense(props) {
                         value={enteredAmount} onChange={amountChangeHandler} />
                 </div>
                 <div className="ModalAddExpense-InputContainer">
-                    <label htmlFor="project">Assign to:</label>
-                    <select name="project" id="project" onChange={projectChangeHandler} value={enteredProject === "" ? "Project 1" : enteredProject}>
+                    <label htmlFor="group">Assign to:</label>
+                    <select name="group" id="group" onChange={projectChangeHandler} value={enteredProject === "" ? "Project 1" : enteredProject}>
                         <option value="Project 1">Project 1</option>
                         <option value="Project 2">Project 2</option>
                         <option value="Project 3">Project 3</option>
@@ -127,6 +127,13 @@ function ModalAddExpense(props) {
                         <option value="Marketing">Marketing</option>
                         <option value="Rent">Rent</option>
                         <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div className="ModalAddExpense-InputContainer">
+                    <label htmlFor="account">Expense type:</label>
+                    <select name="account" id="account">
+                        <option value="Bank">Bank</option>
+                        <option value="Cash">Cash</option>
                     </select>
                 </div>
                 <button type="submit" className="ModalAddExpense-AddExpenseBtn">Add expense</button>

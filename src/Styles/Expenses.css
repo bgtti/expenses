@@ -1,30 +1,143 @@
+/* EXPENSES */
 .Expenses{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+/* EXPENSES FILTER */
+.ExpensesFilter{
+    width: 100%;
+}
+.ExpensesFilter-Header{
+    height: 25px;
+    display: flex;
+}
+.ExpensesFilter-Header div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid var(--cSalmon);
+    border-right: none;
+    padding: 0 10px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    width: 102px;
+}
+.ExpensesFilter-Header div img {
+    width: 15px;
+}
+.ExpensesFilter-Header div h2 {
+    font-size: 1.15em;
+}
+.ExpensesFilter-OpenFilterMenuBtn{
+    background-color: white;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin: 0;
+    padding: 0 5px;
+}
+.ExpensesFilter-OpenFilterMenuBtn img{
+    filter: var(--cFilterSalmon);
+}
+.ExpensesFilter-Form{
+    border: 3px solid var(--cPurple);
+    border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 5px;
+}
+.ExpensesFilter-Form fieldset{
+    border: none;
+    border: 2px solid var(--cLightGray);
+    border-radius: 5px;
+    margin: 5px;
+    display: flex;
+    gap: 15px;
+}
+.ExpensesFilter-Form fieldset legend{
+    padding: 0 10px;
+    color: var(--cLightGray);
+}
+.ExpensesFilter-Form fieldset div label {
+    margin-right: 5px;
+}
+.ExpensesFilter-Form fieldset div input {
+    border: none;
+    border-bottom: 2px solid var(--cLightGray);
+}
+.ExpensesFilter-Form fieldset div select {
+    border: none;
+    border: 2px solid var(--cLightGray);
+    border-radius: 5px;
+}
+@media (hover: hover) {
+    .ExpensesFilter-OpenFilterMenuBtn:hover img{
+        filter: none;
+    }
+}
+/* Filter open only */
+.ExpensesFilter-Header-Open{
+    border: 3px solid var(--cPurple);
+    border-bottom: none;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    justify-content: space-between;
+}
+.ExpensesFilter-Header-Open div {
+    border: none;
+}
+.ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn {
+    border: none;
+    border-radius: 0;
+    border-bottom-left-radius: 5px;
+    background-color: var(--cPurple);
+    padding: 10px 20px;
+}
+.ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn img{
+    transform: rotate(180deg);
+}
+
+@media (hover: hover) {
+    .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn:hover {
+        background-color: var(--cSalmon);
+    }
+}
+/* Filter closed only */
+.ExpensesFilter-FormClosed{
+    display: none;
+}
+
+/* EXPENSES TABLE */
+.ExpensesTable{
 box-shadow: rgba(0, 22, 24, 0.35) 0px 5px 15px;
 padding: 5px;
 border-collapse: collapse;
 border-radius: 5px;
     
 }
-.Expenses tr{
+.ExpensesTable tr{
     box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.35);
 }
-.Expenses tr:last-child {
+.ExpensesTable tr:last-child {
     box-shadow: none;
 }
-.Expenses td, .Expenses th{
+.ExpensesTable thead .ExpensesTable-Header{
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.541);
+}
+.ExpensesTable td, .ExpensesTable th{
 padding: 10px 10px;
 }
 
-/* ExpenseIcon */
+/* EXPENSES ITEM -- ICONS */
 .ExpenseItem-Icon{
     width: 20px;
     cursor: pointer;
 }
 
 @media (hover: hover) {
-
-    /* change filter color later */
     .ExpenseItem-Icon:hover {
-        filter: invert(63%) sepia(77%) saturate(818%) hue-rotate(1deg) brightness(107%) contrast(104%);
+        filter: var(--cFilterSalmon);
     }
 }

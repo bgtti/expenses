@@ -6,7 +6,8 @@ const ExpensesData = [
         exDescription: "Electricity bill",
         exAmount: 200.00,
         project: "Project 1",
-        type: "Utilities"
+        type: "Utilities",
+        account: "Bank",
     },
     {
         id: 'ex2',
@@ -15,7 +16,8 @@ const ExpensesData = [
         exDescription: "Electricity bill",
         exAmount: 200.00,
         project: "Project 1",
-        type: "Utilities"
+        type: "Utilities",
+        account: "Bank",
     },
     {
         id: 'ex3',
@@ -24,7 +26,8 @@ const ExpensesData = [
         exDescription: "Electricity bill",
         exAmount: 200.00,
         project: "Project 1",
-        type: "Utilities"
+        type: "Utilities",
+        account: "Cash",
     },
     {
         id: 'ex4',
@@ -33,7 +36,8 @@ const ExpensesData = [
         exDescription: "Electricity bill",
         exAmount: 200.00,
         project: "Project 1",
-        type: "Utilities"
+        type: "Utilities",
+        account: "Cash",
     },
 ]
 

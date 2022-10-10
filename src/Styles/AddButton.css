@@ -2,8 +2,21 @@
     margin: 10px 0;
     padding: 5px 10px;
     border: none;
-    border: 2px solid var(--cGray);
+    border: 2px solid var(--cSalmon);
+    background-color: var(--cSalmon);
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.AddButton img{
+    width: 15px;
+}
+
+@media (hover: hover) {
+    .AddButton:hover {
+        background-color: var(--cPurple);
+    }
 }

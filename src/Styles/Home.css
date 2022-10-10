@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    /* background-color: blueviolet; */
 }
 .Home nav{
     display: flex;
@@ -24,9 +26,9 @@
     align-items: center;
     gap: 5px;
 }
-.Home-SettingsBtnIcon, .Home-AddBtnIcon{
+/* .Home-SettingsBtnIcon, .Home-AddBtnIcon{
     width: 15px;
-}
+} */
 .Home-SettingsBtn{
     color: var(--cSalmon);
     background-color: white;
@@ -45,14 +47,14 @@
             width: 670px;
         }
 }
-@media (hover: hover) {
+/* @media (hover: hover) {
     .Home-SettingsBtn:hover {
         background-color: var(--cPurple);
     }
     .Home-AddExpenseBtn:hover {
         background-color: var(--cPurple);
     }
-}
+} */
 .Home-Settings-Hidden {
     display: none;
 }
