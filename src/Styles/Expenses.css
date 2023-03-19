@@ -13,17 +13,23 @@
 .ExpensesFilter-Header{
     height: 25px;
     display: flex;
+    /* background-color: aqua; */
+    justify-content: flex-start;
+    align-items: center;
+    /* border: 2px solid var(--cSalmon); */
 }
 .ExpensesFilter-Header div{
     display: flex;
     align-items: center;
     gap: 10px;
-    border: 2px solid var(--cSalmon);
+    border: 2px solid var(--cSalmon); 
     border-right: none;
     padding: 0 10px;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
     width: 102px;
+    height: 20px;
+    /* background-color: blue; */
 }
 .ExpensesFilter-Header div img {
     width: 15px;
@@ -31,16 +37,31 @@
 .ExpensesFilter-Header div h2 {
     font-size: 1.15em;
 }
-.ExpensesFilter-OpenFilterMenuBtn{
+/* .ExpensesFilter-OpenFilterMenuBtn{
     background-color: white;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     margin: 0;
     padding: 0 5px;
+    height: 25px;
+} */
+.ExpensesFilter-OpenFilterMenuBtn {
+    height:25px;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    
 }
-.ExpensesFilter-OpenFilterMenuBtn img{
+.ExpensesFilter-Header-Open button{
+    border-bottom-left-radius: 5px !important;
+    /* border-top-left-radius: 5px !important; */
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+
+/* .ExpensesFilter-OpenFilterMenuBtn img{
     filter: var(--cFilterSalmon);
-}
+} */
 .ExpensesFilter-Form{
     border: 3px solid var(--cPurple);
     border-top: none;
@@ -72,11 +93,11 @@
     border: 2px solid var(--cLightGray);
     border-radius: 5px;
 }
-@media (hover: hover) {
+/* @media (hover: hover) {
     .ExpensesFilter-OpenFilterMenuBtn:hover img{
         filter: none;
     }
-}
+} */
 /* Filter open only */
 .ExpensesFilter-Header-Open{
     border: 3px solid var(--cPurple);
@@ -88,22 +109,24 @@
 .ExpensesFilter-Header-Open div {
     border: none;
 }
-.ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn {
+/* .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn {
     border: none;
     border-radius: 0;
     border-bottom-left-radius: 5px;
     background-color: var(--cPurple);
     padding: 10px 20px;
-}
+} */
 .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn img{
     transform: rotate(180deg);
 }
 
-@media (hover: hover) {
+/* @media (hover: hover) {
     .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn:hover {
         background-color: var(--cSalmon);
     }
-}
+} */
+
+
 /* Filter closed only */
 .ExpensesFilter-FormClosed{
     display: none;

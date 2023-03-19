@@ -12,7 +12,7 @@ function ExpensesFilter() {
         <div className="ExpensesFilter">
             <div className={filterMenuStatus === false ? "ExpensesFilter-Header" : "ExpensesFilter-Header ExpensesFilter-Header-Open"}>
                 <div><img src={filterIcon} alt="filter icon" /> <h2>Filter</h2></div>
-                <AddButton name="" className="ExpensesFilter-OpenFilterMenuBtn" btnAction={filterMenuStatus === false ? "open" : "close"} onClickFunction={filterMenuStatusToggler}>
+                <AddButton name="" type="button" className="ExpensesFilter-OpenFilterMenuBtn" btnAction={filterMenuStatus === false ? "open" : "close"} onClickFunction={filterMenuStatusToggler}>
                     <img src={arrowIcon} alt="Open Menu" />
                 </AddButton>
             </div>
