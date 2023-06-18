@@ -1,16 +1,35 @@
-body {
-  margin: 0;
-}
-
-*{
-  font-family: 'Lato',
-    sans-serif;
-}
-
 :root{
   --cGray: rgb(59, 59, 59); 
   --cLightGray: rgb(203, 203, 203);
   --cSalmon:#fc6c57;
   --cPurple: #6053ff;
   --cFilterSalmon: invert(53%) sepia(73%) saturate(1644%) hue-rotate(325deg) brightness(100%) contrast(98%);
+  /* new ones: https: //m2.material.io/design/color/applying-color-to-ui.html#top-and-bottom-app-bars */
+  /* use cBlueDark for darkmode background */
+  --cBlueDark:#232F34;
+  --cBlue: #344955;
+  --cOrange: #F9AA33;
 }
+
+* {
+  font-family: 'Lato',
+    sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.dark-mode{
+  background-color: black;
+  color: white;
+}
+/* 
+https: //www.geeksforgeeks.org/how-to-make-dark-mode-for-websites-using-html-css-javascript/
+function darkMode() {
+  let element=document.body;
+  let content=document.getElementById("DarkModetext");
+  element.className="dark-mode";
+  content.innerText="Dark Mode is ON";
+}
+*/

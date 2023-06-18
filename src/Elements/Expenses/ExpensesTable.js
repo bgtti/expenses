@@ -16,8 +16,24 @@ function ExpensesTable() {
                 </tr>
             </thead>
             <tbody>
-                <ExpenseItem exDate={ExpensesData[0].exDate} exNr={ExpensesData[0].exNr} exDescription={ExpensesData[0].exDescription} exAmount={ExpensesData[0].exAmount} project={ExpensesData[0].project} type={ExpensesData[0].type} account={ExpensesData[0].account}></ExpenseItem>
-                <ExpenseItem exDate={ExpensesData[1].exDate} exNr={ExpensesData[1].exNr} exDescription={ExpensesData[1].exDescription} exAmount={ExpensesData[1].exAmount} project={ExpensesData[1].project} type={ExpensesData[1].type} account={ExpensesData[1].account}></ExpenseItem>
+                {ExpensesData.length === 0 ? (
+                    <p>No expenses found.</p>
+                ) : (
+                    ExpensesData.map((expense) => (
+                        <ExpenseItem
+                            key={expense.id}
+                            exDate={expense.exDate}
+                            exNr={expense.exNr}
+                            exDescription={expense.exDescription}
+                            exAmount={ExpensesData.exAmount}
+                            project={expense.project}
+                            type={expense.type}
+                            account={expense.account}>
+                        </ExpenseItem>
+                    )))
+                }
+                
+                
             </tbody>
 
         </table>

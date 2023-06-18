@@ -6,7 +6,7 @@ import editIcon from '../../Images/editing.png' // Modify icons created by Freep
 function ExpenseItem(props) {
     const [exDescription, setExDescription] = useState(props.exDescription);
     function clickHandler() {
-        setExDescription('New val');
+        setExDescription('New value');
         console.log("here");
     };
     return (
