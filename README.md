@@ -14,3 +14,12 @@ npm start
 ```
 
 
+PLAN
+
+Design:
+App example: https://m2.material.io/design/color/applying-color-to-ui.html#top-and-bottom-app-bars
+Light/dark mode: https://www.epicpxls.com/items/hireme-job-finder-app-ui-kit
+Another idea: https://www.fiverr.com/josephstephe585/do-mobile-ui-design-mobile-app-ui-ux-design-ui-ux-design-figma
+Another: https://www.behance.net/gallery/16789827/DO-Mobile-UI-Kit-UIUX-Art-Direction
+
+React folder structure: https://www.xenonstack.com/insights/reactjs-project-structure

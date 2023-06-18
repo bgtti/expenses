@@ -1,0 +1,35 @@
+/* convert hex to CSS filter:  https://codepen.io/sosuke/pen/Pjoqqp  */
+
+/* Footer */
+Footer {
+    /* border-top: 5px solid var(--main-blue); */
+    display: flex;
+    padding-top: 15px;
+    /* padding-bottom: auto; */
+    /* align-items: flex-end; */
+    align-items: baseline;
+    /* align-content: center; */
+    justify-content: center;
+    min-height: 30px;
+    background-color: var(--cBlue);
+}
+
+Footer > *{
+    display: inline-block;
+    height: 20px;
+}
+Footer p {
+    margin-right: 7px;
+    color: #1c282e;
+    /* background-color: aquamarine; */
+}
+
+Footer img {
+    height: 20px;
+    padding-left: 5px;
+    filter: invert(6%) sepia(6%) saturate(5274%) hue-rotate(156deg) brightness(102%) contrast(81%);
+}
+
+Footer img:hover {
+    transform: scale(2) rotateZ(360deg);
+}

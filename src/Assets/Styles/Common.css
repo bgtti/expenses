@@ -1,0 +1,14 @@
+.Common-hidden{
+    display:none;
+}
+
+/* Should be used in all main components inside the Main component*/
+.Common-padding{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Should be used in main area between Nav and Footer */
+.Common-expand-flex-1{
+    flex:1;
+}

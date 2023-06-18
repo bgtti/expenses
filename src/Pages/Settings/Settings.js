@@ -1,10 +1,10 @@
-import "../../Styles/Settings.css";
-import GroupData from "../Data/GroupData";
-import TypepData from "../Data/TypeData";
-import AddButton from "../GeneralUI/AddButton";
-import trashIcon from '../../Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
-import editIcon from '../../Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
-import AddIcon from "../../Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
+// import GroupData from "../../Data/GroupData";
+// import TypepData from "../../Data/TypeData";
+import AddButton from "../../Components/AddButton";
+import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
+import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
+import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
+import "../../Assets/Styles/Settings.css";
 
 
 function Settings(props) {

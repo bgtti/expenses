@@ -1,26 +1,30 @@
-.NavBar,  .NavBar-Header{
+/* .NavBar,  .NavBar-Header{
     display: flex;
     align-items: center;
-}
+} */
+
 .NavBar {
     width: 100%;
-    justify-content: space-between;
-    /* background-color: aqua; */
-    
+    /* justify-content: space-between;
+    display: flex;
+    align-items: center; */
+    background-color: var(--cBlue);
 }
-.NavBar-Header {
+.NavBar *{
+    color: white !important;
+}
+/* .NavBar-Header {
     gap: 10px;
-    /* background-color: brown; */
 }
 .NavBar-Header img {
     height: 35px;
     filter: var(--cFilterSalmon);
-}
+} */
 .NavBar-SettingsBtn {
     background-color: white;
     border-radius: 50px;
     height: 35px;
-    color: var(--cSalmon);
+    color: var(--cSalmon) !important;
 }
 @media (hover: hover) {
     .NavBar-SettingsBtn:hover {

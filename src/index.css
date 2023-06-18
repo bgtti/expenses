@@ -8,6 +8,7 @@
   /* use cBlueDark for darkmode background */
   --cBlueDark:#232F34;
   --cBlue: #344955;
+  /* --cBlueLight: #1c282e; */
   --cOrange: #F9AA33;
 }
 
@@ -16,8 +17,14 @@
     sans-serif;
 }
 
+html, body {
+  height: 100%;
+}
 body {
   margin: 0;
+}
+body>*{
+  height: 100%;
 }
 
 .dark-mode{

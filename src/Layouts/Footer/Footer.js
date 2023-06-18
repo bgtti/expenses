@@ -1,5 +1,5 @@
-import "../../Styles/Footer.css";
-import GithubIcon from "../../Images/github.png";
+import GithubIcon from "../../Assets/Images/github.png";
+import "../../Assets/Styles/Footer.css";
 
 function Footer() {
     return (

@@ -1,5 +1,5 @@
-import ModalWrapper from "../GeneralUI/ModalWrapper";
-import closeIcon from "../../Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import ModalWrapper from "../../Components/ModalWrapper";
+import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 //import "../../Styles/ModalAddExpense.css"
 
 function ModalAddSettings(props) {

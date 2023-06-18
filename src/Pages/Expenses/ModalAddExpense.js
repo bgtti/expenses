@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ExpensesData from "../Data/ExpenseData";
-import ModalWrapper from "../GeneralUI/ModalWrapper";
-import closeIcon from "../../Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-import "../../Styles/ModalAddExpense.css"
+import ExpensesData from "../../Data/ExpenseData";
+import ModalWrapper from "../../Components/ModalWrapper";
+import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import "../../Assets/Styles/ModalAddExpense.css"
 
 function ModalAddExpense(props) {
     const styleClasses = 'ModalAddExpense ' + props.className;

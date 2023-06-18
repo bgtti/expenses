@@ -1,8 +1,8 @@
 import { useState } from "react";
-import arrowIcon from '../../Images/arrow.png' //Source: Arrow icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/arrow
-import filterIcon from '../../Images/search.png' //Source: Search icons created by Smashicons - Flaticon, from https://www.flaticon.com/free-icons/search
-import AddButton from "../GeneralUI/AddButton";
-import "../../Styles/Expenses.css"
+import arrowIcon from '../../Assets/Images/arrow.png' //Source: Arrow icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/arrow
+import filterIcon from '../../Assets/Images/search.png' //Source: Search icons created by Smashicons - Flaticon, from https://www.flaticon.com/free-icons/search
+import AddButton from "../../Components/AddButton.js";
+import "../../Assets/Styles/Expenses.css"
 function ExpensesFilter() {
     const [filterMenuStatus, setfilterMenuStatus] = useState(false);
     function filterMenuStatusToggler(openOrClose) {
