@@ -11,9 +11,16 @@ function ExpensesFilter() {
     return (
         <div className="ExpensesFilter">
             <div className={filterMenuStatus === false ? "ExpensesFilter-Header" : "ExpensesFilter-Header ExpensesFilter-Header-Open"}>
-                <div><img src={filterIcon} alt="filter icon" /> <h2>Filter</h2></div>
+                <div><img src={filterIcon} alt="filter icon" /><h2>Filter</h2></div>
+                <AddButton name="" type="button" className="ExpensesFilter-Year-Btn">
+                    {new Date().getFullYear() - 1}
+                </AddButton>
+                <AddButton name="" type="button" className="ExpensesFilter-Year-Btn">
+                    {new Date().getFullYear()}
+                </AddButton>
+                
                 <AddButton name="" type="button" className="ExpensesFilter-OpenFilterMenuBtn" btnAction={filterMenuStatus === false ? "open" : "close"} onClickFunction={filterMenuStatusToggler}>
-                    <img src={arrowIcon} alt="Open Menu" />
+                    Expand <img src={arrowIcon} alt="Open Menu" />
                 </AddButton>
             </div>
             <form action="" className={filterMenuStatus === false ? "ExpensesFilter-FormClosed" : "ExpensesFilter-Form"}>

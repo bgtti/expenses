@@ -1,0 +1,58 @@
+.Modal-Container {
+    background-color: white;
+    border: 2px solid var(--cBlueDark);
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.Modal-Container>h2{
+    color: var(--cBlueDark);
+    margin-bottom: 10px;
+}
+
+.Modal-CloseModalIcon {
+    width: 20px;
+    align-self: flex-end;
+    cursor: pointer;
+    filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
+}
+
+.Modal-InputContainer {
+    display: grid;
+    grid-template-columns: 2fr 60%;
+    grid-gap: 10px;
+    margin-bottom: 5px;
+}
+
+@media only screen and (min-width: 800px) {
+    .Modal-InputContainer {
+        min-width: 400px;
+    }
+}
+.Modal-PrimaryBtn {
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    border: 2px solid var(--cOrange);
+    background-color: var(--cOrange);
+    border-radius: 5px;
+}
+
+@media (hover: hover) {
+    .Modal-PrimaryBtn:hover {
+        border-color: var(--cOrangeDarker);
+        box-shadow: var(--cBoxShadowOrangeBtn);
+    }
+
+    .Modal-CloseModalIcon:hover {
+        filter: invert(53%) sepia(100%) saturate(352%) hue-rotate(357deg) brightness(92%) contrast(87%);
+    }
+}
+
+/* ModalAddExpense */
+.modalAddExpenseHidden {
+    display: none;
+}

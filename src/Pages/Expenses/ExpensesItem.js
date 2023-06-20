@@ -11,15 +11,15 @@ function ExpenseItem(props) {
     };
     return (
         <tr >
-            <td>{new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }).format(props.exDate)}</td>
-            <td>{props.exNr}</td>
-            <td>{exDescription}</td>
-            <td>{props.exAmount}</td>
-            <td>{props.project}</td>
-            <td>{props.type}</td>
-            <td>{props.account}</td>
-            <td onClick={clickHandler} role="button"><img src={editIcon} alt="edit element" className="ExpenseItem-Icon" /></td>
-            <td role="button"><img src={trashIcon} alt="delete element" className="ExpenseItem-Icon" /></td>
+            <td data-title="Date">{new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }).format(props.exDate)}</td>
+            <td data-title="Expense Nr">{props.exNr}</td>
+            <td data-title="Description">{exDescription}</td>
+            <td data-title="Amount">{props.exAmount}</td>
+            <td data-title="Group">{props.project}</td>
+            <td data-title="Type">{props.type}</td>
+            <td data-title="Account">{props.account}</td>
+            <td data-title="Edit"  onClick={clickHandler} role="button"><img src={editIcon} alt="edit element" className="ExpenseItem-Icon" /></td>
+            <td data-title="Delete"  role="button"><img src={trashIcon} alt="delete element" className="ExpenseItem-Icon" /></td>
         </tr>
     )
 }

@@ -25,7 +25,7 @@ function ExpensesTable() {
                             exDate={expense.exDate}
                             exNr={expense.exNr}
                             exDescription={expense.exDescription}
-                            exAmount={ExpensesData.exAmount}
+                            exAmount={expense.exAmount}
                             project={expense.project}
                             type={expense.type}
                             account={expense.account}>
