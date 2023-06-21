@@ -10,7 +10,7 @@ Footer {
     align-items: baseline;
     /* align-content: center; */
     justify-content: center;
-    min-height: 30px;
+    min-height: 50px;
     background-color: var(--cBlue);
 }
 

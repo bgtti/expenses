@@ -1,4 +1,9 @@
-
+.Settings h2{
+    margin: 20px 0;
+}
+.Settings section {
+    margin-bottom: 20px;
+}
 .Settings-List {
     list-style-type: none; 
     margin: 0;
@@ -14,26 +19,30 @@
 .Settings-ListBullet{
     width: 5px;
     height: 5px;
-    background-color: var(--cSalmon);
+    background-color: var(--cOrange);
     border-radius: 50%;
 }
 .Settings-Icon{
     width: 15px;
     cursor: pointer;
 }
-.Settings-AddBtn{
-    background-color: var(--cSalmon);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 120px;
+.Settings-Icon-light{
+    filter: var(--cBlueLightFilter);
 }
-.Settings-AddBtnIcon{
-    width: 15px;
+
+.Settings-checkboxContainer{
+    display: flex;
+    gap: 10px
+}
+.Settings-checkboxContainer>input[type="checkbox"]{
+    outline: var(--cOrange);
+}
+.Settings-checkboxContainer>input[type="checkbox"]:checked{
+    accent-color: var(--cOrange);
 }
 
 @media (hover: hover) {
     .Settings-Icon:hover {
-        filter: var(--cFilterSalmon);
+        filter: var(--cOrangeFilter);
     }
 }

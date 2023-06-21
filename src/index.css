@@ -5,13 +5,17 @@
   --cPurple: #6053ff;
   --cFilterSalmon: invert(53%) sepia(73%) saturate(1644%) hue-rotate(325deg) brightness(100%) contrast(98%);
   /* new ones: https: //m2.material.io/design/color/applying-color-to-ui.html#top-and-bottom-app-bars */
-  /* Primary: cBlueDark, secondary: cOrange */
+  /* Primary: cBlueDark, secondary: cOrange, tertiary: cBlueLight */
   /* use cBlueDark for darkmode background */
   --cBlueDark:#232F34;
+  --cBlueDarker: #11171a;
+  --cBoxShadowBlueBtn: inset 0px 0px 10px #0d1214;
   --cBlueLight: #b4c1cc;
+  --cBlueLightFilter: invert(79%) sepia(8%) saturate(362%) hue-rotate(165deg) brightness(95%) contrast(94%);
   --cBlue: #344955;
   /* --cBlueLight: #1c282e; */
   --cOrange: #F9AA33;
+  --cOrangeFilter:invert(76%) sepia(54%) saturate(942%) hue-rotate(332deg) brightness(99%) contrast(97%);
   --cOrangeDarker: #cf8e2c;
   --cBoxShadowOrangeBtn: inset 0px 0px 10px #cf8e2c;
 }

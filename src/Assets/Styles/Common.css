@@ -12,3 +12,37 @@
 .Common-expand-flex-1{
     flex:1;
 }
+
+.Common-button-primary,
+.Common-button-secondary,
+.Common-button-tertiary{
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 2px solid;
+}
+.Common-button-primary {
+    border: 2px solid var(--cOrange);
+    background-color: var(--cOrange);
+}
+.Common-button-secondary {
+    background-color: var(--cBlueDark);
+    border-color: var(--cBlueDark);
+    color: var(--cBlueLight);
+}
+.Common-button-tertiary {
+    background-color: var(--cBlueLight);
+    border-color: var(--cBlueDark);
+    color: var(--cBlueDark);
+}
+@media (hover: hover) {
+    .Common-button-primary:hover {
+        border-color: var(--cOrangeDarker);
+        box-shadow: var(--cBoxShadowOrangeBtn);
+    }
+    .Common-button-secondary:hover,
+    .Common-button-tertiary:hover {
+        border-color: var(--cBlueDarker);
+        box-shadow: var(--cBoxShadowBlueBtn);
+    }
+}

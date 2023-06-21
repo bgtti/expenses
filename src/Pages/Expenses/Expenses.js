@@ -28,7 +28,7 @@ function Expenses(props) {
                 addExpenseModalToggler={addExpenseModalToggler}>
             </ModalAddExpense>
             <AddButton 
-                name="Add new expense" btnAction="open" className="Expenses-AddExpenseBtn"
+                name="Add new expense" btnAction="open" className="Expenses-AddExpenseBtn Common-button-primary"
                 onClickFunction={addExpenseModalToggler}><img src={AddIcon} alt="Add icon" /></AddButton>
             <ExpensesFilter></ExpensesFilter>
             <h2>Expenses Table</h2>

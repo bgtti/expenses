@@ -11,15 +11,16 @@ function ExpensesFilter() {
     return (
         <div className="ExpensesFilter">
             <div className={filterMenuStatus === false ? "ExpensesFilter-Header" : "ExpensesFilter-Header ExpensesFilter-Header-Open"}>
-                <div><img src={filterIcon} alt="filter icon" /><h2>Filter</h2></div>
-                <AddButton name="" type="button" className="ExpensesFilter-Year-Btn">
+                <div data-toggle="tooltip" data-placement="bottom" title="Click expand to see filter options">
+                    <img src={filterIcon} alt="filter icon" /><h2>Filter</h2>
+                </div>
+                <AddButton name="" type="button" className="ExpensesFilter-Year-Btn Common-button-secondary">
                     {new Date().getFullYear() - 1}
                 </AddButton>
-                <AddButton name="" type="button" className="ExpensesFilter-Year-Btn">
+                <AddButton name="" type="button" className="Common-button-secondary">
                     {new Date().getFullYear()}
                 </AddButton>
-                
-                <AddButton name="" type="button" className="ExpensesFilter-OpenFilterMenuBtn" btnAction={filterMenuStatus === false ? "open" : "close"} onClickFunction={filterMenuStatusToggler}>
+                <AddButton name="" type="button" className="ExpensesFilter-OpenFilterMenuBtn Common-button-tertiary" btnAction={filterMenuStatus === false ? "open" : "close"} onClickFunction={filterMenuStatusToggler}>
                     Expand <img src={arrowIcon} alt="Open Menu" />
                 </AddButton>
             </div>
@@ -80,7 +81,7 @@ function ExpensesFilter() {
                         </select>
                     </div>
                 </fieldset>
-                <AddButton type="submit" name="Apply filters" btnAction="open" className="ExpensesFilter-ApplyFilterBtn"></AddButton>
+                <AddButton type="submit" name="Apply filters" btnAction="open" className="ExpensesFilter-ApplyFilterBtn Common-button-tertiary"></AddButton>
             </form>
         </div>
     )

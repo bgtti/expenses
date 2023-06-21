@@ -6,25 +6,13 @@ import "../../Assets/Styles/NavBar.css"
 
 function NavBar(props) {
     return (
-        // <nav className="NavBar Common-padding">
-        //     <div className="NavBar-Header">
-        //         <img src={Logo} alt="Logo" />
-        //         <h1>Expenses App</h1>
-        //     </div>
-        //     <AddButton className="NavBar-SettingsBtn" name={props.settingsStatus === false ? "Settings" : "Close Settings"} btnAction={props.settingsStatus === false ? "open" : "close"} onClickFunction={props.settingsToggler}>
-        //         {
-        //             props.settingsStatus === false ?
-        //                 <img className="Home-SettingsBtnIcon" src={SettingsIcon} alt="Settings icon open" />
-        //                 : <img className="Home-SettingsBtnIcon" src={CloseIcon} alt="Settings icon close" />
-        //         }
-        //     </AddButton>
-        // </nav>
         <nav class="navbar navbar-expand-lg Common-padding NavBar">
-            <a class="navbar-brand" href="#">Expenses App</a>
+            <span class="navbar-brand NavBar-AppName">Expenses App</span>
+            {/* <a class="navbar-brand" href="#">Expenses App</a> */}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse NavBar-links" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
@@ -51,11 +39,11 @@ function NavBar(props) {
                         </div>
                     </li>
                     <li>
-                        <AddButton className="NavBar-SettingsBtn" name={props.settingsStatus === false ? "Settings" : "Close Settings"} btnAction={props.settingsStatus === false ? "open" : "close"} onClickFunction={props.settingsToggler}>
+                        <AddButton className="NavBar-SettingsBtn nav-link" name={props.settingsStatus === false ? "Settings" : "Close Settings"} btnAction={props.settingsStatus === false ? "open" : "close"} onClickFunction={props.settingsToggler}>
                             {
                                 props.settingsStatus === false ?
-                                    <img className="Home-SettingsBtnIcon" src={SettingsIcon} alt="Settings icon open" />
-                                    : <img className="Home-SettingsBtnIcon" src={CloseIcon} alt="Settings icon close" />
+                                    <img className="NavBar-BtnIcon" src={SettingsIcon} alt="Settings icon open" />
+                                    : <img className="NavBar-BtnIcon" src={CloseIcon} alt="Settings icon close" />
                             }
                         </AddButton>
                     </li>

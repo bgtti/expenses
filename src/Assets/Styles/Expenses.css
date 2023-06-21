@@ -10,61 +10,35 @@
 /* EXPENSES FILTER */
 .ExpensesFilter{
     width: 100%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 .ExpensesFilter-Header{
-    height: 25px;
     display: flex;
-    /* background-color: aqua; */
-    justify-content: flex-start;
-    align-items: center;
-    /* border: 2px solid var(--cSalmon); */
+    gap: 10px;
+    padding-right: 10px;
 }
 .ExpensesFilter-Header div{
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    border: 2px solid var(--cSalmon); 
     border-right: none;
     padding: 0 10px;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-    width: 102px;
-    height: 20px;
-    /* background-color: blue; */
 }
 .ExpensesFilter-Header div img {
     width: 15px;
 }
 .ExpensesFilter-Header div h2 {
     font-size: 1.15em;
+    margin:0;
 }
-/* .ExpensesFilter-OpenFilterMenuBtn{
-    background-color: white;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    margin: 0;
-    padding: 0 5px;
-    height: 25px;
-} */
-.ExpensesFilter-OpenFilterMenuBtn {
-    height:25px;
-    border-bottom-left-radius: 0 !important;
-    border-top-left-radius: 0 !important;
-    
+.ExpensesFilter-Year-Btn{
+    margin-left: auto;
 }
-.ExpensesFilter-Header-Open button{
-    border-bottom-left-radius: 5px !important;
-    /* border-top-left-radius: 5px !important; */
-    border-bottom-right-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-}
-
-
-/* .ExpensesFilter-OpenFilterMenuBtn img{
-    filter: var(--cFilterSalmon);
-} */
 .ExpensesFilter-Form{
-    border: 3px solid var(--cPurple);
+    border: 3px solid var(--cBlueDark);
     border-top: none;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -72,15 +46,33 @@
 }
 .ExpensesFilter-Form fieldset{
     border: none;
-    border: 2px solid var(--cLightGray);
+    border: 2px solid #eee;
     border-radius: 5px;
     margin: 5px;
+    padding: 5px 5px 5px 0;
     display: flex;
     gap: 15px;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+    margin-bottom: 5px;
+}
+.ExpensesFilter-Form fieldset div{
+    padding-left: 10px;
+}
+@media only screen and (min-width: 800px){
+    .ExpensesFilter-Form fieldset{
+        display: grid;
+        grid-template-columns: 2fr repeat(3, 25%);
+    }
+    .ExpensesFilter-Form fieldset div {
+        padding-left: 0;
+    }
 }
 .ExpensesFilter-Form fieldset legend{
     padding: 0 10px;
-    color: var(--cLightGray);
+    color: var(--cBlueLight);
+    font-size: 1em;
 }
 .ExpensesFilter-Form fieldset div label {
     margin-right: 5px;
@@ -94,14 +86,12 @@
     border: 2px solid var(--cLightGray);
     border-radius: 5px;
 }
-/* @media (hover: hover) {
-    .ExpensesFilter-OpenFilterMenuBtn:hover img{
-        filter: none;
-    }
-} */
+.ExpensesFilter-ApplyFilterBtn{
+    margin-left: 5px;
+}
 /* Filter open only */
 .ExpensesFilter-Header-Open{
-    border: 3px solid var(--cPurple);
+    border: 3px solid var(--cBlueDark);
     border-bottom: none;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -110,30 +100,20 @@
 .ExpensesFilter-Header-Open div {
     border: none;
 }
-/* .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn {
-    border: none;
-    border-radius: 0;
-    border-bottom-left-radius: 5px;
-    background-color: var(--cPurple);
-    padding: 10px 20px;
-} */
 .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn img{
     transform: rotate(180deg);
 }
-
-/* @media (hover: hover) {
-    .ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn:hover {
-        background-color: var(--cSalmon);
-    }
-} */
-
 
 /* Filter closed only */
 .ExpensesFilter-FormClosed{
     display: none;
 }
 
+/* ************************************************************** */
 /* EXPENSES TABLE */
+.ExpensesTable {
+    width: 100%;
+}
 
 /* EXPENSES ITEM -- ICONS */
 .ExpenseItem-Icon{
@@ -143,7 +123,7 @@
 
 @media (hover: hover) {
     .ExpenseItem-Icon:hover {
-        filter: var(--cFilterSalmon);
+        filter: var(--cOrangeFilter);
     }
 }
 
