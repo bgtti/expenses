@@ -35,6 +35,14 @@
     border-color: var(--cBlueDark);
     color: var(--cBlueDark);
 }
+.Common-button-primary:disabled,
+.Common-button-secondary:disabled,
+.Common-button-tertiary:disabled {
+    cursor: not-allowed;
+    background: #ccc;
+    border-color: #ccc;
+    color: var(--cGray);
+}
 @media (hover: hover) {
     .Common-button-primary:hover {
         border-color: var(--cOrangeDarker);
@@ -43,6 +51,12 @@
     .Common-button-secondary:hover,
     .Common-button-tertiary:hover {
         border-color: var(--cBlueDarker);
+        box-shadow: var(--cBoxShadowBlueBtn);
+    }
+    .Common-button-primary:hover:disabled,
+    .Common-button-secondary:hover:disabled,
+    .Common-button-tertiary:hover:disabled {
+        border-color: rgb(78, 78, 78);
         box-shadow: var(--cBoxShadowBlueBtn);
     }
 }

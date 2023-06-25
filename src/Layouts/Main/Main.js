@@ -13,25 +13,52 @@ import "../../Assets/Styles/Common.css";
 
 function Main() {
     // const [modalAddExpenseStatus, setModalAddExpenseStatus] = useState(false);
+    const [signupStatus, setSignupStatus] = useState(false);
+    const [loginStatus, setLoginStatus] = useState(false);
     const [settingsStatus, setSettingsStatus] = useState(false);
+    const [expensesStatus, setExpensesStatus] = useState(true);
 
     // function addExpenseModalToggler(openOrClose) {
     //     openOrClose === "close" ? setModalAddExpenseStatus(false) : setModalAddExpenseStatus(true);
     // }
-    function settingsToggler(openOrClose) {
-        openOrClose === "close" ? setSettingsStatus(false) : setSettingsStatus(true);
+    function signUpToggler() {
+        // openOrClose === "close" ? setSignupStatus(false) : setSignupStatus(true);
+        openThePageAndHideAllOthers('signup')
+    }
+    function logInToggler() {
+        // openOrClose === "close" ? setLoginStatus(false) : setLoginStatus(true);
+        openThePageAndHideAllOthers('login')
+    }
+    function settingsToggler() {
+        // openOrClose === "close" ? setSettingsStatus(false) : setSettingsStatus(true);
+        openThePageAndHideAllOthers('settings')
+    }
+    function expensesToggler() {
+        // openOrClose === "close" ? setSettingsStatus(false) : setSettingsStatus(true);
+        openThePageAndHideAllOthers('expenses')
+    }
+    function openThePageAndHideAllOthers(pageToOpen){
+        pageToOpen === "signup" ? setSignupStatus(true) : setSignupStatus(false);
+        pageToOpen === "login" ? setLoginStatus(true) : setLoginStatus(false);
+        pageToOpen === "settings" ? setSettingsStatus(true) : setSettingsStatus(false);
+        pageToOpen === "expenses" ? setExpensesStatus(true) : setExpensesStatus(false);
     }
 
     return (
         <div className="Main">
-            <NavBar settingsStatus={settingsStatus} settingsToggler={settingsToggler}></NavBar>
+            <NavBar 
+                signupStatus={signupStatus} signUpToggler={signUpToggler}
+                loginStatus={loginStatus} logInToggler={logInToggler}
+                settingsStatus={settingsStatus} settingsToggler={settingsToggler}
+                expensesStatus={expensesStatus} expensesToggler={expensesToggler}
+            ></NavBar>
 
             <Home className="Common-hidden"></Home>
-            <LogIn className="Common-hidden"></LogIn>
-            <SignUp className="Common-hidden"></SignUp>
+            <SignUp className={signupStatus === false ? "Common-hidden" : ""}></SignUp>
+            <LogIn className={loginStatus === false ? "Common-hidden" : ""}></LogIn>
 
-            <Settings className={settingsStatus === false ? "Main-Settings-Hidden" : ""}></Settings>
-            <Expenses className={settingsStatus === false ? "" : "Main-Expenses-Hidden"}></Expenses>
+            <Settings className={settingsStatus === false ? "Common-hidden" : ""}></Settings>
+            <Expenses className={expensesStatus === false ? "Common-hidden" : ""}></Expenses>
 
             {/* <Expenses>
                 className={settingsStatus === false ? "" : "Home-Expenses-Hidden"}

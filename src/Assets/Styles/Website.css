@@ -1,0 +1,42 @@
+/* SignUp and LogIn */
+
+/* .Website-SignAndLogForm{
+   background-color: aqua;
+} */
+/* .Website-SignUp{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+} */
+.Website-SignUp>h2{
+    margin: 20px 0;
+}
+.Website-SignAndLog-InputContainer {
+    display: grid;
+    grid-template-columns: 2fr 60%;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+.Website-SignAndLog-InputContainer>input{
+    border-radius: 5px;
+}
+
+@media only screen and (min-width: 800px) {
+    .Website-SignAndLog-InputContainer {
+        max-width: 500px;
+    }
+}
+
+.Website-SignAndLog-invalidInput {
+    border:none;
+    border: 2px solid var(--cRed);
+    background: var(--cRedBackground);
+}
+
+.Website-SignAndLog-PrimaryBtn {
+    margin-top: 10px;
+    padding: 5px 20px;
+}
+
+
+

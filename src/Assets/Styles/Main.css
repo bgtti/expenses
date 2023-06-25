@@ -63,6 +63,12 @@
         background-color: var(--cPurple);
     }
 } */
+.Main-SignUp-Hidden {
+    display: none;
+}
+.Main-LogIn-Hidden {
+    display: none;
+}
 .Main-Settings-Hidden {
     display: none;
 }
