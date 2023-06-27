@@ -63,9 +63,37 @@ function LogIn(props) {
         dispatchPassword({ type: 'INPUT_BLUR' });
     };
 
+    // const submitHandler = (event) => {
+    //     event.preventDefault();
+    //     // props.onLogin(enteredEmail, enteredPassword);
+    // }
+
     const submitHandler = (event) => {
         event.preventDefault();
-        // props.onLogin(enteredEmail, enteredPassword);
+        const options = {
+            method: 'POST',
+            headers:{
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "email": emailState.value,
+                "password": passwordState.value
+            }),
+        };
+        fetch('http://127.0.0.1:5000/api/account/login', options)
+        .then(response =>{
+            if (response.ok) {
+                return response.json(); // Return the Promise to be handled in the next then block
+            } else {
+                throw new Error('Login error: response status not 200');
+            }
+        })
+        .then((data)=>{
+            console.log(data);
+        })
+        .catch(error=>{
+            console.error("Login error.", error);
+        })
     }
 
     return (
@@ -73,15 +101,15 @@ function LogIn(props) {
             <h2>Log in</h2>
             <form className="Website-SignAndLogForm" onSubmit={submitHandler}>
                 <div className="Website-SignAndLog-InputContainer">
-                    <label htmlFor="signupEmail">Email:</label>
-                    <input id="signupEmail" name="signupEmail" type="email" 
+                    <label htmlFor="loginEmail">Email:</label>
+                    <input id="loginEmail" name="loginEmail" type="email" 
                         className={`${emailState.isValid === false ? 'Website-SignAndLog-invalidInput' : ''}`}
                         value={emailState.value} onChange={emailChangeHandler}
                         onBlur={validateEmailHandler}/>
                 </div>
                 <div className="Website-SignAndLog-InputContainer">
-                    <label htmlFor="signupPassword">Password:</label>
-                    <input id="signupPassword" name="signupPassword" type="password" 
+                    <label htmlFor="loginPassword">Password:</label>
+                    <input id="loginPassword" name="loginPassword" type="password" 
                         className={`${passwordState.isValid === false ? 'Website-SignAndLog-invalidInput' : ''}`}
                         value={passwordState.value} onChange={passwordChangeHandler}
                         onBlur={validatePasswordHandler} /> 
