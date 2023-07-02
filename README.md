@@ -23,3 +23,10 @@ Another idea: https://www.fiverr.com/josephstephe585/do-mobile-ui-design-mobile-
 Another: https://www.behance.net/gallery/16789827/DO-Mobile-UI-Kit-UIUX-Art-Direction
 
 React folder structure: https://www.xenonstack.com/insights/reactjs-project-structure
+
+Useful links:
+redux: https://www.youtube.com/watch?v=CVpUuw9XSjY
+token authentication: https://www.youtube.com/watch?v=8-W2O_R95Pk&t=793s
+
+
+ sessionStorage.removeItem("access_token");

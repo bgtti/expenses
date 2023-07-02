@@ -6,16 +6,16 @@ import "../../Assets/Styles/NavBar.css"
 
 function NavBar(props) {
     return (
-        <nav class="navbar navbar-expand-lg Common-padding NavBar">
-            <span class="navbar-brand NavBar-AppName">Expenses App</span>
-            {/* <a class="navbar-brand" href="#">Expenses App</a> */}
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-expand-lg Common-padding NavBar">
+            <span className="navbar-brand NavBar-AppName">Expenses App</span>
+            {/* <a className="navbar-brand" href="#">Expenses App</a> */}
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse NavBar-links" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
+            <div className="collapse navbar-collapse NavBar-links" id="navbarNavDropdown">
+                <ul className="navbar-nav">
+                    <li className="nav-item active">
+                        <a className="nav-link" href="#">Home <span className="sr-only"></span></a>
                     </li>
                     <li class="nav-item">
                         <AddButton 
@@ -25,7 +25,7 @@ function NavBar(props) {
                             onClickFunction={props.signUpToggler}>
                         </AddButton>
                     </li>
-                    <li class="nav-item">
+                    <li className="nav-item">
                         <AddButton
                             className="NavBar-SettingsBtn nav-link"
                             name="LogIn"
@@ -33,10 +33,10 @@ function NavBar(props) {
                             onClickFunction={props.logInToggler}>
                         </AddButton>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Work Space</a>
+                    <li className="nav-item">
+                        <a className="nav-link" href="#">Work Space</a>
                     </li>
-                    <li class="nav-item">
+                    <li className="nav-item">
                         <AddButton
                             className="NavBar-SettingsBtn nav-link"
                             name="Expenses"
@@ -56,13 +56,13 @@ function NavBar(props) {
                             }
                         </AddButton>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             User
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Account Settings</a>
-                            <a class="dropdown-item" href="#">Log out</a>
+                        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a className="dropdown-item" href="#">Account Settings</a>
+                            <a className="dropdown-item" href="#">Log out</a>
                         </div>
                     </li>
                 </ul>

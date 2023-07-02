@@ -71,11 +71,11 @@ function Settings(props) {
                 <h3>Expenses numbering</h3>
                 <p>How would you like your expenses to be numbered?</p>
                 <form action="">
-                    <div class="Settings-checkboxContainer">
+                    <div className="Settings-checkboxContainer">
                         <input type="checkbox" id="option1" name="option1" value="option1" checked/>
                         <label htmlFor="option1">YY-MM-number</label><br />
                     </div>
-                    <div class="Settings-checkboxContainer">
+                    <div className="Settings-checkboxContainer">
                         <input type="checkbox" id="option2" name="option2" value="option2" />
                         <label htmlFor="option2">Number</label><br />
                     </div>

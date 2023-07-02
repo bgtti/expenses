@@ -15,6 +15,12 @@ const whateverReducer = (state={theKey: 0}, action) =>{
 const store = createStore(whateverReducer);
 
 export default store;
+// https://www.youtube.com/watch?v=CVpUuw9XSjY
+// Store --globalized state
+// action --a function that returns an object
+// reducer -- a function gets state and action, and you can have a switch statement...
+// dispatch -- executes the action
+//above: action and reducer are together
 
 // now in index.js: import {Provider} from 'react-redux; import store from '.store/index';
 // this: root.render(<Provider store={store}><App/></Provider>;)
