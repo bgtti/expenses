@@ -1,19 +1,13 @@
 import isLoggedInReducer from './reducer';
-import { createStore, combineReducers } from 'redux'
-// import { signIn, signOut } from './actions';
-// import { useSelector, useDispatch } from "react-redux"
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
 
-//redux: https://www.youtube.com/watch?v=CVpUuw9XSjY
+//advanced store setup: https://github.com/reduxjs/redux-devtools/tree/main/extension#installation
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const allReducers = combineReducers({
     isLoggedIn: isLoggedInReducer,
 })
-const store = createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-
-// store.subscribe(()=>console.log(store.getState()))
-// store.dispatch(signIn())
-// store.dispatch(signOut())
-// store.dispatch(signIn())
-
+const store = createStore(allReducers, composeEnhancers(applyMiddleware(thunk)));
 
 export default store;
-// store is imported in App.js --------------min 32

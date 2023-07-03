@@ -27,6 +27,8 @@ React folder structure: https://www.xenonstack.com/insights/reactjs-project-stru
 Useful links:
 redux: https://www.youtube.com/watch?v=CVpUuw9XSjY
 token authentication: https://www.youtube.com/watch?v=8-W2O_R95Pk&t=793s
-
+//middleware implementation: https://www.youtube.com/watch?v=JDZRfLGNWdc
 
  sessionStorage.removeItem("access_token");
+
+ (token && token !=="" && token!==undefined) ? "You are already logged in." :

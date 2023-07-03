@@ -1,15 +1,28 @@
-const isLoggedInReducer = (state = false, action) => {
+const checkAccessToken = () => {
+    const token = sessionStorage.getItem("access_token");
+    if (token && token !== undefined && token !== ""){
+        return { loggedIn: true, token };
+    } else {
+        return { loggedIn: false, token: undefined };
+    }
+};
+
+const isLoggedInInitialState = checkAccessToken();
+
+const isLoggedInReducer = (state = isLoggedInInitialState, action) => {
     switch(action.type){
-        case 'SIGN_IN':
-            return true;
-        case 'SIGN_OUT':
-            return false;
         case 'LOG_IN':
-            return true;
+            return {
+                loggedIn: true,
+                token: action.token
+            };
         case 'LOG_OUT':
-            return false;
+            return {
+                loggedIn: false,
+                token: undefined
+            };
         default:
-            return false;
+            return state;
     }
 };
 

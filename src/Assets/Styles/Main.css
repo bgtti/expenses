@@ -1,68 +1,14 @@
+/* Used in Routes */
 .Main {
-    /* background-color: brown; */
     height: 100%;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: space-between; */
 }
-
-/* .Main nav {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-} */
-
-/* .Main-Header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.Main-Header img {
-    height: 40px;
-    filter: var(--cFilterSalmon);
-} */
-
-/* .Main-SettingsBtn,
-.Main-AddExpenseBtn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-} */
-
-/* .Main-SettingsBtnIcon, .Main-AddBtnIcon{
-    width: 15px;
-} */
 .Main-SettingsBtn {
     color: var(--cSalmon);
     background-color: white;
     border-color: var(--cSalmon);
 }
-
-/* .Main-SettingsBtnIcon {
-    filter: var(--cFilterSalmon);
-}
-
-.Main-AddExpenseBtn {
-    background-color: var(--cSalmon);
-    border-color: var(--cSalmon);
-}
-
-@media only screen and (min-width:600px) {
-    .Main nav {
-        width: 670px;
-    }
-} */
-
-/* @media (hover: hover) {
-    .Home-SettingsBtn:hover {
-        background-color: var(--cPurple);
-    }
-    .Home-AddExpenseBtn:hover {
-        background-color: var(--cPurple);
-    }
-} */
 .Main-SignUp-Hidden {
     display: none;
 }

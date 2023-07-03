@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ModalAddExpense from "../../Pages/Expenses/ModalAddExpense";
-import ExpensesTable from "./ExpensesTable.js"
-import ExpensesFilter from "./ExpensesFilter.js";
-import AddButton from "../../Components/AddButton.js";
+import ModalAddExpense from "./ModalAddExpense";
+import ExpensesTable from "./ExpensesTable"
+import ExpensesFilter from "./ExpensesFilter";
+import AddButton from "../../Components/AddButton";
 import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
 import "../../Assets/Styles/Expenses.css"
 import "../../Assets/Styles/Home.css";
