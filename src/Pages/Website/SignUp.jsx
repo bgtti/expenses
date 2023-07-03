@@ -87,7 +87,7 @@ function SignUp(props) {
         dispatch(
         signUp(nameState.value, emailState.value, passwordState.value)
         ).then(() => {
-        navigate("/expenses");
+        navigate("/dashboard");
         }).catch((error) => {
         console.error("Signup error: there was a problem signing up. [SignUp.jsx]");
         });

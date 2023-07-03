@@ -65,7 +65,9 @@ function NavBar(props) {
             {isLoggedIn.loggedIn &&  (
                 <>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Work Space</a>
+                        <Link className="NavBar-SettingsBtn nav-link" to={'/workspace'}>
+                        WorkSpace
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <Link className="NavBar-SettingsBtn nav-link" to={'/expenses'}>
@@ -93,9 +95,8 @@ function NavBar(props) {
                             className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom" 
                             aria-labelledby="dropdownMenuButton"
                         >
-                            <Link className="dropdown-item" to={'/usersettings'}>
-                            Account Settings
-                            </Link>
+                            <Link className="dropdown-item" to={'/dashboard'}>Dashboard</Link>
+                            <Link className="dropdown-item" to={'/usersettings'}>Account Settings</Link>
                             {/* <a className="dropdown-item" href="#">Account Settings</a> */}
                             <a className="dropdown-item" href="#" onClick={handleLogout}>Log out</a>
                         </div>

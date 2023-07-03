@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../general_redux/actions";
 import AddButton from "../../Components/AddButton";
+import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
+import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import "../../Assets/Styles/Settings.css";
 
@@ -50,8 +52,26 @@ function UserSettings(props) {
                 <AddButton name="Delete Account" className="Common-button-secondary" onClickFunction={handleDeleteAccount}>
                     <img src={trashIcon} alt="delete user" className="Settings-Icon-light" />
                 </AddButton>
+            </section> 
+            <hr />
+            <section>
+                <h3>Work Spaces</h3>
+                <p>You can have up to 10 different organizations </p>
+                <AddButton name="Add Work Space" className="Common-button-primary">
+                    <img src={AddIcon} alt="Add icon" />
+                </AddButton>
+                <ul className="Settings-List">
+                    <li className="Settings-ListItem">
+                        <div className="Settings-ListBullet"></div>
+                        <div>Workspace 1</div>
+                        <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
+                        <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                    </li>
+                </ul>
             </section>
         </section>
+       
+        
     )
 }
 

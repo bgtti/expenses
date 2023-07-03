@@ -26,9 +26,10 @@ function LogIn(props) {
     };
 
     const [formIsValid, setFormIsValid] = useState(false);
+    const [hasTriedToLogIn, setHasTriedToLogIn] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [emailState, dispatchEmail] = useReducer(emailReducer, { value: '', isValid: null });
     const [passwordState, dispatchPassword] = useReducer(passwordReducer, { value: '', isValid: null });
-    const [errorMessage, setErrorMessage] = useState("");
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -37,12 +38,14 @@ function LogIn(props) {
 
     useEffect(() => {
         if (isLoggedIn.token && isLoggedIn.token !== undefined && isLoggedIn.token !== "") {
-            navigate("/expenses");
-        } else {
+            setErrorMessage("");
+            setHasTriedToLogIn(false);
+            navigate("/dashboard");
+        } else if (hasTriedToLogIn && !isLoggedIn.loggedIn){
             setErrorMessage("Email or Password incorrect, please try again");
             navigate("/login");
         }
-    }, [isLoggedIn, navigate]);
+    }, [hasTriedToLogIn, isLoggedIn, navigate]);
 
     useEffect(()=>{
         setFormIsValid(
@@ -68,6 +71,7 @@ function LogIn(props) {
 
     const submitHandler = (event) => {
         event.preventDefault();
+        setHasTriedToLogIn(true);
         dispatch(logIn(emailState.value, passwordState.value))
     };
 
