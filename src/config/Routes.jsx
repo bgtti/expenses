@@ -6,11 +6,11 @@ import Footer from "../Layouts/Footer/Footer";
 import Home from "../Pages/Website/Home"
 import LogIn from "../Pages/Website/LogIn"
 import SignUp from "../Pages/Website/SignUp"
-import Dashboard from '../Pages/Dashboard/Dashboard';
+import Dashboard from '../Pages/User/Dashboard/Dashboard';
 import WorkSpace from '../Pages/WorkSpace/WorkSpace';
 import Expenses from "../Pages/Expenses/Expenses"
 import Settings from "../Pages/Settings/Settings";
-import UserSettings from '../Pages/UserSettings/UserSettings';
+import UserSettings from '../Pages/User/UserSettings/UserSettings';
 import "../Assets/Styles/Main.css";
 import "../Assets/Styles/Common.css";
 

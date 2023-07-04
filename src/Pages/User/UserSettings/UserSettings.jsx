@@ -1,19 +1,29 @@
-import APIURL from "../../config/api-url";
-import api from '../../config/axios';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "../../general_redux/actions";
-import AddButton from "../../Components/AddButton";
-import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
-import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
-import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
-import "../../Assets/Styles/Settings.css";
+import APIURL from "../../../config/api-url";
+import api from '../../../config/axios';
+import { logOut } from "../../../general_redux/actions";
+import AddButton from "../../../Components/AddButton";
+import ModalAddWorkspace from "../ModalAddWorkspace/ModalAddWorkspace";
+import editIcon from '../../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
+import AddIcon from "../../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
+import trashIcon from '../../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
+import "../../../Assets/Styles/Settings.css";
+import "../User.css"
 
 
 function UserSettings(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const token = useSelector((state) => state.isLoggedIn.token);
+    const [modalAddWorkspaceStatus, setModalAddWorkspaceStatus] = useState(false);
+    // const [settingsStatus, setSettingsStatus] = useState(false);
+
+    function addWorkspaceModalToggler(openOrClose) {
+        // console.log(modalAddWorkspaceStatus)
+        openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
+    }
 
     async function handleDeleteAccount() {
         console.log('clicked')
@@ -42,6 +52,11 @@ function UserSettings(props) {
     }
     return (
         <section className={`Settings Common-padding Common-expand-flex-1 ${props.className}`}>
+            <ModalAddWorkspace
+            className={modalAddWorkspaceStatus === false ? "modalAddWorkspaceHidden" : ""}
+            addWorkspaceModalToggler={addWorkspaceModalToggler}>
+
+            </ModalAddWorkspace>
             <h2>User Settings</h2>
             <hr />
             <section>
@@ -57,7 +72,7 @@ function UserSettings(props) {
             <section>
                 <h3>Work Spaces</h3>
                 <p>You can have up to 10 different organizations </p>
-                <AddButton name="Add Work Space" className="Common-button-primary">
+                <AddButton name="Add Work Space" className="Common-button-primary" onClickFunction={addWorkspaceModalToggler}>
                     <img src={AddIcon} alt="Add icon" />
                 </AddButton>
                 <ul className="Settings-List">
@@ -70,7 +85,6 @@ function UserSettings(props) {
                 </ul>
             </section>
         </section>
-       
         
     )
 }
