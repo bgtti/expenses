@@ -1,4 +1,4 @@
-import isLoggedInReducer from './reducer';
+import isLoggedInReducer from './SignAndLogIn/reducer';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 

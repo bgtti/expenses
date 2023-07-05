@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer } from "react";
 import {useSelector, useDispatch} from "react-redux"
-import { logIn } from "../../general_redux/actions";
+import { logIn } from "../../general_redux/SignAndLogIn/actions";
 import { useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Website.css";
 

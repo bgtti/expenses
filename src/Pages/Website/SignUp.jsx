@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch } from "react-redux";
-import { signUp } from "../../general_redux/actions";
+import { signUp } from "../../general_redux/SignAndLogIn/actions";
 import { useNavigate } from "react-router-dom";
 import "../../Assets/Styles/Website.css";
 

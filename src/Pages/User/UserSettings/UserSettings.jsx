@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import APIURL from "../../../config/api-url";
 import api from '../../../config/axios';
-import { logOut } from "../../../general_redux/actions";
+import { logOut } from "../../../general_redux/SignAndLogIn/actions";
 import AddButton from "../../../Components/AddButton";
 import ModalAddWorkspace from "../ModalAddWorkspace/ModalAddWorkspace";
 import editIcon from '../../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
