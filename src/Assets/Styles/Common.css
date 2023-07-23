@@ -15,7 +15,8 @@
 
 .Common-button-primary,
 .Common-button-secondary,
-.Common-button-tertiary{
+.Common-button-tertiary,
+.Common-button-danger{
     cursor: pointer;
     font-weight: bold;
     border-radius: 5px;
@@ -35,9 +36,15 @@
     border-color: var(--cBlueDark);
     color: var(--cBlueDark);
 }
+.Common-button-danger {
+    background-color: var(--cRed);
+    border-color: var(--cRed);
+    color: var(--cRedBackground);
+}
 .Common-button-primary:disabled,
 .Common-button-secondary:disabled,
-.Common-button-tertiary:disabled {
+.Common-button-tertiary:disabled,
+.Common-button-danger:disabled {
     cursor: not-allowed;
     background: #ccc;
     border-color: #ccc;
@@ -53,9 +60,14 @@
         border-color: var(--cBlueDarker);
         box-shadow: var(--cBoxShadowBlueBtn);
     }
+    .Common-button-danger:hover{
+        border-color: var(--cRedDarker);
+        box-shadow: var(--cBoxShadowRedBtn);
+    }
     .Common-button-primary:hover:disabled,
     .Common-button-secondary:hover:disabled,
-    .Common-button-tertiary:hover:disabled {
+    .Common-button-tertiary:hover:disabled,
+    .Common-button-danger:disabled {
         border-color: rgb(78, 78, 78);
         box-shadow: var(--cBoxShadowBlueBtn);
     }

@@ -1,0 +1,30 @@
+.Dashboard-h2{
+    margin-top: 10px;
+}
+.Dashboard-workspace-container{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /* background-color: aqua; */
+    margin: 15px 0;
+}
+.Dashboard-workspace-abreviation{
+    width: 65px;
+    font-size: 1.5em;
+    border: 2px solid var(--cBlueDark);
+    border-radius: 5px;
+    text-align: center;
+}
+.Dashboard-workspace-abreviation>p{
+    margin: auto;
+    color: var(--cBlueDark);
+}
+
+.Dashboard-workspace-name-container{
+    min-width: 200px;
+}
+.Dashboard-workspace-name-container>*{
+    margin: 0;
+    padding:0;
+    color: var(--cGray);
+}

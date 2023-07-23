@@ -1,4 +1,5 @@
-import isLoggedInReducer from './SignAndLogIn/reducer';
+import { isLoggedInReducer, workspacesReducer } from './SignAndLogIn/reducer';
+// import workspacesReducer from './Workspace/reducer';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
@@ -7,6 +8,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const allReducers = combineReducers({
     isLoggedIn: isLoggedInReducer,
+    allWorkspaces: workspacesReducer,
 })
 const store = createStore(allReducers, composeEnhancers(applyMiddleware(thunk)));
 

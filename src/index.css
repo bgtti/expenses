@@ -16,7 +16,9 @@
   --cOrangeDarker: #cf8e2c;
   --cBoxShadowOrangeBtn: inset 0px 0px 10px #cf8e2c;
   --cRed:#94280A;
+  --cRedDarker: #5d1a07;
   --cRedBackground: #e1c2ba;
+  --cBoxShadowRedBtn: inset 0px 0px 10px #5d1a07;
 }
 
 * {

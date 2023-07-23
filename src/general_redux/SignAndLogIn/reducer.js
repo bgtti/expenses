@@ -1,60 +1,97 @@
 const checkAccessToken = () => {
-    const token = sessionStorage.getItem("access_token");
-    let hasInvitesData = sessionStorage.getItem("hasInvites");
-    let invitesData = sessionStorage.Item("invites");
-    let hasWorkspacesData = sessionStorage.Item("hasWorkspaces");
-    let favoriteWorkspaceData = sessionStorage.Item("favoriteWorkspaces");
-    let workspacesData = sessionStorage.Item("workspaces");
+    let token = sessionStorage.getItem("access_token");
+    let user = sessionStorage.getItem("user");
+    let hasInvites = sessionStorage.getItem("hasInvites");
+    let invitesData = sessionStorage.getItem("invites");
+    // let hasWorkspaces = sessionStorage.getItem("hasWorkspaces");
+    // let favoriteWorkspaceData = sessionStorage.getItem("favoriteWorkspaces");
+    // let workspacesData = sessionStorage.getItem("workspaces");
     if (token && token !== undefined && token !== ""){
         return { 
             loggedIn: true,
             token,
-            hasInvites: hasInvitesData,
+            user,
+            hasInvites: hasInvites,
             invites: invitesData,
-            hasWorkspaces: hasWorkspacesData,
-            favoriteWorkspace: favoriteWorkspaceData,
-            workspaces: workspacesData
+            // hasWorkspaces: hasWorkspaces,
+            // favoriteWorkspace: favoriteWorkspaceData,
+            // workspaces: workspacesData
         };
     } else {
         return { 
             loggedIn: false, 
-            token: undefined, 
+            token: undefined,
+            user: undefined, 
             hasInvites: undefined,
             invites: undefined,
-            hasWorkspaces: undefined,
-            favoriteWorkspace: undefined,
-            workspaces: undefined
+            // hasWorkspaces: undefined,
+            // favoriteWorkspace: undefined,
+            // workspaces: undefined
         };
     }
 };
 
-const isLoggedInInitialState = checkAccessToken();
+const isLoggedInInitialState = checkAccessToken(); 
 
-const isLoggedInReducer = (state = isLoggedInInitialState, action) => {
+export const isLoggedInReducer = (state = isLoggedInInitialState, action) => {
     switch(action.type){
         case 'LOG_IN':
             return {
                 loggedIn: true,
                 token: action.token,
+                user: action.user,
                 hasInvites: action.hasInvites,
                 invites: action.invites,
-                hasWorkspaces: action.hasWorkspaces,
-                favoriteWorkspace: action.favoriteWorkspace,
-                workspaces: action.workspaces
+                // hasWorkspaces: action.hasWorkspaces,
+                // favoriteWorkspace: action.favoriteWorkspace,
+                // workspaces: action.workspaces
             };
         case 'LOG_OUT':
             return {
                 loggedIn: false,
                 token: undefined,
+                user: undefined, 
                 hasInvites: undefined,
                 invites: undefined,
-                hasWorkspaces: undefined,
-                favoriteWorkspace: undefined,
-                workspaces: undefined
+                // hasWorkspaces: undefined,
+                // favoriteWorkspace: undefined,
+                // workspaces: undefined
             };
         default:
             return state;
     }
 };
 
-export default isLoggedInReducer;
+const checkWorkspaces = () => {
+    let token = sessionStorage.getItem("access_token");
+    let hasWorkspaces = sessionStorage.getItem("hasWorkspaces");
+    let favoriteWorkspaceData = sessionStorage.getItem("favoriteWorkspaces");
+    let workspacesData = sessionStorage.getItem("workspaces");
+    if (token && token !== undefined && token !== "") {
+        return {
+            hasWorkspaces: hasWorkspaces,
+            favoriteWorkspace: favoriteWorkspaceData,
+            workspaces: workspacesData
+        };
+    } else {
+        return {
+            hasWorkspaces: undefined,
+            favoriteWorkspace: undefined,
+            workspaces: undefined
+        };
+    }
+};
+const workspacesInitialState = checkWorkspaces();
+export const workspacesReducer = (state = workspacesInitialState, action) => {
+    switch (action.type) {
+        case 'GET_WORKSPACE_INFO':
+            return {
+                hasWorkspaces: action.hasWorkspaces,
+                favoriteWorkspace: action.favoriteWorkspace,
+                workspaces: action.workspaces
+            }
+        default:
+            return state;
+    }
+}
+

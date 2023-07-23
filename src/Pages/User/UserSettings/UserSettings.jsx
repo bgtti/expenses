@@ -26,7 +26,6 @@ function UserSettings(props) {
     }
 
     async function handleDeleteAccount() {
-        console.log('clicked')
         const config = {
             headers: {
             Authorization: `Bearer ${token}`,
@@ -72,7 +71,7 @@ function UserSettings(props) {
             <section>
                 <h3>Work Spaces</h3>
                 <p>You can have up to 10 different organizations </p>
-                <AddButton name="Add Work Space" className="Common-button-primary" onClickFunction={addWorkspaceModalToggler}>
+                <AddButton name="Add Workspace" className="Common-button-primary" onClickFunction={addWorkspaceModalToggler}>
                     <img src={AddIcon} alt="Add icon" />
                 </AddButton>
                 <ul className="Settings-List">

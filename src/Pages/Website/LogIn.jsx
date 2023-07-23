@@ -71,8 +71,9 @@ function LogIn(props) {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        setHasTriedToLogIn(true);
+        // setHasTriedToLogIn(true);
         dispatch(logIn(emailState.value, passwordState.value))
+        // setTimeout(setHasTriedToLogIn(true), 5000)
     };
 
     return (
