@@ -180,7 +180,7 @@ export const addWorkspace = (name, abbreviation, currency) =>{
                 console.log("success")
             }
         } catch (error) {
-            console.error("Login error: there was a problem adding workspace.");
+            console.error("Workspace error: there was a problem adding workspace.");
         }
     };
 }
