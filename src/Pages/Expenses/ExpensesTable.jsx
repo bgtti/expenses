@@ -1,6 +1,6 @@
 import ExpenseItem from "./ExpensesItem"
 import ExpensesData from "../../data/ExpenseData"
-import "../../Assets/Styles/Expenses.css"
+import "./Expenses.css"
 function ExpensesTable() {
     return (
         <table className="ExpensesTable">

@@ -11,17 +11,10 @@ function Dashboard(props) {
     const [modalAddWorkspaceStatus, setModalAddWorkspaceStatus] = useState(false);
     const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const workspaces = useSelector((state) => state.allWorkspaces.workspaces);
-    // const hasWorkspace = false;
-    // const workspaces = undefined;
     const hasInvites = useSelector((state) => state.isLoggedIn.hasInvites);
     const invites = useSelector((state) => state.isLoggedIn.invites);
-    //use for testing:
-    // const invites = [{type: "give_access", user_who_sent_invite_name: "Jason", workspace_in_question_name: "Accounting YTP"},
-    //                     {type: "ownership_transfer", user_who_sent_invite_name: "Jamie", workspace_in_question_name: "Qrun Books" }]
-    // const workspaces = [{name: "My WS", abbreviation: "MW"}, {name: "Catterpillar", abbreviation: "CP"}]
 
     function addWorkspaceModalToggler(openOrClose) {
-        // console.log(modalAddWorkspaceStatus)
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
     }
 
@@ -53,7 +46,7 @@ function Dashboard(props) {
                 ) : ""
             }
             {
-                (hasWorkspace === false || hasWorkspace === undefined) ?
+                (hasWorkspace === false || hasWorkspace === undefined || hasWorkspace === "undefined" || hasWorkspace === "" ) ?
                 (
                     <>
                         <h3>Workspaces</h3>
@@ -71,11 +64,11 @@ function Dashboard(props) {
                         {workspaces.map((workspace, index) => (
                             <div className="Dashboard-workspace-container">
                                 <div className="Dashboard-workspace-abreviation">
-                                    <p>{workspace.abbreviation}</p>
+                                    <p>{workspace.abbreviation.toUpperCase()}</p>
                                 </div>
                                 <div className="Dashboard-workspace-name-container">
                                     <p>{workspace.name}</p>
-                                    <p><small>6 members</small></p>
+                                    <p><small>{workspace.num_users_with_access === 0 ? "1 member" : workspace.num_users_with_access + 1 + " members"}</small></p>
                                 </div>
                                 <div>
                                     <button className="Common-button-secondary">Open workspace</button>

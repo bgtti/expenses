@@ -1,0 +1,62 @@
+/* Many styles of UserSettings are similar or identical to Settings.css */
+.UserSettings h2 {
+    margin: 20px 0;
+}
+
+.UserSettings section {
+    margin-bottom: 20px;
+}
+
+.UserSettings-List {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* .UserSettings-ListItem {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+} */
+
+.UserSettings-ListItem {
+    display: grid;
+    grid-template-columns: 10px 35px minmax(150px, min-content) 100px 30px 30px;
+    align-items: center;
+    grid-gap:5px;
+}
+
+.UserSettings-ListBullet {
+    width: 5px;
+    height: 5px;
+    background-color: var(--cOrange);
+    border-radius: 50%;
+}
+
+.UserSettings-Icon {
+    width: 15px;
+    cursor: pointer;
+}
+
+.UserSettings-Icon-light {
+    filter: var(--cBlueLightFilter);
+}
+
+/* .UserSettings-checkboxContainer {
+    display: flex;
+    gap: 10px
+}
+
+.UserSettings-checkboxContainer>input[type="checkbox"] {
+    outline: var(--cOrange);
+}
+
+.UserSettings-checkboxContainer>input[type="checkbox"]:checked {
+    accent-color: var(--cOrange);
+} */
+
+@media (hover: hover) {
+    .UserSettings-Icon:hover {
+        filter: var(--cOrangeFilter);
+    }
+}

@@ -5,19 +5,26 @@
     display: flex;
     gap: 10px;
     align-items: center;
-    /* background-color: aqua; */
     margin: 15px 0;
 }
 .Dashboard-workspace-abreviation{
-    width: 65px;
+    width: 55px;
+    height: 45px;
     font-size: 1.5em;
     border: 2px solid var(--cBlueDark);
     border-radius: 5px;
-    text-align: center;
+    padding: 0 !important;
+    position: relative;
+
 }
 .Dashboard-workspace-abreviation>p{
-    margin: auto;
+    text-align: center;
     color: var(--cBlueDark);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
 }
 
 .Dashboard-workspace-name-container{

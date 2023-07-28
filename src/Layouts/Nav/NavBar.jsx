@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../general_redux/SignAndLogIn/actions';
-import "../../Assets/Styles/NavBar.css"
+import "./NavBar.css"
 
 function NavBar(props) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);

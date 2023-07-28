@@ -2,6 +2,8 @@ import APIURL from "../../config/api-url";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
 
+//Actions for Sign Up, Log In, Add Workspace, Edit Workspace
+
 export const signUp = (name, email, password) =>{
     return async (dispatch) => {
         const requestData = {
@@ -181,6 +183,90 @@ export const addWorkspace = (name, abbreviation, currency) =>{
             }
         } catch (error) {
             console.error("Workspace error: there was a problem adding workspace.");
+        }
+    };
+}
+
+export const editWorkspace = (name, abbreviation, currency, uuid) => {
+    return async (dispatch) => {
+        const requestData = {
+            name: name,
+            abbreviation: abbreviation,
+            currency: currency,
+            workspace_uuid:uuid
+        };
+        let token = sessionStorage.getItem("access_token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        try {
+            const response = await api.post(APIURL.EDIT_WORKSPACE, requestData, config);
+
+            if (response.status !== 200) {
+                console.error("Error editting worspace: response status not 200.");
+            } else {
+                const data = response.data;
+                let hasWorkspacesData = data.has_workspaces;
+                let favoriteWorkspaceData = undefined;
+                let workspacesData = data.workspaces;
+                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
+
+                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
+                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
+                sessionStorage.setItem("workspaces", workspacesData);
+
+                dispatch({
+                    type: ActionTypes.GET_WORKSPACE_INFO,
+                    hasWorkspaces: hasWorkspacesData,
+                    favoriteWorkspace: favoriteWorkspaceData,
+                    workspaces: workspacesData
+                });
+                console.log("success")
+            }
+        } catch (error) {
+            console.error("Workspace error: there was a problem editting workspace.");
+        }
+    };
+}
+
+export const deleteWorkspace = (uuid) => {
+    return async (dispatch) => {
+        const requestData = {
+            workspace_uuid: uuid
+        };
+        let token = sessionStorage.getItem("access_token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        try {
+            const response = await api.post(APIURL.DELETE_WORKSPACE, requestData, config);
+
+            if (response.status !== 200) {
+                console.error("Error deleting worspace: response status not 200.");
+            } else {
+                const data = response.data;
+                let hasWorkspacesData = data.has_workspaces;
+                let favoriteWorkspaceData = undefined;
+                let workspacesData = data.workspaces;
+                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
+
+                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
+                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
+                sessionStorage.setItem("workspaces", workspacesData);
+
+                dispatch({
+                    type: ActionTypes.GET_WORKSPACE_INFO,
+                    hasWorkspaces: hasWorkspacesData,
+                    favoriteWorkspace: favoriteWorkspaceData,
+                    workspaces: workspacesData
+                });
+            }
+        } catch (error) {
+            console.error("Workspace error: there was a problem deleting workspace.");
         }
     };
 }

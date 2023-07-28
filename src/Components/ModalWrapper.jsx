@@ -1,4 +1,4 @@
-import "../Assets/Styles/ModalWrapper.css"
+import "./ModalWrapper.css"
 
 function ModalWrapper(props) {
     const styleClasses = 'ModalWrapper ' + props.className; //modals created with this wrapper can add classes here

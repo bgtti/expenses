@@ -1,87 +1,119 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import APIURL from "../../../config/api-url";
-import api from '../../../config/axios';
-import { logOut } from "../../../general_redux/SignAndLogIn/actions";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import AddButton from "../../../Components/AddButton";
 import ModalAddWorkspace from "../ModalAddWorkspace/ModalAddWorkspace";
-import editIcon from '../../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
+import ModalDeleteAccount from "./ModalDeleteAccount";
+import ModalEditWorkspace from "./ModalEditWorkspace";
+import ModalDeleteWorkspace from "./ModalDeleteWorkspace";
+import editIcon from '../../../Assets/Images/editing.png'; // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
 import AddIcon from "../../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
-import trashIcon from '../../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
-import "../../../Assets/Styles/Settings.css";
+import trashIcon from '../../../Assets/Images/trash.png'; // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
+// import "../../../Assets/Styles/Settings.css";
 import "../User.css"
+import "./UserSettings.css"
+import "../../../Assets/Styles/Common.css"
 
 
 function UserSettings(props) {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const token = useSelector((state) => state.isLoggedIn.token);
+    const userInfo = useSelector((state) => state.isLoggedIn.user);
+    // const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
+    const workspaces = useSelector((state) => state.allWorkspaces.workspaces);
     const [modalAddWorkspaceStatus, setModalAddWorkspaceStatus] = useState(false);
-    // const [settingsStatus, setSettingsStatus] = useState(false);
+    const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
+    const [modalDeleteWorkspaceStatus, setModalDeleteWorkspaceStatus] = useState(false);
+    const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
+    const [workspaceToEditUuid, setWorkspaceToEditUuid] = useState("");
+    const [workspaceToDeleteUuid, setWorkspaceToDeleteUuid] = useState("");
 
+    useEffect(()=>{
+        if (modalEditWorkspaceStatus === false){
+            setTimeout(()=>{
+                setWorkspaceToEditUuid("");
+            }, 500)
+        }
+    },[modalEditWorkspaceStatus]) 
     function addWorkspaceModalToggler(openOrClose) {
-        // console.log(modalAddWorkspaceStatus)
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
     }
-
-    async function handleDeleteAccount() {
-        const config = {
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-        };
-
-        try {
-            // Make the POST request to delete the account. Second argument is set to null since no request data needs to be sent.
-            const response = await api.post(APIURL.DELETE_ACCOUNT, null, config);
-
-            if (response.status === 200) {
-            // Logout the user if the account deletion is successful
-            dispatch(logOut());
-            navigate("/signup");
-            } else {
-            // Handle any errors that occur during the account deletion
-            throw new Error("Account deletion failed");
-            }
-        } catch (error) {
-            console.error(error);
-            // Display an error message to the user or handle the error in any other way
-        }
+    function editWorkspaceModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
     }
+    function deleteWorkspaceModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteWorkspaceStatus(false) : setModalDeleteWorkspaceStatus(true);
+    }
+    function deleteAccountModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteAccountStatus(false) : setModalDeleteAccountStatus(true);
+    }
+
     return (
-        <section className={`Settings Common-padding Common-expand-flex-1 ${props.className}`}>
+        <section className={`UserSettings Common-padding Common-expand-flex-1 ${props.className}`}>
             <ModalAddWorkspace
             className={modalAddWorkspaceStatus === false ? "modalAddWorkspaceHidden" : ""}
             addWorkspaceModalToggler={addWorkspaceModalToggler}>
-
             </ModalAddWorkspace>
+            {
+                (workspaceToEditUuid === "") ?
+                ("") :
+                (
+                    <ModalEditWorkspace
+                    className={modalEditWorkspaceStatus === false ? "modalEditWorkspaceHidden" : ""}
+                    editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={workspaceToEditUuid}>
+                    </ModalEditWorkspace>
+                )
+            }
+            {
+                (workspaceToDeleteUuid === "") ?
+                ("") :
+                (
+                    <ModalDeleteWorkspace
+                    className={modalDeleteWorkspaceStatus === false ? "modalDeleteWorkspaceHidden" : ""}
+                    deleteWorkspaceModalToggler={deleteWorkspaceModalToggler} uuid={workspaceToDeleteUuid}>
+                    </ModalDeleteWorkspace>
+                )
+            }
+            <ModalDeleteAccount
+            className={modalDeleteAccountStatus === false ? "modalDeleteAccountHidden" : ""}
+            deleteAccountModalToggler={deleteAccountModalToggler}>
+            </ModalDeleteAccount>
             <h2>User Settings</h2>
             <hr />
             <section>
                 <h3>Account</h3>
-                <p><b>Name:</b> user's name</p>
-                <p><b>Email:</b> user's email</p>
-                <p><b>Access:</b> you have not shared this workspace with anyone</p>
-                <AddButton name="Delete Account" className="Common-button-secondary" onClickFunction={handleDeleteAccount}>
-                    <img src={trashIcon} alt="delete user" className="Settings-Icon-light" />
+                <p><b>Name:</b> {userInfo.name}</p>
+                <p><b>Email:</b> {userInfo.email}</p>
+                <AddButton name="Delete Account" className="Common-button-secondary" 
+                    onClickFunction={deleteAccountModalToggler}>
+                    <img src={trashIcon} alt="delete user" className="UserSettings-Icon-light" />
                 </AddButton>
             </section> 
             <hr />
             <section>
                 <h3>Work Spaces</h3>
-                <p>You can have up to 10 different organizations </p>
-                <AddButton name="Add Workspace" className="Common-button-primary" onClickFunction={addWorkspaceModalToggler}>
+                <p>You can have up to 10 different organizations.</p> 
+                <AddButton name="Add Workspace" className="Common-button-primary" onClickFunction={addWorkspaceModalToggler}
+                disable={(workspaces && workspaces.length) > 9 ? true : false}>
                     <img src={AddIcon} alt="Add icon" />
                 </AddButton>
-                <ul className="Settings-List">
-                    <li className="Settings-ListItem">
-                        <div className="Settings-ListBullet"></div>
-                        <div>Workspace 1</div>
-                        <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                        <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
-                    </li>
-                </ul>
+                {
+                    (workspaces === undefined || workspaces === "undefined" || workspaces === []) ?
+                    (<p>You do not own or have access to any workspace. Add a workspace!</p>):
+                    (
+                        <ul className="UserSettings-List">
+                            {workspaces.map((workspace, index) => (
+                                <li className="UserSettings-ListItem" key={index}>
+                                    <div className="UserSettings-ListBullet"></div>
+                                    <div><b>{workspace.abbreviation.toUpperCase()}</b></div>
+                                    <div>{workspace.name}</div>
+                                    <div>Members: {workspace.num_users_with_access}</div>
+                                    <img role="button" src={editIcon} alt="edit element" className="UserSettings-Icon" 
+                                        onClick={()=>{setWorkspaceToEditUuid(`${workspace.uuid}`); editWorkspaceModalToggler("open");}} />
+                                    <img role="button" src={trashIcon} alt="delete element" className="UserSettings-Icon" 
+                                        onClick={()=>{setWorkspaceToDeleteUuid(`${workspace.uuid}`); deleteWorkspaceModalToggler("open");}}/>
+                                </li>
+                                ))}
+                        </ul>
+                    ) 
+                }
             </section>
         </section>
         

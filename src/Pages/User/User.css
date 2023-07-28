@@ -1,3 +1,12 @@
 .modalAddWorkspaceHidden{
-    display:none;
+    display:none !important;
+}
+.modalDeleteAccountHidden {
+    display: none !important;
+}
+.modalEditWorkspaceHidden{
+    display: none !important;
+}
+.modalDeleteWorkspaceHidden {
+    display: none !important;
 }

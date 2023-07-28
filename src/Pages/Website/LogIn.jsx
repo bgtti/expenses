@@ -2,7 +2,7 @@ import { useState, useEffect, useReducer } from "react";
 import {useSelector, useDispatch} from "react-redux"
 import { logIn } from "../../general_redux/SignAndLogIn/actions";
 import { useNavigate } from "react-router-dom";
-import "../../Assets/Styles/Website.css";
+import "./Website.css";
 
 function LogIn(props) {
     //used for form validation
@@ -71,9 +71,8 @@ function LogIn(props) {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        // setHasTriedToLogIn(true);
         dispatch(logIn(emailState.value, passwordState.value))
-        // setTimeout(setHasTriedToLogIn(true), 5000)
+        setHasTriedToLogIn(true);
     };
 
     return (

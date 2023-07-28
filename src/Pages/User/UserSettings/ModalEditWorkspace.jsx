@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useDispatch} from "react-redux";
-import { addWorkspace } from "../../../general_redux/SignAndLogIn/actions";
+import { useDispatch, useSelector} from "react-redux";
+import { editWorkspace } from "../../../general_redux/SignAndLogIn/actions";
 import ModalWrapper from "../../../Components/ModalWrapper";
 import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import "../../../Assets/Styles/Modal.css"
@@ -9,77 +9,71 @@ import currency_list from "../../../data/currencyList";
 
 //MISSING: form validation: disable button until all fields are filled
 
-function ModalAddWorkspace(props) {
+function ModalEditWorkspace(props) {
     const dispatch = useDispatch();
-    const styleClasses = 'ModalAddWorkspace ' + props.className;
-    const [newWorkspace, setNewWorkspace] = useState({
-        name: "",
-        abbreviation: "",
-        currency: "",
+    const styleClasses = 'ModalEditWorkspace ' + props.className;
+    const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
+    const workspaceUuid = props.uuid;
+    const theWorkspace = allWorkspaces.find(workspace => workspace.uuid === workspaceUuid);
+
+    const [thisWorkspace, setThisWorkspace] = useState({
+        name: theWorkspace.name,
+        abbreviation: theWorkspace.abbreviation,
+        currency: theWorkspace.currency,
     });
     function nameChangeHandler(e) {
-        setNewWorkspace((prevState) => ({
+        setThisWorkspace((prevState) => ({
             ...prevState,
             name: e.target.value,
         }));
     }
     function abbrevChangeHandler(e) {
-        setNewWorkspace((prevState) => ({
+        setThisWorkspace((prevState) => ({
             ...prevState,
             abbreviation: e.target.value,
         }));
     }
     function currencyChangeHandler(e) {
-        setNewWorkspace((prevState) => ({
+        setThisWorkspace((prevState) => ({
             ...prevState,
             currency: e.target.value,
         }));
     }
-    // useEffect(() => {
-    //     console.log(newWorkspace);
-    // }, [newWorkspace]);
 
     function closeThisModal() {
-        props.addWorkspaceModalToggler("close");
+        props.editWorkspaceModalToggler("close");
     }
 
-    const formSubmitHandlerAddWorkspace = (event) => {
+    const formSubmitHandlerEditWorkspace = (event) => {
         event.preventDefault();
-        dispatch(addWorkspace(newWorkspace.name, newWorkspace.abbreviation, newWorkspace.currency ))
-        setNewWorkspace((prevState) => ({
-            ...prevState,
-            name: "",
-            abbreviation: "",
-        }));
+        dispatch(editWorkspace(thisWorkspace.name, thisWorkspace.abbreviation, thisWorkspace.currency, workspaceUuid))
     };
 
     return (
         <ModalWrapper className={styleClasses}>
-            <form className="Modal-Container" onSubmit={formSubmitHandlerAddWorkspace}>
+            <form className="Modal-Container" onSubmit={formSubmitHandlerEditWorkspace}>
                 <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
                 <h2>Add Work Space</h2>
                 <div className="Modal-InputContainer">
                     <label htmlFor="workspaceName">Name*:</label>
-                    <input value={newWorkspace.name} id="workspaceName" name="workspaceName" type="text" minLength="1" maxLength="50" onChange={nameChangeHandler} required/>
-                    {/* <input id="expenseDate" name="expenseDate" type="date" value={enteredDate} onChange={dateChangeHandler} /> */}
+                    <input value={thisWorkspace.name} id="workspaceName" name="workspaceName" type="text" minLength="1" maxLength="50" onChange={nameChangeHandler} required/>
                 </div>
                 <div className="Modal-InputContainer">
                     <label htmlFor="workspaceAbbreviation">2-letter abbreviation*:</label>
-                    <input value={newWorkspace.abbreviation} id="workspaceAbbreviation" name="workspaceAbbreviation" type="text" maxLength="2" minLength="2" onChange={abbrevChangeHandler} required/>
+                    <input value={thisWorkspace.abbreviation} id="workspaceAbbreviation" name="workspaceAbbreviation" type="text" maxLength="2" minLength="2" onChange={abbrevChangeHandler} required/>
                 </div>
                 <div className="Modal-InputContainer">
                     <label htmlFor="workspaceCurrency">Currency*:</label>
-                    <select name="workspaceCurrency" id="workspaceCurrency" onChange={currencyChangeHandler} defaultValue={""} required>
-                        <option key={-1} value="">(select an option)</option>
+                    <select name="workspaceCurrency" id="workspaceCurrency" onChange={currencyChangeHandler} defaultValue={thisWorkspace.currency} required>
                         {currency_list.map((currency, index)=>(
                             <option key={index} value={currency.code}>{currency.code} ({currency.name})</option>
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Add Work Space</button>
+                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Save Workspace</button>
             </form>
         </ModalWrapper>
     )
 }
 
-export default ModalAddWorkspace;
+export default ModalEditWorkspace;
