@@ -42,8 +42,13 @@ function LogIn(props) {
             setHasTriedToLogIn(false);
             navigate("/dashboard");
         } else if (hasTriedToLogIn && !isLoggedIn.loggedIn){
-            setErrorMessage("Email or Password incorrect, please try again");
-            navigate("/login");
+            //to avoid running this script before an api response, setTimeout was used - not the best solution.
+            setTimeout(()=>{
+                if (hasTriedToLogIn && !isLoggedIn.loggedIn){
+                    setErrorMessage("Email or Password incorrect, please try again");
+                    navigate("/login");
+                }
+            }, 350)
         }
     }, [hasTriedToLogIn, isLoggedIn, navigate]);
 

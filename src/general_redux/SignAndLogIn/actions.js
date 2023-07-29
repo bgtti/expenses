@@ -92,6 +92,14 @@ export const logIn = (email, password) => {
                 let workspacesData = data.workspaces;
                 data.hasOwnProperty("invites") ? invites = data.invites : invites = undefined;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
+
+                // Create a collator object for sorting the workspaces
+                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
+                // Sort the workspaces before dispatching the action using the collator
+                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                    collator.compare(a.abbreviation, b.abbreviation)
+                );
                 
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
@@ -99,7 +107,7 @@ export const logIn = (email, password) => {
                 sessionStorage.setItem("invites", invites);
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesData);
+                sessionStorage.setItem("workspaces", sortedWorkspaces);
 
                 dispatch({
                     type: ActionTypes.LOG_IN,
@@ -115,7 +123,7 @@ export const logIn = (email, password) => {
                     type: ActionTypes.GET_WORKSPACE_INFO,
                     hasWorkspaces: hasWorkspacesData,
                     favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: workspacesData
+                    workspaces: sortedWorkspaces
                 });
             }
         } catch (error) {
@@ -169,15 +177,23 @@ export const addWorkspace = (name, abbreviation, currency) =>{
                 let workspacesData = data.workspaces;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
 
+                // Create a collator object for sorting the workspaces
+                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
+                // Sort the workspaces before dispatching the action using the collator
+                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                    collator.compare(a.abbreviation, b.abbreviation)
+                ); 
+
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesData);
+                sessionStorage.setItem("workspaces", sortedWorkspaces);
 
                 dispatch({
                     type: ActionTypes.GET_WORKSPACE_INFO,
                     hasWorkspaces: hasWorkspacesData,
                     favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: workspacesData 
+                    workspaces: sortedWorkspaces 
                 });
                 console.log("success")
             }
@@ -213,15 +229,23 @@ export const editWorkspace = (name, abbreviation, currency, uuid) => {
                 let workspacesData = data.workspaces;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
 
+                // Create a collator object for sorting the workspaces
+                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
+                // Sort the workspaces before dispatching the action using the collator
+                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                    collator.compare(a.abbreviation, b.abbreviation)
+                );
+
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesData);
+                sessionStorage.setItem("workspaces", sortedWorkspaces);
 
                 dispatch({
                     type: ActionTypes.GET_WORKSPACE_INFO,
                     hasWorkspaces: hasWorkspacesData,
                     favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: workspacesData
+                    workspaces: sortedWorkspaces
                 });
                 console.log("success")
             }
@@ -254,15 +278,23 @@ export const deleteWorkspace = (uuid) => {
                 let workspacesData = data.workspaces;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
 
+                // Create a collator object for sorting the workspaces
+                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
+                // Sort the workspaces before dispatching the action using the collator
+                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                    collator.compare(a.abbreviation, b.abbreviation)
+                );
+
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesData);
+                sessionStorage.setItem("workspaces", sortedWorkspaces);
 
                 dispatch({
                     type: ActionTypes.GET_WORKSPACE_INFO,
                     hasWorkspaces: hasWorkspacesData,
                     favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: workspacesData
+                    workspaces: sortedWorkspaces
                 });
             }
         } catch (error) {

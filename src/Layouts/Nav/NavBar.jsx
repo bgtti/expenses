@@ -5,14 +5,26 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { editWorkspace } from '../../general_redux/SignAndLogIn/actions';
 import { logOut } from '../../general_redux/SignAndLogIn/actions';
 import "./NavBar.css"
 
 function NavBar(props) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
+    const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
+    const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
+    const firstWorkspace = allWorkspaces.length > 0 ? allWorkspaces[0] : null;
+    const [otherWorkspaces, setOtherWorkspaces] = useState(allWorkspaces.slice(1));
+    const [selectedWorkspace, setSelectedWorkspace] = useState(firstWorkspace);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    function selectedWorkspaceChangeHandler(uuid){
+        const theWorkspace = allWorkspaces.find(workspace => workspace.uuid === uuid);
+        setSelectedWorkspace(theWorkspace);
+        setOtherWorkspaces(allWorkspaces.filter((workspace) => workspace.uuid !== uuid));
+    }
 
     const handleLogout = () => {
             dispatch(logOut());
@@ -62,13 +74,33 @@ function NavBar(props) {
                     </li>
                 </>
             )}
-            {isLoggedIn.loggedIn &&  (
+            {isLoggedIn.loggedIn && hasWorkspace && (
                 <>
-                    <li className="nav-item">
+                    <li className="nav-item dropdown NavBar-dropdown-class">
+                        <div
+                            className={`nav-link dropdown-toggle NavBar-SettingsBtn${
+                                isDropdownOpen ? 'show' : ''
+                            }`}
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"
+                            id="dropdownMenuButton"
+                        >
+                            {selectedWorkspace.abbreviation}
+                        </div>
+                        <div
+                            className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom" 
+                            aria-labelledby="dropdownMenuButton"
+                        >
+                            {otherWorkspaces.map((workspace, index) => (
+                                <Link className="dropdown-item" to={'/workspace'}>{workspace.abbreviation}</Link>
+                            ))}
+                        </div>
+                    </li>
+                    {/* <li className="nav-item">
                         <Link className="NavBar-SettingsBtn nav-link" to={'/workspace'}>
                         WorkSpace
                         </Link>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                         <Link className="NavBar-SettingsBtn nav-link" to={'/expenses'}>
                         Expenses
@@ -79,6 +111,10 @@ function NavBar(props) {
                         Settings
                         </Link>
                     </li>
+                </>
+            )}
+            {isLoggedIn.loggedIn &&  (
+                <>
                     <li className="nav-item dropdown NavBar-dropdown-class">
                         <div
                             className={`nav-link dropdown-toggle NavBar-SettingsBtn${
@@ -87,7 +123,6 @@ function NavBar(props) {
                             data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"
                             id="dropdownMenuButton"
-                            // onClick={toggleDropdown}
                         >
                         User
                         </div>
@@ -97,8 +132,7 @@ function NavBar(props) {
                         >
                             <Link className="dropdown-item" to={'/dashboard'}>Dashboard</Link>
                             <Link className="dropdown-item" to={'/usersettings'}>Account Settings</Link>
-                            {/* <a className="dropdown-item" href="#">Account Settings</a> */}
-                            <a className="dropdown-item" href="#" onClick={handleLogout}>Log out</a>
+                            <span className="dropdown-item" onClick={handleLogout}>Log out</span>
                         </div>
                     </li>
                 </>

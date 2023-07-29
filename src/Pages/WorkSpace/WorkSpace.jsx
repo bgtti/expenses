@@ -13,9 +13,9 @@ import "../../Assets/Styles/Settings.css";
 function WorkSpace(props) {
     return (
         <section className={`Settings Common-padding Common-expand-flex-1 ${props.className}`}>
-            <h2>Work Space</h2>
-            <p>Actially this area should disappear. The user can make changes to this workspace in settings....</p>
-            <p>Makes no sense to keet this. Clicking on 'Workspace' should bring the user to the area of the workspace in question</p>
+            <h2>[Work Space Name] Dashboard</h2>
+            <p>Workspace with no data show:</p>
+            <p>Welcome! You can add expenses to see your data here...</p>
         </section>
         
     )

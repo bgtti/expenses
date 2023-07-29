@@ -27,6 +27,12 @@
     margin-bottom: 5px;
 }
 
+.Modal-InputField-invalid{
+    border: none;
+    border: 2px solid var(--cRed);
+    background: var(--cRedBackground);
+}
+
 @media only screen and (min-width: 800px) {
     .Modal-InputContainer {
         min-width: 400px;
@@ -39,6 +45,13 @@
     border: 2px solid var(--cOrange);
     background-color: var(--cOrange);
     border-radius: 5px;
+}
+
+.Modal-PrimaryBtn:disabled{
+    cursor: not-allowed;
+    background: #ccc;
+    border-color: #ccc;
+    color: var(--cGray);
 }
 
 @media (hover: hover) {
