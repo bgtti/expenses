@@ -47,6 +47,11 @@
     right: 0 !important;;
     left: auto !important;;
 }
+/* Overwriting Bootstrap */
+.dropdown-menu{
+    --bs-dropdown-min-width: 30px;
+    max-width:70px !important;
+}
 
 /* @media (min-width: 992px) {
 

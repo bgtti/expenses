@@ -11,11 +11,9 @@ function ModalEditWorkspace(props) {
     const dispatch = useDispatch();
     const nameFieldReducer = (state, action) => {
         if (action.type === 'USER_INPUT'){
-            console.log(action.val)
             return { value: action.val, isValid: (action.val && action.val !== "" && action.val.trim().length > 0 && action.val.length < 51 ? true : false) }
         }
         if (action.type === 'INPUT_BLUR') {
-            console.log(state.value)
             return { value: state.value, isValid: (state.value && state.value !== "" && state.value.trim().length > 0 && state.value.length < 51 ? true : false) }
         }
         if (action.type === 'CLEAR') {

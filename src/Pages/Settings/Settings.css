@@ -46,3 +46,8 @@
         filter: var(--cOrangeFilter);
     }
 }
+
+/* Modals */
+.modalAddGroupHidden{
+    display:none;
+}

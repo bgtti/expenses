@@ -15,8 +15,13 @@ function NavBar(props) {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
-    const firstWorkspace = allWorkspaces.length > 0 ? allWorkspaces[0] : null;
-    const [otherWorkspaces, setOtherWorkspaces] = useState(allWorkspaces.slice(1));
+    const firstWorkspace = allWorkspaces && allWorkspaces.length > 0 ? allWorkspaces[0] : null;
+    const [otherWorkspaces, setOtherWorkspaces] = useState(()=> {
+        if (allWorkspaces){
+            return allWorkspaces.slice(1)
+        }
+        return null;
+    });
     const [selectedWorkspace, setSelectedWorkspace] = useState(firstWorkspace);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -24,9 +29,9 @@ function NavBar(props) {
         const theWorkspace = allWorkspaces.find(workspace => workspace.uuid === uuid);
         setSelectedWorkspace(theWorkspace);
         setOtherWorkspaces(allWorkspaces.filter((workspace) => workspace.uuid !== uuid));
-    }
+    } 
 
-    const handleLogout = () => {
+    const handleLogout = () => { 
             dispatch(logOut());
             navigate('/login');
             setIsDropdownOpen(false);
@@ -85,14 +90,17 @@ function NavBar(props) {
                             aria-haspopup="true" aria-expanded="false"
                             id="dropdownMenuButton"
                         >
-                            {selectedWorkspace.abbreviation}
+                            {selectedWorkspace ? selectedWorkspace.abbreviation.toUpperCase() : "??"}
                         </div>
                         <div
                             className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom" 
                             aria-labelledby="dropdownMenuButton"
                         >
-                            {otherWorkspaces.map((workspace, index) => (
-                                <Link className="dropdown-item" to={'/workspace'}>{workspace.abbreviation}</Link>
+                            {otherWorkspaces && otherWorkspaces.map((workspace, index) => (
+                                <Link className="dropdown-item" to={'/workspace'} 
+                                state={{from: "Navbar", uuid: workspace.uuid}}
+                                onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>
+                                    {workspace.abbreviation.toUpperCase()}</Link>
                             ))}
                         </div>
                     </li>
@@ -107,7 +115,8 @@ function NavBar(props) {
                         </Link>
                     </li>
                     <li>
-                        <Link className="NavBar-SettingsBtn nav-link" to={'/settings'}>
+                        <Link className="NavBar-SettingsBtn nav-link" to={'/settings'}
+                        state={{uuid:selectedWorkspace.uuid}}>
                         Settings
                         </Link>
                     </li>
