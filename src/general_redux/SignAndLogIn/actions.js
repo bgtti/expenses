@@ -31,16 +31,22 @@ export const signUp = (name, email, password) =>{
                 let user = { name: data.user.name, email: data.user.email };
                 let hasInvites = data.has_invites;
                 let invites = undefined;
+                let invitesString = undefined;
                 const hasWorkspacesData = undefined;
                 const favoriteWorkspaceData = undefined;
                 const workspacesData = undefined;
-                if (data.hasOwnProperty("invites")){
-                    invites = data.invites 
+                if (data.hasOwnProperty("invites") && data.invites.length > 0){
+                    invites = data.invites; 
+                    JSON.stringify(invites); // stringify to add to session storage
                 } 
+                if (hasInvites === true && invites === undefined){
+                    console.error("Sign up error: Has invites, but invites not received.")
+                    return
+                }
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
                 sessionStorage.setItem("hasInvites", hasInvites);
-                sessionStorage.setItem("invites", invites);
+                sessionStorage.setItem("invites", invitesString);
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
                 sessionStorage.setItem("workspaces", workspacesData);
@@ -66,7 +72,6 @@ export const logIn = (email, password) => {
             email,
             password
         };
-
         try {
             const response = await api.post(APIURL.LOGIN, requestData);
 
@@ -89,25 +94,44 @@ export const logIn = (email, password) => {
                 let invites = undefined;
                 let hasWorkspacesData = data.has_workspaces;
                 let favoriteWorkspaceData = undefined;
-                let workspacesData = data.workspaces;
+                let workspacesData = undefined;
                 data.hasOwnProperty("invites") ? invites = data.invites : invites = undefined;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
+                
                 // Create a collator object for sorting the workspaces
                 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+                let sortedWorkspaces = undefined;
 
-                // Sort the workspaces before dispatching the action using the collator
-                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                    collator.compare(a.abbreviation, b.abbreviation)
-                );
+                // if there are workspaces, add and sort them
+                if (data.workspaces && data.workspaces.length > 0) {
+                    workspacesData = data.workspaces;
+                    // Sort the workspaces before dispatching the action using the collator
+                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                        collator.compare(a.abbreviation, b.abbreviation)
+                    );
+                } 
+                if (hasInvites === true && invites === undefined) {
+                    console.error("Sign in error: Has invites, but invites not received.")
+                    return
+                }
+                if (hasWorkspacesData === true && workspacesData === undefined) {
+                    console.error("Sign in error: Has workspaces, but workspaces not received.")
+                    return
+                }
+                
+                // Stringify objects for session storage
+                let invitesString;
+                invites === undefined ? invitesString = invites : invitesString = JSON.stringify(invites)
+                let workspacesDataString;
+                sortedWorkspaces === undefined ? workspacesDataString = sortedWorkspaces : workspacesDataString = JSON.stringify(sortedWorkspaces) 
                 
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
                 sessionStorage.setItem("hasInvites", hasInvites);
-                sessionStorage.setItem("invites", invites);
+                sessionStorage.setItem("invites", invitesString);
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", sortedWorkspaces);
+                sessionStorage.setItem("workspaces", workspacesDataString);
 
                 dispatch({
                     type: ActionTypes.LOG_IN,
@@ -174,20 +198,28 @@ export const addWorkspace = (name, abbreviation, currency) =>{
                 const data = response.data;
                 let hasWorkspacesData = data.has_workspaces;
                 let favoriteWorkspaceData = undefined;
-                let workspacesData = data.workspaces;
+                let workspacesData = undefined;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
 
                 // Create a collator object for sorting the workspaces
                 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+                let sortedWorkspaces = undefined;
 
-                // Sort the workspaces before dispatching the action using the collator
-                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                    collator.compare(a.abbreviation, b.abbreviation)
-                ); 
+                // if there are workspaces, add and sort them
+                if (workspacesData !== undefined && workspacesData.length > 0) {
+                    workspacesData = data.workspaces;
+                    // Sort the workspaces before dispatching the action using the collator
+                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                        collator.compare(a.abbreviation, b.abbreviation)
+                    );
+                } 
+                // Stringify objects for session storage
+                let workspacesDataString;
+                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces) 
 
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", sortedWorkspaces);
+                sessionStorage.setItem("workspaces", workspacesDataString);
 
                 dispatch({
                     type: ActionTypes.GET_WORKSPACE_INFO,
@@ -226,20 +258,28 @@ export const editWorkspace = (name, abbreviation, currency, uuid) => {
                 const data = response.data;
                 let hasWorkspacesData = data.has_workspaces;
                 let favoriteWorkspaceData = undefined;
-                let workspacesData = data.workspaces;
+                let workspacesData = undefined;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
 
                 // Create a collator object for sorting the workspaces
                 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+                let sortedWorkspaces = undefined;
 
-                // Sort the workspaces before dispatching the action using the collator
-                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                    collator.compare(a.abbreviation, b.abbreviation)
-                );
+                // if there are workspaces, add and sort them
+                if (workspacesData !== undefined && workspacesData.length > 0) {
+                    workspacesData = data.workspaces;
+                    // Sort the workspaces before dispatching the action using the collator
+                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                        collator.compare(a.abbreviation, b.abbreviation)
+                    );
+                }
+                // Stringify objects for session storage
+                let workspacesDataString;
+                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces) 
 
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", sortedWorkspaces);
+                sessionStorage.setItem("workspaces", workspacesDataString);
 
                 dispatch({
                     type: ActionTypes.GET_WORKSPACE_INFO,
@@ -275,20 +315,28 @@ export const deleteWorkspace = (uuid) => {
                 const data = response.data;
                 let hasWorkspacesData = data.has_workspaces;
                 let favoriteWorkspaceData = undefined;
-                let workspacesData = data.workspaces;
+                let workspacesData = undefined;
                 data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
 
                 // Create a collator object for sorting the workspaces
                 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+                let sortedWorkspaces = undefined;
 
-                // Sort the workspaces before dispatching the action using the collator
-                const sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                    collator.compare(a.abbreviation, b.abbreviation)
-                );
+                // if there are workspaces, add and sort them
+                if (workspacesData !== undefined && workspacesData.length > 0) {
+                    workspacesData = data.workspaces;
+                    // Sort the workspaces before dispatching the action using the collator
+                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+                        collator.compare(a.abbreviation, b.abbreviation)
+                    );
+                }
+                // Stringify objects for session storage
+                let workspacesDataString;
+                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces) 
 
                 sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
                 sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", sortedWorkspaces);
+                sessionStorage.setItem("workspaces", workspacesDataString);
 
                 dispatch({
                     type: ActionTypes.GET_WORKSPACE_INFO,

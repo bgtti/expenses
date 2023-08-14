@@ -90,13 +90,13 @@ function NavBar(props) {
                             aria-haspopup="true" aria-expanded="false"
                             id="dropdownMenuButton"
                         >
-                            {selectedWorkspace ? selectedWorkspace.abbreviation.toUpperCase() : "??"}
+                            {selectedWorkspace && selectedWorkspace.abbreviation ? selectedWorkspace.abbreviation.toUpperCase() : "??"}
                         </div>
                         <div
-                            className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom" 
+                            className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom NavBar-dropdown-menu-fixed-width" 
                             aria-labelledby="dropdownMenuButton"
                         >
-                            {otherWorkspaces && otherWorkspaces.map((workspace, index) => (
+                            {otherWorkspaces && selectedWorkspace.abbreviation !== undefined && otherWorkspaces.map((workspace, index) => (
                                 <Link className="dropdown-item" to={'/workspace'} 
                                 state={{from: "Navbar", uuid: workspace.uuid}}
                                 onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>
@@ -114,12 +114,15 @@ function NavBar(props) {
                         Expenses
                         </Link>
                     </li>
-                    <li>
+                    {otherWorkspaces && selectedWorkspace.uuid && (
+                        <li>
                         <Link className="NavBar-SettingsBtn nav-link" to={'/settings'}
                         state={{uuid:selectedWorkspace.uuid}}>
                         Settings
                         </Link>
                     </li>
+                    )}
+                    
                 </>
             )}
             {isLoggedIn.loggedIn &&  (

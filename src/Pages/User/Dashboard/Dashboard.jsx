@@ -17,6 +17,9 @@ function Dashboard(props) {
     function addWorkspaceModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
     }
+    console.log(workspaces)
+    console.log(typeof workspaces)
+
 
     return (
         <div className={`Dashboard Common-padding Common-expand-flex-1 ${props.className}`}>
@@ -60,8 +63,8 @@ function Dashboard(props) {
                 (
                     <>
                         <h3>Workspaces</h3> 
-                        <p>You can manage your workspaces under user settings.</p>
-                        {workspaces.map((workspace, index) => (
+                        <p>You can manage your workspaces under User &gt; Account Settings.</p>
+                        {workspaces && workspaces.map((workspace, index) => (
                             <div className="Dashboard-workspace-container">
                                 <div className="Dashboard-workspace-abreviation">
                                     <p>{workspace.abbreviation.toUpperCase()}</p>

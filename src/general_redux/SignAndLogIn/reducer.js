@@ -3,6 +3,13 @@ const checkAccessToken = () => {
     let user = sessionStorage.getItem("user");
     let hasInvites = sessionStorage.getItem("hasInvites");
     let invitesData = sessionStorage.getItem("invites");
+    user = JSON.parse(user)
+    if (invitesData === "undefined") {
+        invitesData = undefined
+    }
+    if (invitesData && invitesData.length > 0) {
+        invitesData = JSON.parse(invitesData);
+    } 
     // let hasWorkspaces = sessionStorage.getItem("hasWorkspaces");
     // let favoriteWorkspaceData = sessionStorage.getItem("favoriteWorkspaces");
     // let workspacesData = sessionStorage.getItem("workspaces");
@@ -67,6 +74,13 @@ const checkWorkspaces = () => {
     let hasWorkspaces = sessionStorage.getItem("hasWorkspaces");
     let favoriteWorkspaceData = sessionStorage.getItem("favoriteWorkspaces");
     let workspacesData = sessionStorage.getItem("workspaces");
+    if (workspacesData === "undefined") {
+        workspacesData = undefined;
+    }
+    if (workspacesData && workspacesData.length > 0){
+        workspacesData = JSON.parse(workspacesData);
+    } 
+
     if (token && token !== undefined && token !== "") {
         return {
             hasWorkspaces: hasWorkspaces,

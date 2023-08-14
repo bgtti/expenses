@@ -43,12 +43,11 @@
         color: var(--cOrange) !important;
     }
 }
-.dropdown-menu-right {
+.NavBar-dropdown-menu-custom {
     right: 0 !important;;
     left: auto !important;;
 }
-/* Overwriting Bootstrap */
-.dropdown-menu{
+.NavBar-dropdown-menu-fixed-width{
     --bs-dropdown-min-width: 30px;
     max-width:70px !important;
 }
