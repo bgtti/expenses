@@ -1,10 +1,13 @@
 import APIURL from "../../config/api-url";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
+import { loaderOn, loaderOff } from "../Loader/actions";
+import store from "../store";
 
 //Actions for Sign Up, Log In, Add Workspace, Edit Workspace
 
-export const signUp = (name, email, password) =>{
+export const signUp = (name, email, password) =>{ //missing loader
+    store.dispatch(loaderOn())
     return async (dispatch) => {
         const requestData = {
             name,
@@ -64,9 +67,11 @@ export const signUp = (name, email, password) =>{
         } catch (error) {
             console.error("Signup error: there was a problem signing up.");
         }
+        dispatch(loaderOff())
     };
 };
 export const logIn = (email, password) => {
+    store.dispatch(loaderOn())
     return async (dispatch) => {
         const requestData = {
             email,
@@ -153,6 +158,7 @@ export const logIn = (email, password) => {
         } catch (error) {
             console.error("Login error: there was a problem logging in.");
         }
+        dispatch(loaderOff())
     };
 };
 

@@ -17,9 +17,6 @@ function Dashboard(props) {
     function addWorkspaceModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
     }
-    console.log(workspaces)
-    console.log(typeof workspaces)
-
 
     return (
         <div className={`Dashboard Common-padding Common-expand-flex-1 ${props.className}`}>

@@ -1,6 +1,10 @@
 import { BrowserRouter as Router, Route, Routes as Switch } from 'react-router-dom';
+import { useState, useEffect, useReducer } from "react";
+import {useSelector, useDispatch} from "react-redux"
+import { loaderOn, loaderOff } from "../general_redux/Loader/actions";
 // import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 // import Main from '../Layouts/Main/Main';
+import Loader from "../Components/Loader";
 import NavBar from "../Layouts/Nav/NavBar";
 import Footer from "../Layouts/Footer/Footer";
 import Home from "../Pages/Website/Home"
@@ -15,9 +19,12 @@ import "../Assets/Styles/Main.css";
 import "../Assets/Styles/Common.css";
 
 const Routes = () =>{
+    const loaderDisplay = useSelector((state) => state.loaderDisplay.loaderDisplayed);
+
     return(
         <Router>
             <div className="Main">
+                {loaderDisplay ? <Loader></Loader> : ""}
                 <NavBar></NavBar>
                 <Switch>
                     <Route exact path="/" element={<Home/>}></Route>
