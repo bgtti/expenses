@@ -1,5 +1,5 @@
 import { useDispatch, useSelector} from "react-redux";
-import { deleteWorkspace } from "../../../general_redux/SignAndLogIn/actions";
+import { deleteWorkspace } from "../../../general_redux/UserSettingsWorkspaces/actions";
 import ModalWrapper from "../../../Components/ModalWrapper";
 import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import "../../../Assets/Styles/Modal.css"
@@ -30,7 +30,7 @@ function ModalDeleteWorkspace(props) {
                 <h2>Delete Workspace</h2>
                 <p>You are about to delete the following workspace:</p>
                 {
-                    (theWorkspace && theWorkspace != undefined) ?
+                    (theWorkspace && theWorkspace !== undefined) ?
                     (<p><b>{theWorkspace.abbreviation}</b>| {theWorkspace.name}</p>):
                     ("")
                 }

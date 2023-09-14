@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch} from "react-redux";
-import { addWorkspace } from "../../../general_redux/SignAndLogIn/actions";
+import { addWorkspace } from "../../../general_redux/UserSettingsWorkspaces/actions";
 import ModalWrapper from "../../../Components/ModalWrapper";
 import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import currency_list from "../../../data/currencyList";
@@ -11,11 +11,9 @@ function ModalAddWorkspace(props) {
     const dispatch = useDispatch();
     const nameFieldReducer = (state, action) => {
         if (action.type === 'USER_INPUT'){
-            console.log(action.val)
             return { value: action.val, isValid: (action.val && action.val !== "" && action.val.trim().length > 0 && action.val.length < 51 ? true : false) }
         }
         if (action.type === 'INPUT_BLUR') {
-            console.log(state.value)
             return { value: state.value, isValid: (state.value && state.value !== "" && state.value.trim().length > 0 && state.value.length < 51 ? true : false) }
         }
         if (action.type === 'CLEAR') {
@@ -97,7 +95,7 @@ function ModalAddWorkspace(props) {
 
     const formSubmitHandlerAddWorkspace = (event) => {
         event.preventDefault();
-        dispatch(addWorkspace(nameFieldState.value, abbrevFieldState.value, currencyFieldState.value ))
+        dispatch(addWorkspace(nameFieldState.value, abbrevFieldState.value, currencyFieldState.value))
     };
 
     return (

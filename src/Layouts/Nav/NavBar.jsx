@@ -3,9 +3,8 @@
 // import CloseIcon from "../../Assets/Images/cancel.png"; //Source: Close icons created by Freepik - Flaticon, at https://www.flaticon.com/free-icons/close
 // import AddButton from "../../Components/AddButton";
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editWorkspace } from '../../general_redux/SignAndLogIn/actions';
 import { logOut } from '../../general_redux/SignAndLogIn/actions';
 import "./NavBar.css"
 
@@ -15,15 +14,29 @@ function NavBar(props) {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
-    const firstWorkspace = allWorkspaces && allWorkspaces.length > 0 ? allWorkspaces[0] : null;
-    const [otherWorkspaces, setOtherWorkspaces] = useState(()=> {
-        if (allWorkspaces){
-            return allWorkspaces.slice(1)
-        }
-        return null;
-    });
-    const [selectedWorkspace, setSelectedWorkspace] = useState(firstWorkspace);
+    // const [firstWorkspace, setFirstWorkspace] = useState(null);
+    const [selectedWorkspace, setSelectedWorkspace] = useState(null);
+    const [otherWorkspaces, setOtherWorkspaces] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    
+    useEffect(()=>{
+        if (allWorkspaces && allWorkspaces.length > 0){
+            // setFirstWorkspace(allWorkspaces[0])
+            setSelectedWorkspace(allWorkspaces[0]);
+            allWorkspaces.length === 1 ? setOtherWorkspaces(null): setOtherWorkspaces(allWorkspaces.slice(1));
+        } else {
+            setSelectedWorkspace(null)
+        }
+        console.log(`in NAV: allWorkspaces = ${allWorkspaces}`)
+    }, [allWorkspaces])
+    
+    // const [otherWorkspaces, setOtherWorkspaces] = useState(()=> {
+    //     if (allWorkspaces){
+    //         return allWorkspaces.slice(1)
+    //     }
+    //     return null;
+    // });
+    // const [selectedWorkspace, setSelectedWorkspace] = useState(firstWorkspace);
 
     function selectedWorkspaceChangeHandler(uuid){
         const theWorkspace = allWorkspaces.find(workspace => workspace.uuid === uuid);
@@ -31,10 +44,10 @@ function NavBar(props) {
         setOtherWorkspaces(allWorkspaces.filter((workspace) => workspace.uuid !== uuid));
     } 
 
-    const handleLogout = () => { 
+    const handleLogout = () => {
+            setIsDropdownOpen(false); 
             dispatch(logOut());
             navigate('/login');
-            setIsDropdownOpen(false);
     };
 
     const toggleDropdown = () => {
@@ -84,8 +97,7 @@ function NavBar(props) {
                     <li className="nav-item dropdown NavBar-dropdown-class">
                         <div
                             className={`nav-link dropdown-toggle NavBar-SettingsBtn${
-                                isDropdownOpen ? 'show' : ''
-                            }`}
+                                isDropdownOpen ? 'show' : ''} NavBar-SettingsBtn-Arrow${!otherWorkspaces ? 'noarrow' : ''}`}
                             data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"
                             id="dropdownMenuButton"

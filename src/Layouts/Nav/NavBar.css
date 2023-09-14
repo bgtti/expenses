@@ -29,6 +29,9 @@
 .NavBar-dropdown-menu-custom>*{
     color: black !important;
 }
+.NavBar-SettingsBtn-Arrownoarrow::after{
+    content:none;
+}
 @media (hover: hover) {
     .NavBar-SettingsBtn:hover {
         color: var(--cOrange) !important;

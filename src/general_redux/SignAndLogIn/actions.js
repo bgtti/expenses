@@ -2,6 +2,7 @@ import APIURL from "../../config/api-url";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
+import {workspaceInfoSetAsUndefined} from "../UserSettingsWorkspaces/actions"
 import store from "../store";
 
 //Actions for Sign Up, Log In, Add Workspace, Edit Workspace
@@ -18,17 +19,19 @@ export const signUp = (name, email, password) =>{ //missing loader
             const response = await api.post(APIURL.SIGNUP, requestData);
 
             if (response.status !== 200) {
-                console.error("Signup error: response status not 200.");
-                dispatch({
-                    type: ActionTypes.LOG_OUT,
-                    token: undefined,
-                    user: undefined, 
-                    hasInvites: undefined,
-                    invites: undefined,
-                    // hasWorkspaces: undefined,
-                    // favoriteWorkspace: undefined,
-                    // workspaces: undefined
-                });
+                console.error(`Signup error: response status ${response.status}.`);
+                dispatch(logOut())
+                dispatch(workspaceInfoSetAsUndefined())
+                // dispatch({
+                //     type: ActionTypes.LOG_OUT,
+                //     token: undefined,
+                //     user: undefined, 
+                //     hasInvites: undefined,
+                //     invites: undefined,
+                //     // hasWorkspaces: undefined,
+                //     // favoriteWorkspace: undefined,
+                //     // workspaces: undefined
+                // });
             } else {
                 const data = response.data;
                 let user = { name: data.user.name, email: data.user.email };
@@ -63,6 +66,7 @@ export const signUp = (name, email, password) =>{ //missing loader
                     // favoriteWorkspace: undefined,
                     // workspaces: undefined
                 });
+                dispatch(workspaceInfoSetAsUndefined())
             }
         } catch (error) {
             console.error("Signup error: there was a problem signing up.");
@@ -81,17 +85,20 @@ export const logIn = (email, password) => {
             const response = await api.post(APIURL.LOGIN, requestData);
 
             if (response.status !== 200) {
-                console.error("Login error: response status not 200.");
-                dispatch({
-                    type: ActionTypes.LOG_OUT,
-                    token: undefined,
-                    user: undefined, 
-                    hasInvites: undefined,
-                    invites: undefined,
-                    // hasWorkspaces: undefined,
-                    // favoriteWorkspace: undefined,
-                    // workspaces: undefined
-                });
+                console.error(`Log in error: response status ${response.status}.`);
+                // dispatch({
+                //     type: ActionTypes.LOG_OUT,
+                //     token: undefined,
+                //     user: undefined, 
+                //     hasInvites: undefined,
+                //     invites: undefined,
+                //     // hasWorkspaces: undefined,
+                //     // favoriteWorkspace: undefined,
+                //     // workspaces: undefined
+                // });
+                // dispatch(workspaceInfoSetAsUndefined())
+                dispatch(logOut())
+                dispatch(workspaceInfoSetAsUndefined())
             } else {
                 const data = response.data;
                 let user = { name: data.user.name, email: data.user.email };
@@ -149,7 +156,7 @@ export const logIn = (email, password) => {
                     // workspaces: workspacesData 
                 });
                 dispatch({
-                    type: ActionTypes.GET_WORKSPACE_INFO,
+                    type: ActionTypes.SET_ALL_WORKSPACE_INFO,
                     hasWorkspaces: hasWorkspacesData,
                     favoriteWorkspace: favoriteWorkspaceData,
                     workspaces: sortedWorkspaces
@@ -163,6 +170,7 @@ export const logIn = (email, password) => {
 };
 
 export const logOut = () => {
+    store.dispatch(loaderOn())
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("hasInvites");
@@ -170,7 +178,8 @@ export const logOut = () => {
     sessionStorage.removeItem("hasWorkspaces");
     sessionStorage.removeItem("favoriteWorkspaces");
     sessionStorage.removeItem("workspaces");
-    return {
+    return (dispatch) => {
+        dispatch({
         type: ActionTypes.LOG_OUT,
         token: undefined,
         user: undefined, 
@@ -179,180 +188,7 @@ export const logOut = () => {
         // hasWorkspaces: undefined,
         // favoriteWorkspace: undefined,
         // workspaces: undefined
+        })
+        dispatch(loaderOff())
     };
 };
-
-export const addWorkspace = (name, abbreviation, currency) =>{
-    return async (dispatch) => {
-        const requestData = {
-            name: name, 
-            abbreviation: abbreviation, 
-            currency: currency
-        };
-        let token = sessionStorage.getItem("access_token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-        try {
-            const response = await api.post(APIURL.ADD_WORKSPACE, requestData, config);
-
-            if (response.status !== 200) {
-                console.error("Error adding worspace: response status not 200.");
-            } else {
-                const data = response.data;
-                let hasWorkspacesData = data.has_workspaces;
-                let favoriteWorkspaceData = undefined;
-                let workspacesData = undefined;
-                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
-                // Create a collator object for sorting the workspaces
-                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
-                let sortedWorkspaces = undefined;
-
-                // if there are workspaces, add and sort them
-                if (workspacesData !== undefined && workspacesData.length > 0) {
-                    workspacesData = data.workspaces;
-                    // Sort the workspaces before dispatching the action using the collator
-                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                        collator.compare(a.abbreviation, b.abbreviation)
-                    );
-                } 
-                // Stringify objects for session storage
-                let workspacesDataString;
-                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces) 
-
-                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
-                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesDataString);
-
-                dispatch({
-                    type: ActionTypes.GET_WORKSPACE_INFO,
-                    hasWorkspaces: hasWorkspacesData,
-                    favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: sortedWorkspaces 
-                });
-                console.log("success")
-            }
-        } catch (error) {
-            console.error("Workspace error: there was a problem adding workspace.");
-        }
-    };
-}
-
-export const editWorkspace = (name, abbreviation, currency, uuid) => {
-    return async (dispatch) => {
-        const requestData = {
-            name: name,
-            abbreviation: abbreviation,
-            currency: currency,
-            workspace_uuid:uuid
-        };
-        let token = sessionStorage.getItem("access_token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-        try {
-            const response = await api.post(APIURL.EDIT_WORKSPACE, requestData, config);
-
-            if (response.status !== 200) {
-                console.error("Error editting worspace: response status not 200.");
-            } else {
-                const data = response.data;
-                let hasWorkspacesData = data.has_workspaces;
-                let favoriteWorkspaceData = undefined;
-                let workspacesData = undefined;
-                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
-                // Create a collator object for sorting the workspaces
-                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
-                let sortedWorkspaces = undefined;
-
-                // if there are workspaces, add and sort them
-                if (workspacesData !== undefined && workspacesData.length > 0) {
-                    workspacesData = data.workspaces;
-                    // Sort the workspaces before dispatching the action using the collator
-                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                        collator.compare(a.abbreviation, b.abbreviation)
-                    );
-                }
-                // Stringify objects for session storage
-                let workspacesDataString;
-                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces) 
-
-                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
-                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesDataString);
-
-                dispatch({
-                    type: ActionTypes.GET_WORKSPACE_INFO,
-                    hasWorkspaces: hasWorkspacesData,
-                    favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: sortedWorkspaces
-                });
-                console.log("success")
-            }
-        } catch (error) {
-            console.error("Workspace error: there was a problem editting workspace.");
-        }
-    };
-}
-
-export const deleteWorkspace = (uuid) => {
-    return async (dispatch) => {
-        const requestData = {
-            workspace_uuid: uuid
-        };
-        let token = sessionStorage.getItem("access_token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-        try {
-            const response = await api.post(APIURL.DELETE_WORKSPACE, requestData, config);
-
-            if (response.status !== 200) {
-                console.error("Error deleting worspace: response status not 200.");
-            } else {
-                const data = response.data;
-                let hasWorkspacesData = data.has_workspaces;
-                let favoriteWorkspaceData = undefined;
-                let workspacesData = undefined;
-                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
-                // Create a collator object for sorting the workspaces
-                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
-                let sortedWorkspaces = undefined;
-
-                // if there are workspaces, add and sort them
-                if (workspacesData !== undefined && workspacesData.length > 0) {
-                    workspacesData = data.workspaces;
-                    // Sort the workspaces before dispatching the action using the collator
-                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                        collator.compare(a.abbreviation, b.abbreviation)
-                    );
-                }
-                // Stringify objects for session storage
-                let workspacesDataString;
-                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces) 
-
-                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
-                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesDataString);
-
-                dispatch({
-                    type: ActionTypes.GET_WORKSPACE_INFO,
-                    hasWorkspaces: hasWorkspacesData,
-                    favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: sortedWorkspaces
-                });
-            }
-        } catch (error) {
-            console.error("Workspace error: there was a problem deleting workspace.");
-        }
-    };
-}

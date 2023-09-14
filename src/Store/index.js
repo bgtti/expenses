@@ -1,20 +1,20 @@
-import { createStore } from 'redux';
+// import { createStore } from 'redux';
 
-const whateverReducer = (state={theKey: 0}, action) =>{
-    if (action.type === 'something'){
-        //return something like:
-        return {
-            theKey: state.theKey + 1
-        }
-    } //else:
-    return {
-        theKey: state.theKey + action.amount,
-    };
-}
+// const whateverReducer = (state={theKey: 0}, action) =>{
+//     if (action.type === 'something'){
+//         //return something like:
+//         return {
+//             theKey: state.theKey + 1
+//         }
+//     } //else:
+//     return {
+//         theKey: state.theKey + action.amount,
+//     };
+// }
 
-const store = createStore(whateverReducer);
+// const store = createStore(whateverReducer);
 
-export default store;
+// export default store;
 // https://www.youtube.com/watch?v=CVpUuw9XSjY
 // Store --globalized state
 // action --a function that returns an object

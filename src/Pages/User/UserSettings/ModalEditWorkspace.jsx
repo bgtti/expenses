@@ -1,6 +1,6 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector} from "react-redux";
-import { editWorkspace } from "../../../general_redux/SignAndLogIn/actions";
+import { editWorkspace } from "../../../general_redux/UserSettingsWorkspaces/actions";
 import ModalWrapper from "../../../Components/ModalWrapper";
 import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import currency_list from "../../../data/currencyList";
