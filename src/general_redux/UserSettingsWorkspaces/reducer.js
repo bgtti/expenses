@@ -1,3 +1,4 @@
+//Data of all workspaces
 const checkWorkspaces = () => {
     let token = sessionStorage.getItem("access_token");
     let hasWorkspaces = sessionStorage.getItem("hasWorkspaces");

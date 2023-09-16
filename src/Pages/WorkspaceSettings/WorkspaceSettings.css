@@ -1,48 +1,48 @@
-.Settings h2{
+.WorkspaceSettings h2{
     margin: 20px 0;
 }
-.Settings section {
+.WorkspaceSettings section {
     margin-bottom: 20px;
 }
-.Settings-List {
+.WorkspaceSettings-List {
     list-style-type: none; 
     margin: 0;
     padding: 0;
 }
 
-.Settings-ListItem {
+.WorkspaceSettings-ListItem {
     display: flex;
     gap: 10px;
     align-items: center;
 
 }
-.Settings-ListBullet{
+.WorkspaceSettings-ListBullet{
     width: 5px;
     height: 5px;
     background-color: var(--cOrange);
     border-radius: 50%;
 }
-.Settings-Icon{
+.WorkspaceSettings-Icon{
     width: 15px;
     cursor: pointer;
 }
-.Settings-Icon-light{
+.WorkspaceSettings-Icon-light{
     filter: var(--cBlueLightFilter);
 }
 
-.Settings-checkboxContainer{
+.WorkspaceSettings-checkboxContainer{
     display: flex;
     gap: 10px
 }
-.Settings-checkboxContainer>input[type="checkbox"]{
+.WorkspaceSettings-checkboxContainer>input[type="checkbox"]{
     outline: var(--cOrange);
 }
-.Settings-checkboxContainer>input[type="checkbox"]:checked{
+.WorkspaceSettings-checkboxContainer>input[type="checkbox"]:checked{
     accent-color: var(--cOrange);
 }
 
 @media (hover: hover) {
-    .Settings-Icon:hover {
+    .WorkspaceSettings-Icon:hover {
         filter: var(--cOrangeFilter);
     }
 }

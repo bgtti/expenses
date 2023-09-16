@@ -1,5 +1,6 @@
 import { isLoggedInReducer } from './SignAndLogIn/reducer';
 import { workspacesReducer } from './UserSettingsWorkspaces/reducer';
+import { workspaceReducer } from './Workspace/reducer';
 import { loaderReducer } from './Loader/reducer';
 import { invitesReducer } from './Invites/reducer'
 // import workspacesReducer from './Workspace/reducer';
@@ -12,6 +13,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const allReducers = combineReducers({
     isLoggedIn: isLoggedInReducer,
     allWorkspaces: workspacesReducer,
+    selectedWorkspace: workspaceReducer,
     loaderDisplay: loaderReducer,
     allInvites: invitesReducer,
 })

@@ -139,9 +139,9 @@ function NavBar(props) {
                     </li>
                     {otherWorkspaces && selectedWorkspace.uuid && (
                         <li>
-                        <Link className="NavBar-SettingsBtn nav-link" to={'/settings'}
+                        <Link className="NavBar-SettingsBtn nav-link" to={'/workspacesettings'}
                         state={{uuid:selectedWorkspace.uuid}}>
-                        Settings
+                        WS Settings
                         </Link>
                     </li>
                     )}

@@ -13,7 +13,7 @@ import SignUp from "../Pages/Website/SignUp"
 import Dashboard from '../Pages/User/Dashboard/Dashboard';
 import WorkSpace from '../Pages/WorkSpace/WorkSpace';
 import Expenses from "../Pages/Expenses/Expenses"
-import Settings from "../Pages/Settings/Settings";
+import WorkspaceSettings from "../Pages/WorkspaceSettings/WorkspaceSettings";
 import UserSettings from '../Pages/User/UserSettings/UserSettings';
 import "../Assets/Styles/Main.css";
 import "../Assets/Styles/Common.css";
@@ -32,7 +32,7 @@ const Routes = () =>{
                     <Route exact path="/signup" element={<SignUp/>}></Route>
                     <Route exact path="/workspace" element={<WorkSpace/>}></Route>
                     <Route exact path="/expenses" element={<Expenses/>}></Route>
-                    <Route exact path="/settings" element={<Settings/>}></Route>
+                    <Route exact path="/workspacesettings" element={<WorkspaceSettings/>}></Route>
                     <Route exact path="/usersettings" element={<UserSettings/>}></Route>
                     <Route exact path="/dashboard" element={<Dashboard/>}></Route>
                 </Switch>

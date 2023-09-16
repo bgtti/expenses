@@ -7,12 +7,12 @@ import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
 import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
-import "./Settings.css";
+import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
 
-function Settings(props) {
-    // const styleClasses = 'Settings ' + props.className;
+function WorkspaceSettings(props) {
+    // const styleClasses = 'WorkspaceSettings ' + props.className;
     const workspaceUuid = "123"//GET THIS INFO
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
@@ -24,12 +24,12 @@ function Settings(props) {
         openOrClose === "close" ? setModalAddGroupStatus(false) : setModalAddGroupStatus(true);
     }
     return (
-        <section className={`Settings Common-padding Common-expand-flex-1 ${props.className}`}>
+        <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
             <ModalAddGroup
             className={modalAddGroupStatus === false ? "modalAddGroupHidden" : ""}
             addGroupModalToggler={addGroupModalToggler} workspaceUuid={workspaceUuid}>
             </ModalAddGroup>
-            <h2>Settings</h2>
+            <h2>Workspace Settings</h2>
             <hr />
             <section>
                 <h3>This Workspace</h3>
@@ -37,7 +37,7 @@ function Settings(props) {
                 <p><b>Base currency:</b> USD</p>
                 <p><b>Access:</b> you have not shared this workspace with anyone</p>
                 <AddButton name="Edit Workspace" className="Common-button-secondary">
-                    <img src={editIcon} alt="edit element" className="Settings-Icon-light" />
+                    <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />
                 </AddButton>
             </section>
             <hr />
@@ -50,18 +50,18 @@ function Settings(props) {
                     <AddButton name="Add Group" className="Common-button-primary" onClickFunction={addGroupModalToggler}>
                         <img src={AddIcon} alt="Add icon" />
                     </AddButton>
-                    <ul className="Settings-List">
-                        <li className="Settings-ListItem">
-                            <div className="Settings-ListBullet"></div>
+                    <ul className="WorkspaceSettings-List">
+                        <li className="WorkspaceSettings-ListItem">
+                            <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Project 1</div>
-                            <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
-                        <li className="Settings-ListItem">
-                            <div className="Settings-ListBullet"></div>
+                        <li className="WorkspaceSettings-ListItem">
+                            <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Project 2</div>
-                            <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
                     </ul>
                 </div>
@@ -72,18 +72,18 @@ function Settings(props) {
                     <AddButton name="Add Account" className="Common-button-primary">
                         <img src={AddIcon} alt="Add icon" />
                     </AddButton>
-                    <ul className="Settings-List">
-                        <li className="Settings-ListItem">
-                            <div className="Settings-ListBullet"></div>
+                    <ul className="WorkspaceSettings-List">
+                        <li className="WorkspaceSettings-ListItem">
+                            <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Bank</div>
-                            <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
-                        <li className="Settings-ListItem">
-                            <div className="Settings-ListBullet"></div>
+                        <li className="WorkspaceSettings-ListItem">
+                            <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Cash</div>
-                            <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
                     </ul>
                 </div>
@@ -98,18 +98,18 @@ function Settings(props) {
                     <AddButton name="Add Category" className="Common-button-primary">
                         <img src={AddIcon} alt="Add icon" />
                     </AddButton>
-                    <ul className="Settings-List">
-                        <li className="Settings-ListItem">
-                            <div className="Settings-ListBullet"></div>
+                    <ul className="WorkspaceSettings-List">
+                        <li className="WorkspaceSettings-ListItem">
+                            <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Utilities</div>
-                            <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
-                        <li className="Settings-ListItem">
-                            <div className="Settings-ListBullet"></div>
+                        <li className="WorkspaceSettings-ListItem">
+                            <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Marketing</div>
-                            <img role="button" src={editIcon} alt="edit element" className="Settings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="Settings-Icon" />
+                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
                     </ul>
                 </div>
@@ -128,11 +128,11 @@ function Settings(props) {
                     <h4>Expenses numbering</h4>
                     <p>How would you like your expenses to be numbered?</p>
                     <form action="">
-                        <div className="Settings-checkboxContainer">
+                        <div className="WorkspaceSettings-checkboxContainer">
                             <input type="checkbox" id="option1" name="option1" value="option1" checked/>
                             <label htmlFor="option1">YY-MM-number</label><br />
                         </div>
-                        <div className="Settings-checkboxContainer">
+                        <div className="WorkspaceSettings-checkboxContainer">
                             <input type="checkbox" id="option2" name="option2" value="option2" />
                             <label htmlFor="option2">Number</label><br />
                         </div>
@@ -155,4 +155,4 @@ function Settings(props) {
     )
 }
 
-export default Settings;
+export default WorkspaceSettings;
