@@ -18,6 +18,13 @@ function NavBar(props) {
     const [selectedWorkspace, setSelectedWorkspace] = useState(null);
     const [otherWorkspaces, setOtherWorkspaces] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    // console.log(`in NAV: hasWorkspace = ${hasWorkspace}`)
+    // console.log(`in NAV: allWorkspaces = ${JSON.stringify(allWorkspaces)}`)
+    // console.log(`in NAV: selectedWorkspace = ${selectedWorkspace}`)
+    // console.log(`in NAV: selectedWorkspace = ${JSON.stringify(selectedWorkspace)}`)
+    // console.log(`in NAV: otherWorkspaces = ${otherWorkspaces}`)
+    // console.log(`in NAV: otherWorkspaces = ${JSON.stringify(otherWorkspaces)}`)
     
     useEffect(()=>{
         if (allWorkspaces && allWorkspaces.length > 0){
@@ -26,9 +33,13 @@ function NavBar(props) {
             allWorkspaces.length === 1 ? setOtherWorkspaces(null): setOtherWorkspaces(allWorkspaces.slice(1));
         } else {
             setSelectedWorkspace(null)
+            setOtherWorkspaces(null)
         }
-        console.log(`in NAV: allWorkspaces = ${allWorkspaces}`)
-    }, [allWorkspaces])
+        // console.log(`in NAV: in useEffect: ************************`)
+        // console.log(`in NAV: in useEffect: allWorkspaces = ${allWorkspaces}`)
+        // console.log(`in NAV: in useEffect: otherWorkspaces = ${JSON.stringify(otherWorkspaces)}`)
+        // console.log(`in NAV: in useEffect: selectedWorkspace = ${JSON.stringify(selectedWorkspace)}`)
+    }, [allWorkspaces, otherWorkspaces, selectedWorkspace])
     
     // const [otherWorkspaces, setOtherWorkspaces] = useState(()=> {
     //     if (allWorkspaces){
@@ -108,7 +119,7 @@ function NavBar(props) {
                             className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom NavBar-dropdown-menu-fixed-width" 
                             aria-labelledby="dropdownMenuButton"
                         >
-                            {otherWorkspaces && selectedWorkspace.abbreviation !== undefined && otherWorkspaces.map((workspace, index) => (
+                            {otherWorkspaces && selectedWorkspace.abbreviation && otherWorkspaces.map((workspace, index) => (
                                 <Link className="dropdown-item" to={'/workspace'} 
                                 state={{from: "Navbar", uuid: workspace.uuid}}
                                 onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>

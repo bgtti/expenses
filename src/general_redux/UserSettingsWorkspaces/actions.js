@@ -6,6 +6,9 @@ import store from "../store";
 
 export const workspaceInfoSetAsUndefined = () => {
     return (dispatch) => {
+        sessionStorage.setItem("hasWorkspaces", undefined);
+        sessionStorage.setItem("favoriteWorkspaces", undefined);
+        sessionStorage.setItem("workspaces", undefined);
         dispatch({
             type: ActionTypes.SET_WORKSPACE_INFO_UNDEFINED,
             hasWorkspaces: undefined,
@@ -14,6 +17,64 @@ export const workspaceInfoSetAsUndefined = () => {
         })
     }
 };
+
+export const removeWorkspaceInfoFromStorage = () =>{
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_WORKSPACE_INFO_UNDEFINED,
+            hasWorkspaces: undefined,
+            favoriteWorkspace: undefined,
+            workspaces: undefined
+        })
+        sessionStorage.removeItem("hasWorkspaces");
+        sessionStorage.removeItem("favoriteWorkspaces");
+        sessionStorage.removeItem("workspaces");
+    }
+}
+
+export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, workspacesData) => {
+
+    if (!hasWorkspacesData && workspacesData.length > 0){
+        return store.dispatch(workspaceInfoSetAsUndefined())
+    } 
+    if (!hasWorkspacesData && workspacesData.length > 0){
+        console.warn("Has workspace set to false, but workspaces were found.");
+        hasWorkspacesData = true;
+    }
+    if (hasWorkspacesData && !workspacesData) {
+        console.error("Has workspaces set to true, but workspaces not received.")
+        return
+    }
+    if (!favoriteWorkspaceData){
+        favoriteWorkspaceData = undefined;
+    }
+
+    // Create a collator object for sorting the workspaces
+    const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+    let sortedWorkspaces = undefined;
+
+    // Sort the workspaces before dispatching the action using the collator
+    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
+        collator.compare(a.abbreviation, b.abbreviation)
+    );
+
+    // Stringify objects for session storage
+    let workspacesDataString;
+    sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces)
+
+    sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
+    sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
+    sessionStorage.setItem("workspaces", workspacesDataString);
+
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_ALL_WORKSPACE_INFO,
+            hasWorkspaces: hasWorkspacesData,
+            favoriteWorkspace: favoriteWorkspaceData,
+            workspaces: sortedWorkspaces
+        })
+    }
+}
 
 export const addWorkspace = (name, abbreviation, currency) => {
     store.dispatch(loaderOn())
@@ -36,42 +97,7 @@ export const addWorkspace = (name, abbreviation, currency) => {
                 console.error(`Error adding workspace: response status ${response.status}.`);
             } else {
                 const data = response.data;
-                let hasWorkspacesData = data.has_workspaces;
-                let favoriteWorkspaceData = undefined;
-                let workspacesData = undefined;
-                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
-                // Create a collator object for sorting the workspaces
-                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
-                let sortedWorkspaces = undefined;
-
-                // if there are workspaces, add and sort them
-                if (workspacesData !== undefined && workspacesData.length > 0) {
-                    workspacesData = data.workspaces;
-                    // Sort the workspaces before dispatching the action using the collator
-                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                        collator.compare(a.abbreviation, b.abbreviation)
-                    );
-                }
-                // Stringify objects for session storage
-                let workspacesDataString;
-                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces)
-
-                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
-                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesDataString);
-
-                console.log(workspacesDataString)
-                console.log("+++")
-                console.log(sortedWorkspaces)
-
-                dispatch({
-                    type: ActionTypes.SET_ALL_WORKSPACE_INFO,
-                    hasWorkspaces: hasWorkspacesData,
-                    favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: sortedWorkspaces
-                });
-                console.log("Workspace info retrieved successfully")
+                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
             }
         } catch (error) {
             console.error("Workspace error: there was a problem adding workspace.");
@@ -102,38 +128,7 @@ export const editWorkspace = (name, abbreviation, currency, uuid) => {
                 console.error(`Error editing workspace: response status ${response.status}.`);
             } else {
                 const data = response.data;
-                let hasWorkspacesData = data.has_workspaces;
-                let favoriteWorkspaceData = undefined;
-                let workspacesData = undefined;
-                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
-                // Create a collator object for sorting the workspaces
-                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
-                let sortedWorkspaces = undefined;
-
-                // if there are workspaces, add and sort them
-                if (workspacesData !== undefined && workspacesData.length > 0) {
-                    workspacesData = data.workspaces;
-                    // Sort the workspaces before dispatching the action using the collator
-                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                        collator.compare(a.abbreviation, b.abbreviation)
-                    );
-                }
-                // Stringify objects for session storage
-                let workspacesDataString;
-                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces)
-
-                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
-                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesDataString);
-
-                dispatch({
-                    type: ActionTypes.SET_ALL_WORKSPACE_INFO,
-                    hasWorkspaces: hasWorkspacesData,
-                    favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: sortedWorkspaces
-                });
-                console.log("Workspace edited successfully.")
+                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
             }
         } catch (error) {
             console.error("Workspace error: there was a problem editting workspace.");
@@ -161,37 +156,7 @@ export const deleteWorkspace = (uuid) => {
                 console.error(`Error deleting workspace: response status ${response.status}.`);
             } else {
                 const data = response.data;
-                let hasWorkspacesData = data.has_workspaces;
-                let favoriteWorkspaceData = undefined;
-                let workspacesData = undefined;
-                data.favorite_workspace === null ? favoriteWorkspaceData = false : favoriteWorkspaceData = data.favorite_workspace;
-
-                // Create a collator object for sorting the workspaces
-                const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
-                let sortedWorkspaces = undefined;
-
-                // if there are workspaces, add and sort them
-                if (workspacesData !== undefined && workspacesData.length > 0) {
-                    workspacesData = data.workspaces;
-                    // Sort the workspaces before dispatching the action using the collator
-                    sortedWorkspaces = workspacesData.slice().sort((a, b) =>
-                        collator.compare(a.abbreviation, b.abbreviation)
-                    );
-                }
-                // Stringify objects for session storage
-                let workspacesDataString;
-                sortedWorkspaces === undefined ? workspacesDataString = undefined : workspacesDataString = JSON.stringify(sortedWorkspaces)
-
-                sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
-                sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
-                sessionStorage.setItem("workspaces", workspacesDataString);
-
-                dispatch({
-                    type: ActionTypes.SET_ALL_WORKSPACE_INFO,
-                    hasWorkspaces: hasWorkspacesData,
-                    favoriteWorkspace: favoriteWorkspaceData,
-                    workspaces: sortedWorkspaces
-                });
+                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
             }
         } catch (error) {
             console.error("Workspace error: there was a problem deleting workspace.");

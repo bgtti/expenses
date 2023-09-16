@@ -11,8 +11,8 @@ function Dashboard(props) {
     const [modalAddWorkspaceStatus, setModalAddWorkspaceStatus] = useState(false);
     const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const workspaces = useSelector((state) => state.allWorkspaces.workspaces);
-    const hasInvites = useSelector((state) => state.isLoggedIn.hasInvites);
-    const invites = useSelector((state) => state.isLoggedIn.invites);
+    const hasInvites = useSelector((state) => state.allInvites.hasInvites);
+    const invites = useSelector((state) => state.allInvites.invites);
 
     function addWorkspaceModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
