@@ -1,5 +1,6 @@
 import { ActionTypes } from "../types";
 import store from "../store";
+import { loaderOn, loaderOff } from "../Loader/actions";
 
 export const selectedWorkspaceSetAsUndefined = () => {
     return (dispatch) => {
@@ -22,11 +23,35 @@ export const removeSelectedWorkspaceFromStorage = () => {
 }
 
 export const saveSelectedWorkspace = (selectedWorkspace) => {
-    sessionStorage.setItem("hasWorkspaces", selectedWorkspace);
+    store.dispatch(loaderOn())
+    if (!selectedWorkspace){
+        return (dispatch) => {
+            dispatch(selectedWorkspaceSetAsUndefined())
+            dispatch(loaderOff())
+        }
+    }; 
+    sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE,
-            selectedWorkspace: undefined,
+            selectedWorkspace: selectedWorkspace
+        })
+        dispatch(loaderOff())
+    }
+}
+
+//This action is used within saveWorkspaceInfo when no sessionStorage object for selectedWorkspace is found (without loader)
+export const setSelectedWorkspaceOnLogIn = (selectedWorkspace) => {
+    if (!selectedWorkspace) {
+        return (dispatch) => {
+            dispatch(selectedWorkspaceSetAsUndefined())
+        }
+    }; 
+    sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_SELECTED_WORKSPACE,
+            selectedWorkspace: selectedWorkspace
         })
     }
 }

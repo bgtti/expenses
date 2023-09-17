@@ -39,6 +39,7 @@ Global state is managed using redux. This is found in the genral_redux folder wh
 - Delete workspace: ready
 - Edit workspace: ready
 - Share workspace: MISSING
+- Set favorite workspace: MISSING
 
 ### 3.Invites
 #### 3.1 Workspace access invite

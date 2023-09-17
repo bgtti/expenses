@@ -4,9 +4,11 @@ import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
 import { workspaceInfoSetAsUndefined, saveWorkspaceInfo, removeWorkspaceInfoFromStorage } from "../UserSettingsWorkspaces/actions"
 import { removeInvitesInfoFromStorage, invitesInfoSetAsUndefined, saveInvitesInfo } from "../Invites/actions"
+import { selectedWorkspaceSetAsUndefined, removeSelectedWorkspaceFromStorage, saveSelectedWorkspace } from "../Workspace/actions"
 import store from "../store";
+import { useSelector } from 'react-redux';
 
-//Actions for Sign Up, Log In, Add Workspace, Edit Workspace
+//Actions for Sign Up, Log In, and Log out
 
 export const signUp = (name, email, password) =>{ //missing loader
     store.dispatch(loaderOn())
@@ -86,6 +88,25 @@ export const logIn = (email, password) => {
 
                 dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
 
+                // if (data.has_workspaces){
+                //     console.log("here")
+                //     if (data.favorite_workspace){
+                //         console.log("here1")
+                //         // dispatch(saveSelectedWorkspace(JSON.stringify(data.favorite_workspace)))
+                //     } else {
+                //         if (data.workspaces && data.workspaces.length > 0){
+                //             const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
+                //             console.log("here2")
+                //             console.log(allWorkspaces[0])
+                //             // dispatch(saveSelectedWorkspace(allWorkspaces[0]));
+                //         } else {
+                //             console.warn("Has workspaces but no workspace could be found.")
+                //         }
+                //     }
+                // } else {
+                //     dispatch(selectedWorkspaceSetAsUndefined());
+                // }
+
                 // if (hasInvites === true && invites === undefined) {
                 //     console.error("Sign in error: Has invites, but invites not received.")
                 //     return
@@ -118,6 +139,7 @@ export const logIn = (email, password) => {
 export const logOut = () => {
     store.dispatch(loaderOn())
     store.dispatch(removeWorkspaceInfoFromStorage())
+    store.dispatch(removeSelectedWorkspaceFromStorage())
     store.dispatch(removeInvitesInfoFromStorage())
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("user");

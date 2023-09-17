@@ -2,6 +2,7 @@ import APIURL from "../../config/api-url";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
+import { setSelectedWorkspaceOnLogIn } from "../Workspace/actions"
 import store from "../store";
 
 export const workspaceInfoSetAsUndefined = () => {
@@ -65,6 +66,15 @@ export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, work
     sessionStorage.setItem("hasWorkspaces", hasWorkspacesData);
     sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
     sessionStorage.setItem("workspaces", workspacesDataString);
+
+    // Check if there is selected workspace - if not, set it
+    if (localStorage.getItem("selectedWorkspace") === null || JSON.parse(localStorage.getItem("selectedWorkspace")) === undefined) {
+        if (favoriteWorkspaceData) {
+            store.dispatch(setSelectedWorkspaceOnLogIn(favoriteWorkspaceData));
+        } else {
+            store.dispatch(setSelectedWorkspaceOnLogIn(sortedWorkspaces[0]));
+        }
+    }
 
     return (dispatch) => {
         dispatch({

@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../general_redux/SignAndLogIn/actions';
+import {saveSelectedWorkspace} from '../../general_redux/Workspace/actions'
 import "./NavBar.css"
 
 function NavBar(props) {
@@ -14,44 +15,28 @@ function NavBar(props) {
     const isLoggedIn = useSelector((state) => state.isLoggedIn);
     const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
-    // const [firstWorkspace, setFirstWorkspace] = useState(null);
-    const [selectedWorkspace, setSelectedWorkspace] = useState(null);
+    const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const [otherWorkspaces, setOtherWorkspaces] = useState(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    // console.log(`in NAV: hasWorkspace = ${hasWorkspace}`)
-    // console.log(`in NAV: allWorkspaces = ${JSON.stringify(allWorkspaces)}`)
-    // console.log(`in NAV: selectedWorkspace = ${selectedWorkspace}`)
-    // console.log(`in NAV: selectedWorkspace = ${JSON.stringify(selectedWorkspace)}`)
-    // console.log(`in NAV: otherWorkspaces = ${otherWorkspaces}`)
-    // console.log(`in NAV: otherWorkspaces = ${JSON.stringify(otherWorkspaces)}`)
     
     useEffect(()=>{
-        if (allWorkspaces && allWorkspaces.length > 0){
-            // setFirstWorkspace(allWorkspaces[0])
-            setSelectedWorkspace(allWorkspaces[0]);
-            allWorkspaces.length === 1 ? setOtherWorkspaces(null): setOtherWorkspaces(allWorkspaces.slice(1));
+        if (allWorkspaces && selectedWorkspace){
+            if (allWorkspaces.length === 1){
+                setOtherWorkspaces(null)
+            } else {
+                setOtherWorkspaces(allWorkspaces.filter((workspace) => workspace.uuid !== selectedWorkspace.uuid));
+            }
         } else {
-            setSelectedWorkspace(null)
             setOtherWorkspaces(null)
         }
-        // console.log(`in NAV: in useEffect: ************************`)
-        // console.log(`in NAV: in useEffect: allWorkspaces = ${allWorkspaces}`)
-        // console.log(`in NAV: in useEffect: otherWorkspaces = ${JSON.stringify(otherWorkspaces)}`)
-        // console.log(`in NAV: in useEffect: selectedWorkspace = ${JSON.stringify(selectedWorkspace)}`)
-    }, [allWorkspaces, otherWorkspaces, selectedWorkspace])
-    
-    // const [otherWorkspaces, setOtherWorkspaces] = useState(()=> {
-    //     if (allWorkspaces){
-    //         return allWorkspaces.slice(1)
-    //     }
-    //     return null;
-    // });
-    // const [selectedWorkspace, setSelectedWorkspace] = useState(firstWorkspace);
+        if(allWorkspaces && allWorkspaces.length > 0 && !selectedWorkspace){
+            console.error("Has workspaces but none selected. Check root problem.")
+        }
+    }, [selectedWorkspace, allWorkspaces])
 
     function selectedWorkspaceChangeHandler(uuid){
         const theWorkspace = allWorkspaces.find(workspace => workspace.uuid === uuid);
-        setSelectedWorkspace(theWorkspace);
+        dispatch(saveSelectedWorkspace(theWorkspace))
         setOtherWorkspaces(allWorkspaces.filter((workspace) => workspace.uuid !== uuid));
     } 
 
@@ -137,7 +122,7 @@ function NavBar(props) {
                         Expenses
                         </Link>
                     </li>
-                    {otherWorkspaces && selectedWorkspace.uuid && (
+                    {otherWorkspaces && selectedWorkspace && selectedWorkspace.uuid && (
                         <li>
                         <Link className="NavBar-SettingsBtn nav-link" to={'/workspacesettings'}
                         state={{uuid:selectedWorkspace.uuid}}>
