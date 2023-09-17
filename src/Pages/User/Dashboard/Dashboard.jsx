@@ -62,7 +62,7 @@ function Dashboard(props) {
                         <h3>Workspaces</h3> 
                         <p>You can manage your workspaces under User &gt; Account Settings.</p>
                         {workspaces && workspaces.map((workspace, index) => (
-                            <div className="Dashboard-workspace-container">
+                            <div className="Dashboard-workspace-container" key={index}>
                                 <div className="Dashboard-workspace-abreviation">
                                     <p>{workspace.abbreviation.toUpperCase()}</p>
                                 </div>

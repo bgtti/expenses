@@ -58,10 +58,10 @@ Global state is managed using redux. This is found in the genral_redux folder wh
 
 ### 4.Workspace Settings
 #### 4.1 Settings page
-- Show settings page of selected workspace: MISSING
+- Show settings page of selected workspace: ready
 
 #### 4.2 Group
-- Add group: MISSING
+- Add group: *** WORKING ON IT
 - Edit group: MISSING
 - Delete group: MISSING
 #### 4.3 Account

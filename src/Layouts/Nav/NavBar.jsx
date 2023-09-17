@@ -105,8 +105,8 @@ function NavBar(props) {
                             aria-labelledby="dropdownMenuButton"
                         >
                             {otherWorkspaces && selectedWorkspace.abbreviation && otherWorkspaces.map((workspace, index) => (
-                                <Link className="dropdown-item" to={'/workspace'} 
-                                state={{from: "Navbar", uuid: workspace.uuid}}
+                                <Link className="dropdown-item" to={'/workspace'}  key={index}
+                                //state={{from: "Navbar", uuid: workspace.uuid}}
                                 onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>
                                     {workspace.abbreviation.toUpperCase()}</Link>
                             ))}

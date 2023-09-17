@@ -10,10 +10,15 @@ import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created 
 import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
+//WORK IN PROGRESS: SENDING API REQUEST TO BACKEND (MODAL ADD GROUP)
+//CHECK RESPONSE - SHOULD BE SAVED IN REDUX'S SELECTED WORKSPACE
+//NEED TO PRESENT GROUP INFORMATION IN THIS PAGE
+
 
 function WorkspaceSettings(props) {
     // const styleClasses = 'WorkspaceSettings ' + props.className;
-    const workspaceUuid = "123"//GET THIS INFO
+    //const workspaceUuid = "123"//GET THIS INFO
+    const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
     //missing modals: edit group, delete group, add account, edit account, delete account, add type, edit type, delete type
@@ -27,14 +32,14 @@ function WorkspaceSettings(props) {
         <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
             <ModalAddGroup
             className={modalAddGroupStatus === false ? "modalAddGroupHidden" : ""}
-            addGroupModalToggler={addGroupModalToggler} workspaceUuid={workspaceUuid}>
+            addGroupModalToggler={addGroupModalToggler}>
             </ModalAddGroup>
             <h2>Workspace Settings</h2>
             <hr />
             <section>
-                <h3>This Workspace</h3>
-                <p><b>Name:</b> This WS</p>
-                <p><b>Base currency:</b> USD</p>
+                <h3>{selectedWorkspace.abbreviation} | {selectedWorkspace.name}</h3>
+                <p><b>Name:</b> {selectedWorkspace.name}</p>
+                <p><b>Base currency:</b> {selectedWorkspace.currency}</p>
                 <p><b>Access:</b> you have not shared this workspace with anyone</p>
                 <AddButton name="Edit Workspace" className="Common-button-secondary">
                     <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />

@@ -4,13 +4,12 @@ import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
 import { workspaceInfoSetAsUndefined, saveWorkspaceInfo, removeWorkspaceInfoFromStorage } from "../UserSettingsWorkspaces/actions"
 import { removeInvitesInfoFromStorage, invitesInfoSetAsUndefined, saveInvitesInfo } from "../Invites/actions"
-import { selectedWorkspaceSetAsUndefined, removeSelectedWorkspaceFromStorage, saveSelectedWorkspace } from "../Workspace/actions"
+import { removeSelectedWorkspaceFromStorage } from "../Workspace/actions"
 import store from "../store";
-import { useSelector } from 'react-redux';
 
 //Actions for Sign Up, Log In, and Log out
 
-export const signUp = (name, email, password) =>{ //missing loader
+export const signUp = (name, email, password) =>{ 
     store.dispatch(loaderOn())
     return async (dispatch) => {
         const requestData = {
@@ -27,30 +26,20 @@ export const signUp = (name, email, password) =>{ //missing loader
             } else {
                 const data = response.data;
                 let user = { name: data.user.name, email: data.user.email };
-                // let hasInvites = data.has_invites;
-                // let invites = undefined;
-                // let invitesString = undefined;
 
                 if (data.hasOwnProperty("invites")){
                     dispatch(saveInvitesInfo(data.has_invites, data.invites))
                 } else {
                     dispatch(invitesInfoSetAsUndefined())
                 }
-                // if (hasInvites === true && invites === undefined){
-                //     console.error("Sign up error: Has invites, but invites not received.")
-                //     return
-                // }
+                
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
-                // sessionStorage.setItem("hasInvites", hasInvites);
-                // sessionStorage.setItem("invites", invitesString);
                 
                 dispatch({
                     type: ActionTypes.LOG_IN,
                     token: data.access_token,
-                    user: user,
-                    // hasInvites: hasInvites,
-                    // invites: invites,
+                    user: user
                 });
                 dispatch(workspaceInfoSetAsUndefined())
             }
@@ -76,9 +65,6 @@ export const logIn = (email, password) => {
             } else {
                 const data = response.data;
                 let user = { name: data.user.name, email: data.user.email };
-                // let hasInvites = data.has_invites;
-                // let invites = undefined;
-                // data.hasOwnProperty("invites") ? invites = data.invites : invites = undefined;
 
                 if (data.hasOwnProperty("invites")) {
                     dispatch(saveInvitesInfo(data.has_invites, data.invites))
@@ -87,46 +73,14 @@ export const logIn = (email, password) => {
                 }
 
                 dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
-
-                // if (data.has_workspaces){
-                //     console.log("here")
-                //     if (data.favorite_workspace){
-                //         console.log("here1")
-                //         // dispatch(saveSelectedWorkspace(JSON.stringify(data.favorite_workspace)))
-                //     } else {
-                //         if (data.workspaces && data.workspaces.length > 0){
-                //             const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
-                //             console.log("here2")
-                //             console.log(allWorkspaces[0])
-                //             // dispatch(saveSelectedWorkspace(allWorkspaces[0]));
-                //         } else {
-                //             console.warn("Has workspaces but no workspace could be found.")
-                //         }
-                //     }
-                // } else {
-                //     dispatch(selectedWorkspaceSetAsUndefined());
-                // }
-
-                // if (hasInvites === true && invites === undefined) {
-                //     console.error("Sign in error: Has invites, but invites not received.")
-                //     return
-                // }
-                
-                // Stringify objects for session storage
-                // let invitesString;
-                // !invites ? invitesString = undefined : invitesString = JSON.stringify(invites)
                 
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
-                // sessionStorage.setItem("hasInvites", hasInvites);
-                // sessionStorage.setItem("invites", invitesString);
 
                 dispatch({
                     type: ActionTypes.LOG_IN,
                     token: data.access_token,
-                    user: user, 
-                    // hasInvites: hasInvites,
-                    // invites: invites,
+                    user: user
                 });
             }
         } catch (error) {
@@ -148,9 +102,7 @@ export const logOut = () => {
         dispatch({
         type: ActionTypes.LOG_OUT,
         token: undefined,
-        user: undefined, 
-        // hasInvites: undefined,
-        // invites: undefined,
+        user: undefined
         })
         dispatch(loaderOff())
     };
