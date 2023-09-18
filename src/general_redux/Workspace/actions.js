@@ -107,7 +107,7 @@ export const addSelectedWorkspaceGroup = (workspaceUuid, groupName, groupDescrip
                 console.error(`Error adding group: response status ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceGroup(data.group_data))
+                dispatch(setSelectedWorkspaceGroup(data))
             }
         } catch (error) {
             console.error("Selected Workspace error: there was a problem adding groups.");

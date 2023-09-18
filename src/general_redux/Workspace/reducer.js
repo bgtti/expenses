@@ -33,7 +33,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
         case 'SET_SELECTED_WORKSPACE':
             return {
                 selectedWorkspace: action.selectedWorkspace,
-                selectedWorkspaceGroups: action.groups,
+                selectedWorkspaceGroups: action.selectedWorkspaceGroups,
             }
         case 'SET_SELECTED_WORKSPACE_UNDEFINED':
             return {
@@ -43,7 +43,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
         case 'SET_SELECTED_WORKSPACE_GROUP':
             return {
                 selectedWorkspace: state.selectedWorkspace,
-                selectedWorkspaceGroups: action.groups,
+                selectedWorkspaceGroups: action.selectedWorkspaceGroups,
             }
         default:
             return state;

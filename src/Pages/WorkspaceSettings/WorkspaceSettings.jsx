@@ -10,15 +10,19 @@ import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created 
 import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
-//WORK IN PROGRESS: SENDING API REQUEST TO BACKEND (MODAL ADD GROUP)
-//CHECK RESPONSE - SHOULD BE SAVED IN REDUX'S SELECTED WORKSPACE
-//NEED TO PRESENT GROUP INFORMATION IN THIS PAGE
+//WORK IN PROGRESS: 
+// Groups can be added, but need api to pull group information every time this page is accessed and save it to redux
+// currently groups in redux is only being populated when group is added
+// add a modal to edit group and one to delete group
+// backend apis for edit and delete are already ready
+
 
 
 function WorkspaceSettings(props) {
     // const styleClasses = 'WorkspaceSettings ' + props.className;
     //const workspaceUuid = "123"//GET THIS INFO
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
+    const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
     //missing modals: edit group, delete group, add account, edit account, delete account, add type, edit type, delete type
@@ -37,7 +41,7 @@ function WorkspaceSettings(props) {
             <h2>Workspace Settings</h2>
             <hr />
             <section>
-                <h3>{selectedWorkspace.abbreviation} | {selectedWorkspace.name}</h3>
+                <h3>{selectedWorkspace.abbreviation.toUpperCase() } | {selectedWorkspace.name}</h3>
                 <p><b>Name:</b> {selectedWorkspace.name}</p>
                 <p><b>Base currency:</b> {selectedWorkspace.currency}</p>
                 <p><b>Access:</b> you have not shared this workspace with anyone</p>
@@ -55,20 +59,22 @@ function WorkspaceSettings(props) {
                     <AddButton name="Add Group" className="Common-button-primary" onClickFunction={addGroupModalToggler}>
                         <img src={AddIcon} alt="Add icon" />
                     </AddButton>
-                    <ul className="WorkspaceSettings-List">
-                        <li className="WorkspaceSettings-ListItem">
-                            <div className="WorkspaceSettings-ListBullet"></div>
-                            <div>Project 1</div>
-                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
-                        </li>
-                        <li className="WorkspaceSettings-ListItem">
-                            <div className="WorkspaceSettings-ListBullet"></div>
-                            <div>Project 2</div>
-                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
-                        </li>
-                    </ul>
+                    {
+                            (!selectedWorkspaceGroups) ?
+                            (<p>No groups.</p>) :
+                            (
+                                <ul className="WorkspaceSettings-List"> 
+                                    {selectedWorkspaceGroups.map((group, index) => (
+                                        <li className="WorkspaceSettings-ListItem" key={index}>
+                                            <div className="WorkspaceSettings-ListBullet"></div>
+                                            <div>{group.name}</div>
+                                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
+                                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
+                                        </li>
+                                    ))}
+                                </ul>
+                            )
+                        }
                 </div>
                 <br />
                 <div>
