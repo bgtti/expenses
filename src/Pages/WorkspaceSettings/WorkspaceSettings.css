@@ -51,3 +51,9 @@
 .modalAddGroupHidden{
     display:none;
 }
+.modalEditGroupHidden {
+    display: none;
+}
+.modalDeleteGroupHidden {
+    display: none;
+}

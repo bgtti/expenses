@@ -3,6 +3,7 @@ import store from "../store";
 import { loaderOn, loaderOff } from "../Loader/actions";
 import api from '../../config/axios';
 import APIURL from "../../config/api-url";
+import { getAuthHeader } from "../../config/authHeader"
 
 export const selectedWorkspaceSetAsUndefined = () => {
     return (dispatch) => {
@@ -94,12 +95,7 @@ export const addSelectedWorkspaceGroup = (workspaceUuid, groupName, groupDescrip
             description: groupDescription,
             code: groupCode
         };
-        let token = sessionStorage.getItem("access_token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
+        const config = getAuthHeader()
         try {
             const response = await api.post(APIURL.ADD_GROUP, requestData, config);
 
@@ -111,6 +107,57 @@ export const addSelectedWorkspaceGroup = (workspaceUuid, groupName, groupDescrip
             }
         } catch (error) {
             console.error("Selected Workspace error: there was a problem adding groups.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Edit group
+export const editSelectedWorkspaceGroup = (groupUuid, groupName, groupDescription, groupCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            group_uuid: groupUuid,
+            name: groupName,
+            description: groupDescription,
+            code: groupCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.EDIT_GROUP, requestData, config);
+
+            if (response.status !== 200) {
+                console.error(`Error editing group: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceGroup(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem editing groups.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Delete group
+export const deleteSelectedWorkspaceGroup = (groupUuid) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            group_uuid: groupUuid,
+        };
+        let token = sessionStorage.getItem("access_token");
+        try {
+            const response = await api.delete(APIURL.DELETE_GROUP, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
+
+            if (response.status !== 200) {
+                console.error(`Error deleting group: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceGroup(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem deleting a group.");
         }
         dispatch(loaderOff());
     }

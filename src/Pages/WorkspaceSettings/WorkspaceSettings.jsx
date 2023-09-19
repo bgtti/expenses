@@ -1,8 +1,8 @@
-// import GroupData from "../../Data/GroupData";
-// import TypepData from "../../Data/TypeData";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import ModalAddGroup from "./ModalAddGroup";
+import ModalEditGroup from "./ModalEditGroup";
+import ModalDeleteGroup from "./ModalDeleteGroup";
 import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
@@ -11,26 +11,34 @@ import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
 //WORK IN PROGRESS: 
-// Groups can be added, but need api to pull group information every time this page is accessed and save it to redux
-// currently groups in redux is only being populated when group is added
-// add a modal to edit group and one to delete group
-// backend apis for edit and delete are already ready
+// Style the Add Group, Delete Group, and Edit Group modals
+// Proceed to create Add account, edit account, and delete account
 
 
 
 function WorkspaceSettings(props) {
     // const styleClasses = 'WorkspaceSettings ' + props.className;
-    //const workspaceUuid = "123"//GET THIS INFO
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
-    const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
-    //missing modals: edit group, delete group, add account, edit account, delete account, add type, edit type, delete type
-    function editWorkspaceModalToggler(openOrClose) {
-        openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
-    }
+    const [modalEditGroupStatus, setModalEditGroupStatus] = useState(false);
+    const [groupToEditUuid, setGroupToEditUuid] = useState("");
+    const [modalDeleteGroupStatus, setModalDeleteGroupStatus] = useState(false);
+    const [groupToDeleteUuid, setGroupToDeleteUuid] = useState("");
+    
+    useEffect(()=>{
+        if (modalEditGroupStatus === false){
+            setGroupToEditUuid("");
+        }
+    },[modalEditGroupStatus]) 
     function addGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddGroupStatus(false) : setModalAddGroupStatus(true);
+    }
+    function editGroupModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditGroupStatus(false) : setModalEditGroupStatus(true);
+    }
+    function deleteGroupModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteGroupStatus(false) : setModalDeleteGroupStatus(true);
     }
     return (
         <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
@@ -38,6 +46,27 @@ function WorkspaceSettings(props) {
             className={modalAddGroupStatus === false ? "modalAddGroupHidden" : ""}
             addGroupModalToggler={addGroupModalToggler}>
             </ModalAddGroup>
+            {
+                (groupToEditUuid === "") ?
+                ("") :
+                (
+                    <ModalEditGroup
+                className={modalEditGroupStatus === false ? "modalEditGroupHidden" : ""}
+                editGroupModalToggler={editGroupModalToggler} uuid={groupToEditUuid}>
+            </ModalEditGroup>
+                )
+            }
+            {
+                (groupToDeleteUuid === "") ?
+                ("") :
+                (
+                    <ModalDeleteGroup
+                className={modalDeleteGroupStatus === false ? "modalDeleteGroupHidden" : ""}
+                deleteGroupModalToggler={deleteGroupModalToggler} uuid={groupToDeleteUuid}>
+            </ModalDeleteGroup>
+                )
+            }
+            
             <h2>Workspace Settings</h2>
             <hr />
             <section>
@@ -68,8 +97,10 @@ function WorkspaceSettings(props) {
                                         <li className="WorkspaceSettings-ListItem" key={index}>
                                             <div className="WorkspaceSettings-ListBullet"></div>
                                             <div>{group.name}</div>
-                                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
+                                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" 
+                                            onClick={()=>{setGroupToEditUuid(`${group.uuid}`); editGroupModalToggler("open");}}/>
+                                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" 
+                                            onClick={()=>{setGroupToDeleteUuid(`${group.uuid}`); deleteGroupModalToggler("open");}}/>
                                         </li>
                                     ))}
                                 </ul>

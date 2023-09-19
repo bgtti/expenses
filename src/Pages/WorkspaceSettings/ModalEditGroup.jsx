@@ -2,12 +2,11 @@ import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import ModalWrapper from "../../Components/ModalWrapper";
 import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-//import "../../Styles/ModalAddExpense.css"
 import "../../Assets/Styles/Modal.css"
-import { addSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
+import { editSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
 
-//We are only validating the form for Name, since 'Description' and 'Code' are not required fields
-function ModalAddGroup(props) {
+//We are only validating the form for Name, since 'Description' and 'Code' are not required fields 
+function ModalEditGroup(props) {
     const nameFieldReducer = (state, action) => {
         if (action.type === 'USER_INPUT'){
             return { value: action.val, isValid: (action.val && action.val !== "" && action.val.trim().length > 0 && action.val.length < 31 ? true : false) }
@@ -15,19 +14,19 @@ function ModalAddGroup(props) {
         if (action.type === 'INPUT_BLUR') {
             return { value: state.value, isValid: (state.value && state.value !== "" && state.value.trim().length > 0 && state.value.length < 31 ? true : false) }
         }
-        if (action.type === 'CLEAR') {
-            return {value: '', isValid: null}
-        }
         return {value: '', isValid: false};
     };
     const dispatch = useDispatch();
     const styleClasses = 'ModalEditWorkspace ' + props.className;
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
+    const allGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
+    const groupUuid = props.uuid;
+    const theGroup = allGroups.find(group => group.uuid === groupUuid);
     const [formIsValid, setFormIsValid] = useState(false);
-    const [nameFieldState, dispatchNameField] = useReducer(nameFieldReducer, { value: null, isValid: true });
+    const [nameFieldState, dispatchNameField] = useReducer(nameFieldReducer, { value: theGroup.name, isValid: true });
     const {isValid: nameFieldIsValid} = nameFieldState;
-    const [descriptionFieldState, setDescriptionFieldState] = useState("");
-    const [codeFieldState, setCodeFieldState] = useState("");
+    const [descriptionFieldState, setDescriptionFieldState] = useState(theGroup.description);
+    const [codeFieldState, setCodeFieldState] = useState(theGroup.code);
 
     useEffect(()=>{
         setFormIsValid(nameFieldIsValid);
@@ -45,24 +44,16 @@ function ModalAddGroup(props) {
     const handleCodeInput = (e) => {
         setCodeFieldState(e.target.value);
     };
-    const clearAllFields = () => {
-        dispatchNameField({ type: 'CLEAR'});
-        setDescriptionFieldState("");
-        setCodeFieldState("");
-    };
     function closeThisModal() {
-        props.addGroupModalToggler("close"); ///PROPS
-        setTimeout(()=>{
-            clearAllFields(); 
-        }, 150);
+        props.editGroupModalToggler("close"); ///PROPS
     };
-    const formSubmitHandlerAddGroup = (event) => {
+    const formSubmitHandlerEditGroup = (event) => {
         event.preventDefault();
         let nameField = nameFieldState.value.trim();
-        let descriptionField = event.target.addGroupDescription.value.trim();
-        let codeField = event.target.addGroupCode.value.trim(); 
+        let descriptionField = event.target.editGroupDescription.value.trim();
+        let codeField = event.target.editGroupCode.value.trim(); 
         if(!nameField ){
-            return console.error("Name field required to add a group.") //replace with proper error message
+            return console.error("Name field required to edit a group.") //replace with proper error message
         }
         if(nameField.length < 1 || nameField.length > 30 ){
             return console.error("Name field invalid.") //replace with proper error message
@@ -74,33 +65,33 @@ function ModalAddGroup(props) {
             return console.error("Code field invalid.") //replace with proper error message
         }
 
-        dispatch(addSelectedWorkspaceGroup(selectedWorkspace.uuid, nameField , descriptionField, codeField));
+        dispatch(editSelectedWorkspaceGroup(groupUuid, nameField , descriptionField, codeField));
     };
 
     return (
         <ModalWrapper className={styleClasses}>
-            <form className="Modal-Container" onSubmit={formSubmitHandlerAddGroup}>
+            <form className="Modal-Container" onSubmit={formSubmitHandlerEditGroup}>
                 <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
-                <h2>Add Group</h2>
+                <h2>Edit Group</h2>
                 <p><small>Workspace: {selectedWorkspace.name}</small></p> 
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupName">Name*:</label>
-                    <input value={nameFieldState.value} id="addGroupName" name="addGroupName" type="text" minLength="1" maxLength="30"
+                    <label htmlFor="editGroupName">Name*:</label>
+                    <input value={nameFieldState.value} id="editGroupName" name="editGroupName" type="text" minLength="1" maxLength="30"
                     className={`${nameFieldState.isValid === false ? 'Modal-InputField-invalid' : ''}`} 
                     onChange={nameFieldChangeHandler} onBlur={validateNameFieldHandler} />
                 </div>
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupDescription">Description:</label>
-                    <input id="addGroupDescription" name="addGroupDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100"/>
+                    <label htmlFor="editGroupDescription">Description:</label>
+                    <input id="editGroupDescription" name="editGroupDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100"/>
                 </div>
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupCode">Code:</label>
-                    <input id="addGroupCode" name="addGroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10"/>
+                    <label htmlFor="editGroupCode">Code:</label>
+                    <input id="editGroupCode" name="editGroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10"/>
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Add group</button>
+                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Edit group</button>
             </form>
         </ModalWrapper>
     )
 }
 
-export default ModalAddGroup;
+export default ModalEditGroup;
