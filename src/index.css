@@ -1,5 +1,6 @@
 :root{
   --cGray: rgb(59, 59, 59); 
+  --cMidGray:#81868a;
   --cLightGray: rgb(203, 203, 203);
   /* new ones: https: //m2.material.io/design/color/applying-color-to-ui.html#top-and-bottom-app-bars */
   /* Primary: cBlueDark, secondary: cOrange, tertiary: cBlueLight */
@@ -16,9 +17,10 @@
   --cOrangeDarker: #cf8e2c;
   --cBoxShadowOrangeBtn: inset 0px 0px 10px #cf8e2c;
   --cRed:#94280A;
+  --cRedLight: #efe9e7;
   --cRedDarker: #5d1a07;
   --cRedBackground: #e1c2ba;
-  --cBoxShadowRedBtn: inset 0px 0px 10px #5d1a07;
+  --cBoxShadowRedBtn: inset 0px 0px 15px #5d1a07;
 }
 
 * {

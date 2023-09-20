@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import ModalEditWorkspace from "../User/ModalEditWorkspace/ModalEditWorkspace";
 import ModalAddGroup from "./ModalAddGroup";
+import ModalAddAccount from "./ModalAddAccount";
 import ModalEditGroup from "./ModalEditGroup";
+import ModalEditAccount from "./ModalEditAccount"
 import ModalDeleteGroup from "./ModalDeleteGroup";
+import ModalDeleteAccount from "./ModalDeleteAccount";
 import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
@@ -11,71 +15,136 @@ import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
 //WORK IN PROGRESS: 
-// Style the Add Group, Delete Group, and Edit Group modals
-// Proceed to create Add account, edit account, and delete account
-
-
+// Create add/edit/deete expense category modal and expense numbering
 
 function WorkspaceSettings(props) {
     // const styleClasses = 'WorkspaceSettings ' + props.className;
+    // the word 'account' bellow refers to the object belonging to the WS, not the user's account
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
+    const selectedWorkspaceAccounts = useSelector((state) => state.selectedWorkspace.selectedWorkspaceAccounts);
+    const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
+    const [modalAddAccountStatus, setModalAddAccountStatus] = useState(false);
     const [modalEditGroupStatus, setModalEditGroupStatus] = useState(false);
+    const [modalEditAccountStatus, setModalEditAccountStatus] = useState(false);
+    //const [workspaceToEditUuid, setGroupToEditUuid] = useState("");
     const [groupToEditUuid, setGroupToEditUuid] = useState("");
+    const [accountToEditUuid, setAccountToEditUuid] = useState("");
     const [modalDeleteGroupStatus, setModalDeleteGroupStatus] = useState(false);
+    const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
     const [groupToDeleteUuid, setGroupToDeleteUuid] = useState("");
+    const [accountToDeleteUuid, setAccountToDeleteUuid] = useState("");
     
+    // useEffect(()=>{
+    //     if (modalEditWorkspaceStatus === false){
+    //         setGroupToEditUuid("");
+    //     }
+    // },[modalEditWorkspaceStatus]) 
+
     useEffect(()=>{
         if (modalEditGroupStatus === false){
             setGroupToEditUuid("");
         }
     },[modalEditGroupStatus]) 
+
+    useEffect(()=>{
+        if (modalEditAccountStatus === false){
+            setAccountToEditUuid("");
+        }
+    },[modalEditAccountStatus]) 
+
+    function editWorkspaceModalToggler(openOrClose) {
+        console.log(selectedWorkspace.uuid)
+        openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
+    }
     function addGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddGroupStatus(false) : setModalAddGroupStatus(true);
+    }
+    function addAccountModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalAddAccountStatus(false) : setModalAddAccountStatus(true);
     }
     function editGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditGroupStatus(false) : setModalEditGroupStatus(true);
     }
+    function editAccountModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditAccountStatus(false) : setModalEditAccountStatus(true);
+    }
     function deleteGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteGroupStatus(false) : setModalDeleteGroupStatus(true);
     }
+    function deleteAccountModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteAccountStatus(false) : setModalDeleteAccountStatus(true);
+    }
     return (
         <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
-            <ModalAddGroup
-            className={modalAddGroupStatus === false ? "modalAddGroupHidden" : ""}
-            addGroupModalToggler={addGroupModalToggler}>
-            </ModalAddGroup>
-            {
-                (groupToEditUuid === "") ?
-                ("") :
-                (
-                    <ModalEditGroup
-                className={modalEditGroupStatus === false ? "modalEditGroupHidden" : ""}
-                editGroupModalToggler={editGroupModalToggler} uuid={groupToEditUuid}>
-            </ModalEditGroup>
+            {selectedWorkspace.uuid &&
+                (   <>
+                        <ModalEditWorkspace
+                        className={modalEditWorkspaceStatus === false ? "modalEditWorkspaceHidden" : ""}
+                        editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={selectedWorkspace.uuid}>
+                        </ModalEditWorkspace>
+                        <ModalAddGroup
+                        className={modalAddGroupStatus === false ? "modalAddGroupHidden" : ""}
+                        addGroupModalToggler={addGroupModalToggler}>
+                        </ModalAddGroup>
+                        <ModalAddAccount
+                        className={modalAddAccountStatus === false ? "modalAddAccountHidden" : ""}
+                        addAccountModalToggler={addAccountModalToggler}>
+                        </ModalAddAccount>
+                    </>
                 )
             }
-            {
-                (groupToDeleteUuid === "") ?
-                ("") :
+            {groupToEditUuid &&
                 (
-                    <ModalDeleteGroup
+                <ModalEditGroup
+                className={modalEditGroupStatus === false ? "modalEditGroupHidden" : ""}
+                editGroupModalToggler={editGroupModalToggler} uuid={groupToEditUuid}>
+                </ModalEditGroup>
+                )
+            }
+            {accountToEditUuid &&
+                (
+                <ModalEditAccount
+                className={modalEditAccountStatus === false ? "modalEditAccountHidden" : ""}
+                editAccountModalToggler={editAccountModalToggler} uuid={accountToEditUuid}>
+                </ModalEditAccount>
+                )
+            }
+            {groupToDeleteUuid &&
+                (
+                <ModalDeleteGroup
                 className={modalDeleteGroupStatus === false ? "modalDeleteGroupHidden" : ""}
                 deleteGroupModalToggler={deleteGroupModalToggler} uuid={groupToDeleteUuid}>
-            </ModalDeleteGroup>
+                </ModalDeleteGroup>
+                )
+            }
+            {accountToDeleteUuid &&
+                (
+                <ModalDeleteAccount
+                className={modalDeleteAccountStatus === false ? "modalDeleteAccountHidden" : ""}
+                deleteAccountModalToggler={deleteAccountModalToggler} uuid={accountToDeleteUuid}>
+                </ModalDeleteAccount>
                 )
             }
             
             <h2>Workspace Settings</h2>
             <hr />
-            <section>
+            {(!selectedWorkspace) ?
+            (<section>
+                <h3>Oops, an error occurred.</h3>
+                <p>We could not find your workspace.</p>
+            </section>)
+            :
+            (
+                <>
+                <section>
                 <h3>{selectedWorkspace.abbreviation.toUpperCase() } | {selectedWorkspace.name}</h3>
                 <p><b>Name:</b> {selectedWorkspace.name}</p>
                 <p><b>Base currency:</b> {selectedWorkspace.currency}</p>
                 <p><b>Access:</b> you have not shared this workspace with anyone</p>
-                <AddButton name="Edit Workspace" className="Common-button-secondary">
-                    <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />
+                <AddButton name="Edit Workspace" className="Common-button-secondary" onClickFunction={editWorkspaceModalToggler}>
+                    <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light"/>
                 </AddButton>
             </section>
             <hr />
@@ -111,10 +180,28 @@ function WorkspaceSettings(props) {
                 <div>
                     <h4>Accounts</h4>
                     <p>You can set different accounts, such as 'Bank' or 'Cash' accounts.</p>
-                    <AddButton name="Add Account" className="Common-button-primary">
+                    <AddButton name="Add Account" className="Common-button-primary" onClickFunction={addAccountModalToggler}>
                         <img src={AddIcon} alt="Add icon" />
                     </AddButton>
-                    <ul className="WorkspaceSettings-List">
+                    {
+                            (!selectedWorkspaceAccounts) ?
+                            (<p>No accounts.</p>) :
+                            (
+                                <ul className="WorkspaceSettings-List"> 
+                                    {selectedWorkspaceAccounts.map((account, index) => (
+                                        <li className="WorkspaceSettings-ListItem" key={index}>
+                                            <div className="WorkspaceSettings-ListBullet"></div>
+                                            <div>{account.name}</div>
+                                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" 
+                                            onClick={()=>{setAccountToEditUuid(`${account.uuid}`); editAccountModalToggler("open");}}/>
+                                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" 
+                                            onClick={()=>{setAccountToDeleteUuid(`${account.uuid}`); deleteAccountModalToggler("open");}}/>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )
+                        }
+                    {/* <ul className="WorkspaceSettings-List">
                         <li className="WorkspaceSettings-ListItem">
                             <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Bank</div>
@@ -127,7 +214,7 @@ function WorkspaceSettings(props) {
                             <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
                             <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
             </section>
             <hr />
@@ -156,7 +243,7 @@ function WorkspaceSettings(props) {
                     </ul>
                 </div>
                 <br />
-                <div>
+                {/* <div>
                     <h4>Expense Tags</h4>
                     <p>tags here...</p>
                 </div>
@@ -165,7 +252,7 @@ function WorkspaceSettings(props) {
                     <h4>Expense Tax Rules</h4>
                     <p>tax rules here here...</p>
                 </div>
-                <br />
+                <br /> */}
                 <div>
                     <h4>Expenses numbering</h4>
                     <p>How would you like your expenses to be numbered?</p>
@@ -181,7 +268,7 @@ function WorkspaceSettings(props) {
                     </form>
                 </div>
             </section>
-            <hr />
+            {/* <hr />
             <section>
                 <h3>Income Settings</h3>
                 <p>income settings here...</p>
@@ -192,8 +279,11 @@ function WorkspaceSettings(props) {
                 <br />
                 <h4>Persons</h4>
                 <p>If persons in your business collect cash payments or a partner in the company deposits money in the company's bank account you can add 'persons' to track such transactions.</p>
+            </section> */}
+                </>
+            )
+            }
             </section>
-        </section>
     )
 }
 

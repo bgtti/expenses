@@ -1,12 +1,12 @@
 import { useDispatch, useSelector} from "react-redux";
+import { deleteSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
 import ModalWrapper from "../../Components/ModalWrapper";
 import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import "../../Assets/Styles/Modal.css"
-import { deleteSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
 
 function ModalDeleteGroup(props) {
     const dispatch = useDispatch();
-    const styleClasses = 'ModalEditWorkspace ' + props.className;
+    const styleClasses = props.className;
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const allGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
     const groupUuid = props.uuid;
@@ -22,20 +22,24 @@ function ModalDeleteGroup(props) {
     return (
         <ModalWrapper className={styleClasses}>
             <form className="Modal-Container" onSubmit={formSubmitHandlerDeleteGroup}>
-                <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
-                <h2>Delete Group</h2>
+                <div className="Modal-Heading">
+                    <h2>Delete Group</h2>
+                    <div>
+                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
+                    </div>
+                </div>
+                <p className="Modal-SubHeading-Info">Workspace: {selectedWorkspace.abbreviation.toUpperCase()} | {selectedWorkspace.name}</p> 
                 <p>You are about to delete the following group:</p>
                 {
                     (theGroup && selectedWorkspace) ?
                     (
-                        <>
-                        <p><small>Workspace: {selectedWorkspace.name}</small></p> 
-                        <p>Group name: {theGroup.name}</p>
-                        <p>Group description: {theGroup.description}</p>
-                        <p>Group code: {theGroup.code}</p>
-                        </>
+                        <div className="Modal-InformationGroupingDiv">
+                        <p><b>Group name: {theGroup.name}</b></p>
+                        <p className="Modal-InformationGroupingDiv-Pgray">Group description: {theGroup.description}</p>
+                        <p className="Modal-InformationGroupingDiv-Pgray">Group code: {theGroup.code}</p>
+                        </div>
                     ):
-                    ("Group not found.")
+                    (<p><b>Group not found.</b></p>)
                 }
                 <p>This action cannot be undone. Are you sure you want to proceed?</p>
                 <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Delete group</button>

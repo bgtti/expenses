@@ -7,6 +7,8 @@ import currency_list from "../../../data/currencyList";
 import "../../../Assets/Styles/Modal.css"
 import "../User.css"
 
+//modal being used in UserSettings and WorkspaceSettings
+
 function ModalEditWorkspace(props) {
     const dispatch = useDispatch();
     const nameFieldReducer = (state, action) => {
@@ -48,7 +50,7 @@ function ModalEditWorkspace(props) {
 
     const styleClasses = 'ModalEditWorkspace ' + props.className;
     const allWorkspaces = useSelector((state) => state.allWorkspaces.workspaces);
-    const workspaceUuid = props.uuid;
+    const workspaceUuid = props.uuid; //PROPS
     const theWorkspace = allWorkspaces.find(workspace => workspace.uuid === workspaceUuid);
     const [formIsValid, setFormIsValid] = useState(false);
     const [nameFieldState, dispatchNameField] = useReducer(nameFieldReducer, { value: theWorkspace.name, isValid: true });
@@ -84,17 +86,17 @@ function ModalEditWorkspace(props) {
         dispatchCurrencyField({ type: 'INPUT_BLUR' });
     };
 
-    const clearAllFields = () => {
-        dispatchNameField({ type: 'CLEAR'});
-        dispatchAbbrevField({ type: 'CLEAR' });
-        dispatchCurrencyField({ type: 'CLEAR' });
-    }
+    // const clearAllFields = () => {
+    //     dispatchNameField({ type: 'CLEAR'});
+    //     dispatchAbbrevField({ type: 'CLEAR' });
+    //     dispatchCurrencyField({ type: 'CLEAR' });
+    // }
 
     function closeThisModal() {
         props.editWorkspaceModalToggler("close");
-        setTimeout(()=>{
-            clearAllFields(); 
-        }, 150);
+        // setTimeout(()=>{
+        //     clearAllFields(); 
+        // }, 150);
     }
 
     const formSubmitHandlerEditWorkspace = (event) => {
@@ -105,8 +107,12 @@ function ModalEditWorkspace(props) {
     return (
         <ModalWrapper className={styleClasses}>
             <form className="Modal-Container" onSubmit={formSubmitHandlerEditWorkspace}>
-                <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
-                <h2>Edit Work Space</h2>
+                <div className="Modal-Heading">
+                    <h2>Edit Workspace</h2>
+                    <div>
+                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
+                    </div>
+                </div>
                 <div className="Modal-InputContainer">
                     <label htmlFor="workspaceName">Name*:</label>
                     <input value={nameFieldState.value} id="workspaceName" name="workspaceName" type="text" minLength="1" maxLength="50"

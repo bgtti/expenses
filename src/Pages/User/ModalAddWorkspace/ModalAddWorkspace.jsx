@@ -101,8 +101,12 @@ function ModalAddWorkspace(props) {
     return (
         <ModalWrapper className={styleClasses}>
             <form className="Modal-Container" onSubmit={formSubmitHandlerAddWorkspace}>
-                <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
-                <h2>Add Work Space</h2>
+                <div className="Modal-Heading">
+                    <h2>Add Workspace</h2>
+                    <div>
+                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
+                    </div>
+                </div>
                 <div className="Modal-InputContainer">
                     <label htmlFor="workspaceName">Name*:</label>
                     <input value={nameFieldState.value} id="workspaceName" name="workspaceName" type="text" minLength="1" maxLength="50"
@@ -126,7 +130,7 @@ function ModalAddWorkspace(props) {
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid} >Add Work Space</button>
+                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid} >Add Workspace</button>
             </form>
         </ModalWrapper>
     )

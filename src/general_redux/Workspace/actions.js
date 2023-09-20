@@ -5,14 +5,18 @@ import api from '../../config/axios';
 import APIURL from "../../config/api-url";
 import { getAuthHeader } from "../../config/authHeader"
 
+// Actions for updating the state of a selected workspace
+// Objects such as groups and accounts are used in Workspace Settings
 export const selectedWorkspaceSetAsUndefined = () => {
     return (dispatch) => {
         sessionStorage.setItem("selectedWorkspace", undefined);
         sessionStorage.setItem("selectedWorkspaceGroups", undefined);
+        sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_UNDEFINED,
             selectedWorkspace: undefined,
             selectedWorkspaceGroups: undefined,
+            selectedWorkspaceAccounts: undefined,
         })
     }
 };
@@ -23,9 +27,11 @@ export const removeSelectedWorkspaceFromStorage = () => {
             type: ActionTypes.SET_SELECTED_WORKSPACE_UNDEFINED,
             selectedWorkspace: undefined,
             selectedWorkspaceGroups: undefined,
+            selectedWorkspaceAccounts: undefined,
         })
         sessionStorage.removeItem("selectedWorkspace");
         sessionStorage.removeItem("selectedWorkspaceGroups");
+        sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
     }
 }
 
@@ -42,7 +48,8 @@ export const saveSelectedWorkspace = (selectedWorkspace) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE,
             selectedWorkspace: selectedWorkspace,
-            selectedWorkspaceGroups: undefined //might want to change this later
+            selectedWorkspaceGroups: undefined, //might want to change this later
+            selectedWorkspaceAccounts: undefined,//might want to change this later
         })
         dispatch(loaderOff())
     }
@@ -60,11 +67,13 @@ export const setSelectedWorkspaceOnLogIn = (selectedWorkspace) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE,
             selectedWorkspace: selectedWorkspace,
-            selectedWorkspaceGroups: undefined
+            selectedWorkspaceGroups: undefined,
+            selectedWorkspaceAccounts: undefined,
         })
     }
 }
 
+//*********** GROUPS ***********
 //Getting group information
 export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
     if (!selectedWorkspaceGroups) {
@@ -72,7 +81,7 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SET_SELECTED_WORKSPACE_GROUP,
-                selectedWorkspaceGroups: undefined
+                selectedWorkspaceGroups: undefined,
             })
         }
     };
@@ -162,3 +171,104 @@ export const deleteSelectedWorkspaceGroup = (groupUuid) => {
         dispatch(loaderOff());
     }
 }
+
+//*********** ACCOUNTS ***********
+//Getting account information
+export const setSelectedWorkspaceAccount = (selectedWorkspaceAccounts) => {
+    if (!selectedWorkspaceAccounts) {
+        sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_SELECTED_WORKSPACE_ACCOUNT,
+                selectedWorkspaceAccounts: undefined,
+            })
+        }
+    };
+    sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(selectedWorkspaceAccounts));
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_SELECTED_WORKSPACE_ACCOUNT,
+            selectedWorkspaceAccounts: selectedWorkspaceAccounts
+        })
+    }
+}
+
+// Add account
+export const addSelectedWorkspaceAccount = (workspaceUuid, accountName, accountDescription, accountCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            workspace_uuid: workspaceUuid,
+            name: accountName,
+            description: accountDescription,
+            code: accountCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.ADD_ACCOUNT, requestData, config);
+
+            if (response.status !== 200) {
+                console.error(`Error adding account: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceAccount(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem adding accounts.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Edit account
+export const editSelectedWorkspaceAccount = (accountUuid, accountName, accountDescription, accountCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            account_uuid: accountUuid,
+            name: accountName,
+            description: accountDescription,
+            code: accountCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.EDIT_ACCOUNT, requestData, config);
+
+            if (response.status !== 200) {
+                console.error(`Error editing account: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceAccount(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem editing accounts.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Delete account
+export const deleteSelectedWorkspaceAccount = (accountUuid) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            account_uuid: accountUuid,
+        };
+        let token = sessionStorage.getItem("access_token");
+        try {
+            const response = await api.delete(APIURL.DELETE_ACCOUNT, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
+
+            if (response.status !== 200) {
+                console.error(`Error deleting account: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceAccount(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem deleting a account.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+

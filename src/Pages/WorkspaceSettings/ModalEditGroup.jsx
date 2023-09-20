@@ -1,9 +1,9 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector} from "react-redux";
+import { editSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
 import ModalWrapper from "../../Components/ModalWrapper";
 import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import "../../Assets/Styles/Modal.css"
-import { editSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
 
 //We are only validating the form for Name, since 'Description' and 'Code' are not required fields 
 function ModalEditGroup(props) {
@@ -17,7 +17,7 @@ function ModalEditGroup(props) {
         return {value: '', isValid: false};
     };
     const dispatch = useDispatch();
-    const styleClasses = 'ModalEditWorkspace ' + props.className;
+    const styleClasses = props.className;
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const allGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
     const groupUuid = props.uuid;
@@ -64,16 +64,19 @@ function ModalEditGroup(props) {
         if(codeField.length > 10){
             return console.error("Code field invalid.") //replace with proper error message
         }
-
         dispatch(editSelectedWorkspaceGroup(groupUuid, nameField , descriptionField, codeField));
     };
 
     return (
         <ModalWrapper className={styleClasses}>
             <form className="Modal-Container" onSubmit={formSubmitHandlerEditGroup}>
-                <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
-                <h2>Edit Group</h2>
-                <p><small>Workspace: {selectedWorkspace.name}</small></p> 
+                <div className="Modal-Heading">
+                    <h2>Edit Group</h2>
+                    <div>
+                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
+                    </div>
+                </div>
+                <p className="Modal-SubHeading-Info">Workspace: {selectedWorkspace.abbreviation.toUpperCase()} | {selectedWorkspace.name}</p> 
                 <div className="Modal-InputContainer">
                     <label htmlFor="editGroupName">Name*:</label>
                     <input value={nameFieldState.value} id="editGroupName" name="editGroupName" type="text" minLength="1" maxLength="30"

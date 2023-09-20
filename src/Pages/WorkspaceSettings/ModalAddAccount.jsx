@@ -1,12 +1,12 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector} from "react-redux";
-import { addSelectedWorkspaceGroup } from '../../general_redux/Workspace/actions';
+import { addSelectedWorkspaceAccount } from '../../general_redux/Workspace/actions';
 import ModalWrapper from "../../Components/ModalWrapper";
 import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
 import "../../Assets/Styles/Modal.css"
 
 //We are only validating the form for Name, since 'Description' and 'Code' are not required fields
-function ModalAddGroup(props) {
+function ModalAddAccount(props) {
     const nameFieldReducer = (state, action) => {
         if (action.type === 'USER_INPUT'){
             return { value: action.val, isValid: (action.val && action.val !== "" && action.val.trim().length > 0 && action.val.length < 31 ? true : false) }
@@ -50,18 +50,18 @@ function ModalAddGroup(props) {
         setCodeFieldState("");
     };
     function closeThisModal() {
-        props.addGroupModalToggler("close"); ///PROPS
+        props.addAccountModalToggler("close"); ///PROPS
         setTimeout(()=>{
             clearAllFields(); 
         }, 150);
     };
-    const formSubmitHandlerAddGroup = (event) => {
+    const formSubmitHandlerAddAccount = (event) => {
         event.preventDefault();
         let nameField = nameFieldState.value.trim();
-        let descriptionField = event.target.addGroupDescription.value.trim();
-        let codeField = event.target.addGroupCode.value.trim(); 
+        let descriptionField = event.target.addAccountDescription.value.trim();
+        let codeField = event.target.addAccountCode.value.trim(); 
         if(!nameField ){
-            return console.error("Name field required to add a group.") //replace with proper error message
+            return console.error("Name field required to add an account.") //replace with proper error message
         }
         if(nameField.length < 1 || nameField.length > 30 ){
             return console.error("Name field invalid.") //replace with proper error message
@@ -73,37 +73,37 @@ function ModalAddGroup(props) {
             return console.error("Code field invalid.") //replace with proper error message
         }
 
-        dispatch(addSelectedWorkspaceGroup(selectedWorkspace.uuid, nameField , descriptionField, codeField));
+        dispatch(addSelectedWorkspaceAccount(selectedWorkspace.uuid, nameField , descriptionField, codeField));
     };
 
     return (
         <ModalWrapper className={styleClasses}>
-            <form className="Modal-Container" onSubmit={formSubmitHandlerAddGroup}>
+            <form className="Modal-Container" onSubmit={formSubmitHandlerAddAccount}>
                 <div className="Modal-Heading">
-                    <h2>Add Group</h2>
+                    <h2>Add Account</h2>
                     <div>
                         <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
                     </div>
                 </div>
                 <p className="Modal-SubHeading-Info">Workspace: {selectedWorkspace.abbreviation.toUpperCase()} | {selectedWorkspace.name}</p> 
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupName">Name*:</label>
-                    <input value={nameFieldState.value} id="addGroupName" name="addGroupName" type="text" minLength="1" maxLength="30"
+                    <label htmlFor="addAccountName">Name*:</label>
+                    <input value={nameFieldState.value} id="addAccountName" name="addAccountName" type="text" minLength="1" maxLength="30"
                     className={`${nameFieldState.isValid === false ? 'Modal-InputField-invalid' : ''}`} 
                     onChange={nameFieldChangeHandler} onBlur={validateNameFieldHandler} />
                 </div>
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupDescription">Description:</label>
-                    <input id="addGroupDescription" name="addGroupDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100"/>
+                    <label htmlFor="addAccountDescription">Description:</label>
+                    <input id="addAccountDescription" name="addAccountDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100"/>
                 </div>
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupCode">Code:</label>
-                    <input id="addGroupCode" name="addGroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10"/>
+                    <label htmlFor="addAccountCode">Code:</label>
+                    <input id="addAccountCode" name="addAccountCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10"/>
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Add group</button>
+                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Add account</button>
             </form>
         </ModalWrapper>
     )
 }
 
-export default ModalAddGroup;
+export default ModalAddAccount;

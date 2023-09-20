@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import AddButton from "../../../Components/AddButton";
 import ModalAddWorkspace from "../ModalAddWorkspace/ModalAddWorkspace";
-import ModalDeleteAccount from "./ModalDeleteAccount";
-import ModalEditWorkspace from "./ModalEditWorkspace";
+import ModalDeleteUserAccount from "./ModalDeleteUserAccount";
+import ModalEditWorkspace from "../ModalEditWorkspace/ModalEditWorkspace";
 import ModalDeleteWorkspace from "./ModalDeleteWorkspace";
 import editIcon from '../../../Assets/Images/editing.png'; // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
 import AddIcon from "../../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
@@ -21,7 +21,7 @@ function UserSettings(props) {
     const [modalAddWorkspaceStatus, setModalAddWorkspaceStatus] = useState(false);
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalDeleteWorkspaceStatus, setModalDeleteWorkspaceStatus] = useState(false);
-    const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
+    const [modalDeleteUserAccountStatus, setModalDeleteUserAccountStatus] = useState(false);
     const [workspaceToEditUuid, setWorkspaceToEditUuid] = useState("");
     const [workspaceToDeleteUuid, setWorkspaceToDeleteUuid] = useState("");
 
@@ -42,7 +42,7 @@ function UserSettings(props) {
         openOrClose === "close" ? setModalDeleteWorkspaceStatus(false) : setModalDeleteWorkspaceStatus(true);
     }
     function deleteAccountModalToggler(openOrClose) {
-        openOrClose === "close" ? setModalDeleteAccountStatus(false) : setModalDeleteAccountStatus(true);
+        openOrClose === "close" ? setModalDeleteUserAccountStatus(false) : setModalDeleteUserAccountStatus(true);
     }
 
     return (
@@ -71,10 +71,10 @@ function UserSettings(props) {
                     </ModalDeleteWorkspace>
                 )
             }
-            <ModalDeleteAccount
-            className={modalDeleteAccountStatus === false ? "modalDeleteAccountHidden" : ""}
+            <ModalDeleteUserAccount
+            className={modalDeleteUserAccountStatus === false ? "modalDeleteUserAccountHidden" : ""}
             deleteAccountModalToggler={deleteAccountModalToggler}>
-            </ModalDeleteAccount>
+            </ModalDeleteUserAccount>
             <h2>User Settings</h2>
             <hr />
             <section>

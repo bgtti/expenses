@@ -5,8 +5,6 @@ import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons c
 import "../../../Assets/Styles/Modal.css"
 import "../User.css"
 
-//MISSING: form validation: disable button until all fields are filled
-
 function ModalDeleteWorkspace(props) {
     const dispatch = useDispatch();
     const styleClasses = 'ModalDeleteWorkspace ' + props.className;
@@ -26,13 +24,17 @@ function ModalDeleteWorkspace(props) {
     return (
         <ModalWrapper className={styleClasses}>
             <form className="Modal-Container" onSubmit={formSubmitHandlerDeleteWorkspace}>
-                <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
-                <h2>Delete Workspace</h2>
+                <div className="Modal-Heading">
+                    <h2>Delete Workspace</h2>
+                    <div>
+                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
+                    </div>
+                </div>
                 <p>You are about to delete the following workspace:</p>
                 {
                     (theWorkspace && theWorkspace !== undefined) ?
-                    (<p><b>{theWorkspace.abbreviation}</b>| {theWorkspace.name}</p>):
-                    ("")
+                    (<p><b>{theWorkspace.abbreviation}</b> | {theWorkspace.name}</p>):
+                    (<p><b>Error: no workspace could be found.</b></p>)
                 }
                 <p>This action cannot be undone. Are you sure you want to proceed?</p>
                 <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Delete Workspace</button>

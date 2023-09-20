@@ -48,12 +48,24 @@
 }
 
 /* Modals */
+.modalEditWorkspaceHidden {
+    display: none;
+}
 .modalAddGroupHidden{
     display:none;
+}
+.modalAddAccountHidden {
+    display: none;
 }
 .modalEditGroupHidden {
     display: none;
 }
+.modalEditAccountHidden {
+    display: none;
+}
 .modalDeleteGroupHidden {
+    display: none;
+}
+.modalDeleteAccountHidden {
     display: none;
 }

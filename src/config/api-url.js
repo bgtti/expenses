@@ -1,23 +1,37 @@
 const LOGIN = '/api/account/login';
 const SIGNUP = '/api/account/register';
-const DELETE_ACCOUNT = '/api/account/delete';
+const DELETE_USER_ACCOUNT = '/api/account/delete';
 const ADD_WORKSPACE = '/api/account/add_workspace';
 const EDIT_WORKSPACE = '/api/account/edit_workspace';
 const DELETE_WORKSPACE = '/api/account/delete_workspace';
 const ADD_GROUP = '/api/workspace_settings/add_group';
 const EDIT_GROUP = '/api/workspace_settings/edit_group';
 const DELETE_GROUP = '/api/workspace_settings/delete_group';
+const ADD_ACCOUNT = '/api/workspace_settings/add_account';
+const EDIT_ACCOUNT = '/api/workspace_settings/edit_account';
+const DELETE_ACCOUNT = '/api/workspace_settings/delete_account'; //Accounts from WS, not user's account
+const ADD_EXPENSE_CATEGORY = '/api/workspace_settings/add_expense_category'; 
+const EDIT_EXPENSE_CATEGORY = '/api/workspace_settings/edit_expense_category';
+const DELETE_EXPENSE_CATEGORY = '/api/workspace_settings/delete_expense_category';
+const SET_EXPENSE_NUMBERING_FORMAT = '/api/workspace_settings/set_expense_numbering_format';
 
 const APIURL = {
     LOGIN,
     SIGNUP,
-    DELETE_ACCOUNT,
+    DELETE_USER_ACCOUNT, //User's account deletion
     ADD_WORKSPACE,
     EDIT_WORKSPACE,
     DELETE_WORKSPACE,
     ADD_GROUP,
     EDIT_GROUP,
-    DELETE_GROUP
+    DELETE_GROUP,
+    ADD_ACCOUNT, //Accounts from WS, not user's account
+    EDIT_ACCOUNT, //Accounts from WS, not user's account
+    DELETE_ACCOUNT, //Accounts from WS, not user's account
+    ADD_EXPENSE_CATEGORY,
+    EDIT_EXPENSE_CATEGORY,
+    DELETE_EXPENSE_CATEGORY,
+    SET_EXPENSE_NUMBERING_FORMAT
 }
 
 export default APIURL
