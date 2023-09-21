@@ -3,10 +3,14 @@ import { useSelector } from "react-redux";
 import ModalEditWorkspace from "../User/ModalEditWorkspace/ModalEditWorkspace";
 import ModalAddGroup from "./ModalAddGroup";
 import ModalAddAccount from "./ModalAddAccount";
+import ModalAddExpenseCategory from "./ModalAddExpenseCategory";
 import ModalEditGroup from "./ModalEditGroup";
 import ModalEditAccount from "./ModalEditAccount"
+import ModalEditExpenseCategory from "./ModalEditExpenseCategory";
 import ModalDeleteGroup from "./ModalDeleteGroup";
 import ModalDeleteAccount from "./ModalDeleteAccount";
+import ModalDeleteExpenseCategory from "./ModalDeleteExpenseCategory";
+import { ExpenseNumberingFormat } from "../../constants/enums";
 import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
@@ -15,7 +19,11 @@ import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
 //WORK IN PROGRESS: 
-// Create add/edit/deete expense category modal and expense numbering
+// Create add/edit/delete expense category modal: BE & test
+// Finish ModalSetExpenseNumbering
+// Check Http requests: put to edit, and post to add
+// Add action to upload all data to this page
+
 
 function WorkspaceSettings(props) {
     // const styleClasses = 'WorkspaceSettings ' + props.className;
@@ -23,18 +31,25 @@ function WorkspaceSettings(props) {
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
     const selectedWorkspaceAccounts = useSelector((state) => state.selectedWorkspace.selectedWorkspaceAccounts);
+    const selectedWorkspaceExpenseCategories = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseCategories);
+    const selectedWorkspaceExpenseNumberingFormat = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseNumberingFormat);
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
     const [modalAddAccountStatus, setModalAddAccountStatus] = useState(false);
+    const [modalAddExpenseCategoryStatus, setModalAddExpenseCategoryStatus] = useState(false);
     const [modalEditGroupStatus, setModalEditGroupStatus] = useState(false);
     const [modalEditAccountStatus, setModalEditAccountStatus] = useState(false);
+    const [modalEditExpenseCategoryStatus, setModalEditExpenseCategoryStatus] = useState(false);
     //const [workspaceToEditUuid, setGroupToEditUuid] = useState("");
     const [groupToEditUuid, setGroupToEditUuid] = useState("");
     const [accountToEditUuid, setAccountToEditUuid] = useState("");
+    const [expenseCategoryToEditUuid, setExpenseCategoryToEditUuid] = useState("");
     const [modalDeleteGroupStatus, setModalDeleteGroupStatus] = useState(false);
     const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
+    const [modalDeleteExpenseCategoryStatus, setModalDeleteExpenseCategoryStatus] = useState(false);
     const [groupToDeleteUuid, setGroupToDeleteUuid] = useState("");
     const [accountToDeleteUuid, setAccountToDeleteUuid] = useState("");
+    const [expenseCategoryToDeleteUuid, setExpenseCategoryToDeleteUuid] = useState("");
     
     // useEffect(()=>{
     //     if (modalEditWorkspaceStatus === false){
@@ -54,6 +69,12 @@ function WorkspaceSettings(props) {
         }
     },[modalEditAccountStatus]) 
 
+    useEffect(()=>{
+        if (modalEditExpenseCategoryStatus === false){
+            setExpenseCategoryToEditUuid("");
+        }
+    },[modalEditExpenseCategoryStatus]) 
+
     function editWorkspaceModalToggler(openOrClose) {
         console.log(selectedWorkspace.uuid)
         openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
@@ -64,17 +85,26 @@ function WorkspaceSettings(props) {
     function addAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddAccountStatus(false) : setModalAddAccountStatus(true);
     }
+    function addExpenseCategoryModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalAddExpenseCategoryStatus(false) : setModalAddExpenseCategoryStatus(true);
+    }
     function editGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditGroupStatus(false) : setModalEditGroupStatus(true);
     }
     function editAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditAccountStatus(false) : setModalEditAccountStatus(true);
     }
+    function editExpenseCategoryModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditExpenseCategoryStatus(false) : setModalEditExpenseCategoryStatus(true);
+    }
     function deleteGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteGroupStatus(false) : setModalDeleteGroupStatus(true);
     }
     function deleteAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteAccountStatus(false) : setModalDeleteAccountStatus(true);
+    }
+    function deleteExpenseCategoryModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteExpenseCategoryStatus(false) : setModalDeleteExpenseCategoryStatus(true);
     }
     return (
         <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
@@ -92,6 +122,9 @@ function WorkspaceSettings(props) {
                         className={modalAddAccountStatus === false ? "modalAddAccountHidden" : ""}
                         addAccountModalToggler={addAccountModalToggler}>
                         </ModalAddAccount>
+                        <ModalAddExpenseCategory className={modalAddExpenseCategoryStatus === false ? "modalAddExpenseCategoryHidden" : ""}
+                        addExpenseCategoryModalToggler={addExpenseCategoryModalToggler}>
+                        </ModalAddExpenseCategory>
                     </>
                 )
             }
@@ -111,6 +144,14 @@ function WorkspaceSettings(props) {
                 </ModalEditAccount>
                 )
             }
+            {expenseCategoryToEditUuid &&
+                (
+                <ModalEditExpenseCategory
+                className={modalEditExpenseCategoryStatus === false ? "modalEditExpenseCategoryHidden" : ""}
+                editExpenseCategoryModalToggler={editExpenseCategoryModalToggler} uuid={expenseCategoryToEditUuid}>
+                </ModalEditExpenseCategory>
+                )
+            }
             {groupToDeleteUuid &&
                 (
                 <ModalDeleteGroup
@@ -125,6 +166,14 @@ function WorkspaceSettings(props) {
                 className={modalDeleteAccountStatus === false ? "modalDeleteAccountHidden" : ""}
                 deleteAccountModalToggler={deleteAccountModalToggler} uuid={accountToDeleteUuid}>
                 </ModalDeleteAccount>
+                )
+            }
+            {expenseCategoryToDeleteUuid &&
+                (
+                <ModalDeleteExpenseCategory
+                className={modalDeleteExpenseCategoryStatus === false ? "modalDeleteExpenseCategoryHidden" : ""}
+                deleteExpenseCategoryModalToggler={deleteExpenseCategoryModalToggler} uuid={expenseCategoryToDeleteUuid}>
+                </ModalDeleteExpenseCategory>
                 )
             }
             
@@ -159,7 +208,7 @@ function WorkspaceSettings(props) {
                     </AddButton>
                     {
                             (!selectedWorkspaceGroups) ?
-                            (<p>No groups.</p>) :
+                            (<p>You have no groups yet.</p>) :
                             (
                                 <ul className="WorkspaceSettings-List"> 
                                     {selectedWorkspaceGroups.map((group, index) => (
@@ -185,7 +234,7 @@ function WorkspaceSettings(props) {
                     </AddButton>
                     {
                             (!selectedWorkspaceAccounts) ?
-                            (<p>No accounts.</p>) :
+                            (<p>You have no accounts yet.</p>) :
                             (
                                 <ul className="WorkspaceSettings-List"> 
                                     {selectedWorkspaceAccounts.map((account, index) => (
@@ -224,10 +273,28 @@ function WorkspaceSettings(props) {
                 <div>
                     <h4>Expense category</h4>
                     <p>You can assign a type of expense to each item.</p>
-                    <AddButton name="Add Category" className="Common-button-primary">
+                    <AddButton name="Add Category" className="Common-button-primary" onClickFunction={addExpenseCategoryModalToggler}>
                         <img src={AddIcon} alt="Add icon" />
                     </AddButton>
-                    <ul className="WorkspaceSettings-List">
+                    {
+                            (!selectedWorkspaceExpenseCategories) ?
+                            (<p>You have no category yet.</p>) :
+                            (
+                                <ul className="WorkspaceSettings-List"> 
+                                    {selectedWorkspaceExpenseCategories.map((category, index) => (
+                                        <li className="WorkspaceSettings-ListItem" key={index}>
+                                            <div className="WorkspaceSettings-ListBullet"></div>
+                                            <div>{category.name}</div>
+                                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" 
+                                            onClick={()=>{setExpenseCategoryToEditUuid(`${category.uuid}`); editExpenseCategoryModalToggler("open");}}/>
+                                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" 
+                                            onClick={()=>{setExpenseCategoryToDeleteUuid(`${category.uuid}`); deleteExpenseCategoryModalToggler("open");}}/>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )
+                        }
+                    {/* <ul className="WorkspaceSettings-List">
                         <li className="WorkspaceSettings-ListItem">
                             <div className="WorkspaceSettings-ListBullet"></div>
                             <div>Utilities</div>
@@ -240,7 +307,7 @@ function WorkspaceSettings(props) {
                             <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
                             <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
                 <br />
                 {/* <div>

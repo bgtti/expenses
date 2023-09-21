@@ -80,17 +80,17 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
-                selectedWorkspaceAccounts: action.selectedWorkspaceAccounts,
-                selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
+                selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceExpenseCategories: action.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
         case 'SET_SELECTED_EXPENSE_NUMBERING':
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
-                selectedWorkspaceAccounts: action.selectedWorkspaceAccounts,
+                selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
-                selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
+                selectedWorkspaceExpenseNumberingFormat: action.selectedWorkspaceExpenseNumberingFormat,
             }
         default:
             return state;

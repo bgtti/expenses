@@ -1,9 +1,10 @@
+import store from "../store"; 
 import { ActionTypes } from "../types";
-import store from "../store";
-import { loaderOn, loaderOff } from "../Loader/actions";
 import api from '../../config/axios';
 import APIURL from "../../config/api-url";
 import { getAuthHeader } from "../../config/authHeader"
+import { loaderOn, loaderOff } from "../Loader/actions";
+import { ExpenseNumberingFormat } from "../../constants/enums";
 
 // Actions for updating the state of a selected workspace
 // Objects such as groups and accounts are used in Workspace Settings
@@ -12,11 +13,13 @@ export const selectedWorkspaceSetAsUndefined = () => {
         sessionStorage.setItem("selectedWorkspace", undefined);
         sessionStorage.setItem("selectedWorkspaceGroups", undefined);
         sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
+        sessionStorage.setItem("selectedWorkspaceExpenseCategories", undefined);
+        sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", undefined);
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_UNDEFINED,
-            selectedWorkspace: undefined,
-            selectedWorkspaceGroups: undefined,
-            selectedWorkspaceAccounts: undefined,
+            // selectedWorkspace: undefined,
+            // selectedWorkspaceGroups: undefined,
+            // selectedWorkspaceAccounts: undefined,
         })
     }
 };
@@ -25,13 +28,15 @@ export const removeSelectedWorkspaceFromStorage = () => {
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_UNDEFINED,
-            selectedWorkspace: undefined,
-            selectedWorkspaceGroups: undefined,
-            selectedWorkspaceAccounts: undefined,
+            // selectedWorkspace: undefined,
+            // selectedWorkspaceGroups: undefined,
+            // selectedWorkspaceAccounts: undefined,
         })
         sessionStorage.removeItem("selectedWorkspace");
         sessionStorage.removeItem("selectedWorkspaceGroups");
-        sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
+        sessionStorage.removeItem("selectedWorkspaceAccounts");
+        sessionStorage.removeItem("selectedWorkspaceExpenseCategories");
+        sessionStorage.removeItem("selectedWorkspaceExpenseNumberingFormat");
     }
 }
 
@@ -50,6 +55,8 @@ export const saveSelectedWorkspace = (selectedWorkspace) => {
             selectedWorkspace: selectedWorkspace,
             selectedWorkspaceGroups: undefined, //might want to change this later
             selectedWorkspaceAccounts: undefined,//might want to change this later
+            selectedWorkspaceExpenseCategories: undefined, //might want to change this later
+            selectedWorkspaceExpenseNumberingFormat: undefined, //might want to change this later
         })
         dispatch(loaderOff())
     }
@@ -69,6 +76,8 @@ export const setSelectedWorkspaceOnLogIn = (selectedWorkspace) => {
             selectedWorkspace: selectedWorkspace,
             selectedWorkspaceGroups: undefined,
             selectedWorkspaceAccounts: undefined,
+            selectedWorkspaceExpenseCategories: undefined,
+            selectedWorkspaceExpenseNumberingFormat: undefined,
         })
     }
 }
@@ -271,4 +280,151 @@ export const deleteSelectedWorkspaceAccount = (accountUuid) => {
     }
 }
 
+//*********** EXPENSE CATEGORY ***********
+//Getting expense category information
+export const setSelectedWorkspaceExpenseCategories = (selectedWorkspaceExpenseCategories) => {
+    if (!selectedWorkspaceExpenseCategories) {
+        sessionStorage.setItem("selectedWorkspaceExpenseCategories", undefined);
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_SELECTED_EXPENSE_CATEGORY,
+                selectedWorkspaceExpenseCategories: undefined,
+            })
+        }
+    };
+    sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(selectedWorkspaceExpenseCategories));
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_SELECTED_EXPENSE_CATEGORY,
+            selectedWorkspaceExpenseCategories: selectedWorkspaceExpenseCategories
+        })
+    }
+}
 
+// Add expense category
+export const addSelectedExpenseCategory = (workspaceUuid, expenseCategoryName, expenseCategoryDescription, expenseCategoryCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            workspace_uuid: workspaceUuid,
+            name: expenseCategoryName,
+            description: expenseCategoryDescription,
+            code: expenseCategoryCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.ADD_EXPENSE_CATEGORY, requestData, config);
+
+            if (response.status !== 200) {
+                console.error(`Error adding expense category: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceExpenseCategories(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem adding expense category.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Edit expense category
+export const editSelectedExpenseCategory = (expenseCategoryUuid, expenseCategoryName, expenseCategoryDescription, expenseCategoryCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            expense_category_uuid: expenseCategoryUuid,
+            name: expenseCategoryName,
+            description: expenseCategoryDescription,
+            code: expenseCategoryCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.EDIT_EXPENSE_CATEGORY, requestData, config);
+
+            if (response.status !== 200) {
+                console.error(`Error editing expense category: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceExpenseCategories(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem editing expense category.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Delete expense category
+export const deleteSelectedWorkspaceExpenseCategories = (expenseCategoryUuid) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            expense_category_uuid: expenseCategoryUuid,
+        };
+        let token = sessionStorage.getItem("access_token");
+        try {
+            const response = await api.delete(APIURL.DELETE_EXPENSE_CATEGORY, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
+
+            if (response.status !== 200) {
+                console.error(`Error deleting expense category: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceExpenseCategories(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem deleting a expense category.");
+        }
+        dispatch(loaderOff());
+    }
+}
+
+//*********** EXPENSE  NUMBERING ***********
+//Setting expense numbering information
+//Default numbering = YY-MM-Number
+export const setSelectedWorkspaceExpenseNumbering = (selectedWorkspaceExpenseNumbering) => {
+    if (!selectedWorkspaceExpenseNumbering || !Object.values(ExpenseNumberingFormat).includes(selectedWorkspaceExpenseNumbering)) {
+        sessionStorage.setItem("selectedWorkspaceExpenseNumbering", ExpenseNumberingFormat.YYMMNum);
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
+                selectedWorkspaceExpenseNumbering: ExpenseNumberingFormat.YYMMNum,
+            })
+        }
+    };
+    sessionStorage.setItem("selectedWorkspaceExpenseNumbering", JSON.stringify(selectedWorkspaceExpenseNumbering));
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
+            selectedWorkspaceExpenseNumbering: selectedWorkspaceExpenseNumbering
+        })
+    }
+}
+
+// Add expense category
+export const addSelectedExpenseNumberingPreference = (workspaceUuid, selectedWorkspaceExpenseNumbering) => {
+    store.dispatch(loaderOn())
+    if(!selectedWorkspaceExpenseNumbering || !Object.values(ExpenseNumberingFormat).includes(selectedWorkspaceExpenseNumbering)){
+        return console.error("Numbering format not supported.")// replace with proper error message
+    }
+    return async (dispatch) => {
+        const requestData = {
+            workspace_uuid: workspaceUuid,
+            expense_numbering: selectedWorkspaceExpenseNumbering,
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.SET_EXPENSE_NUMBERING_FORMAT, requestData, config);
+
+            if (response.status !== 200) {
+                console.error(`Error setting expense numbering: response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                dispatch(setSelectedWorkspaceExpenseNumbering(data))
+            }
+        } catch (error) {
+            console.error("Selected Workspace error: there was a problem setting expense numbering.");
+        }
+        dispatch(loaderOff());
+    }
+}

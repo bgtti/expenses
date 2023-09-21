@@ -35,10 +35,10 @@ function ModalDeleteAccount(props) {
                 {
                     (theAccount && selectedWorkspace) ?
                     (
-                        <div className="Modal-InformationAccountingDiv">
+                        <div className="Modal-InformationGroupingDiv">
                         <p><b>Account name: {theAccount.name}</b></p>
-                        <p className="Modal-InformationAccountingDiv-Pgray">Account description: {theAccount.description}</p>
-                        <p className="Modal-InformationAccountingDiv-Pgray">Account code: {theAccount.code}</p>
+                        <p className="Modal-InformationGroupingDiv-Pgray">Account description: {theAccount.description}</p>
+                        <p className="Modal-InformationGroupingDiv-Pgray">Account code: {theAccount.code}</p>
                         </div>
                     ):
                     (<p><b>Account not found.</b></p>)

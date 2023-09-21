@@ -57,15 +57,24 @@
 .modalAddAccountHidden {
     display: none;
 }
+.modalAddExpenseCategoryHidden {
+    display: none;
+}
 .modalEditGroupHidden {
     display: none;
 }
 .modalEditAccountHidden {
     display: none;
 }
+.modalEditExpenseCategoryHidden {
+    display: none;
+}
 .modalDeleteGroupHidden {
     display: none;
 }
 .modalDeleteAccountHidden {
+    display: none;
+}
+.modalDeleteExpenseCategoryHidden {
     display: none;
 }
