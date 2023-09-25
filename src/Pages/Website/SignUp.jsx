@@ -127,6 +127,8 @@ function SignUp(props) {
                 id="signupPassword"
                 name="signupPassword"
                 type="password"
+                minlength="6"
+                maxlength="60"
                 value={passwordState.value}
                 onChange={passwordChangeHandler}
                 onBlur={validatePasswordHandler}

@@ -1,4 +1,5 @@
 //Data of selected workspace
+import { ExpenseNumberingFormat } from "../../constants/enums";
 
 const checkWorkspace = () => {
     let token = sessionStorage.getItem("access_token");
@@ -37,7 +38,7 @@ const checkWorkspace = () => {
             selectedWorkspaceGroups: undefined,
             selectedWorkspaceAccounts: undefined,
             selectedWorkspaceExpenseCategories: undefined,
-            selectedWorkspaceExpenseNumberingFormat: undefined,
+            selectedWorkspaceExpenseNumberingFormat: ExpenseNumberingFormat.YYMMNum,
         };
     }
 };

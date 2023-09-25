@@ -10,7 +10,8 @@ import ModalEditExpenseCategory from "./ModalEditExpenseCategory";
 import ModalDeleteGroup from "./ModalDeleteGroup";
 import ModalDeleteAccount from "./ModalDeleteAccount";
 import ModalDeleteExpenseCategory from "./ModalDeleteExpenseCategory";
-import { ExpenseNumberingFormat } from "../../constants/enums";
+import ModalSetExpenseNumbering from "./ModalSetExpenseNumbering";
+//import { ExpenseNumberingFormat } from "../../constants/enums";
 import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
@@ -40,6 +41,7 @@ function WorkspaceSettings(props) {
     const [modalEditGroupStatus, setModalEditGroupStatus] = useState(false);
     const [modalEditAccountStatus, setModalEditAccountStatus] = useState(false);
     const [modalEditExpenseCategoryStatus, setModalEditExpenseCategoryStatus] = useState(false);
+    const [modalSetExpenseNumberingStatus, setModalSetExpenseNumberingStatus] = useState(false);
     //const [workspaceToEditUuid, setGroupToEditUuid] = useState("");
     const [groupToEditUuid, setGroupToEditUuid] = useState("");
     const [accountToEditUuid, setAccountToEditUuid] = useState("");
@@ -105,6 +107,9 @@ function WorkspaceSettings(props) {
     }
     function deleteExpenseCategoryModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteExpenseCategoryStatus(false) : setModalDeleteExpenseCategoryStatus(true);
+    }
+    function expenseNumberingModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalSetExpenseNumberingStatus(false) : setModalSetExpenseNumberingStatus(true);
     }
     return (
         <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
@@ -175,6 +180,13 @@ function WorkspaceSettings(props) {
                 deleteExpenseCategoryModalToggler={deleteExpenseCategoryModalToggler} uuid={expenseCategoryToDeleteUuid}>
                 </ModalDeleteExpenseCategory>
                 )
+            }
+            {
+                selectedWorkspaceExpenseNumberingFormat &&
+                <ModalSetExpenseNumbering
+                className={modalSetExpenseNumberingStatus === false ? "modalSetExpenseNumberingHidden" : ""}
+                expenseNumberingModalToggler={expenseNumberingModalToggler}>
+                </ModalSetExpenseNumbering>
             }
             
             <h2>Workspace Settings</h2>
@@ -322,8 +334,11 @@ function WorkspaceSettings(props) {
                 <br /> */}
                 <div>
                     <h4>Expenses numbering</h4>
-                    <p>How would you like your expenses to be numbered?</p>
-                    <form action="">
+                    <p>Expense numbering format: XXX</p>
+                    <AddButton name="Edit Expense Numbering" className="Common-button-secondary" onClickFunction={expenseNumberingModalToggler}>
+                    <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light"/>
+                    </AddButton>
+                    {/* <form action="">
                         <div className="WorkspaceSettings-checkboxContainer">
                             <input type="checkbox" id="option1" name="option1" value="option1" checked/>
                             <label htmlFor="option1">YY-MM-number</label><br />
@@ -332,7 +347,7 @@ function WorkspaceSettings(props) {
                             <input type="checkbox" id="option2" name="option2" value="option2" />
                             <label htmlFor="option2">Number</label><br />
                         </div>
-                    </form>
+                    </form> */}
                 </div>
             </section>
             {/* <hr />

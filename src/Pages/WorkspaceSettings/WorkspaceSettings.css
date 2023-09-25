@@ -78,3 +78,6 @@
 .modalDeleteExpenseCategoryHidden {
     display: none;
 }
+.modalSetExpenseNumberingHidden {
+    display: none;
+}
