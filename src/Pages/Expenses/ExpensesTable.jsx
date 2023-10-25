@@ -1,5 +1,5 @@
 import ExpenseItem from "./ExpensesItem"
-import ExpensesData from "../../data/ExpenseData"
+import ExpensesData from "../../Data/ExpenseData"
 import "./Expenses.css"
 function ExpensesTable() {
     return (

@@ -78,7 +78,6 @@ function WorkspaceSettings(props) {
     },[modalEditExpenseCategoryStatus]) 
 
     function editWorkspaceModalToggler(openOrClose) {
-        console.log(selectedWorkspace.uuid)
         openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
     }
     function addGroupModalToggler(openOrClose) {

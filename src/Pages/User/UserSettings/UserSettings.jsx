@@ -95,7 +95,7 @@ function UserSettings(props) {
                     <img src={AddIcon} alt="Add icon" />
                 </AddButton>
                 {
-                    (workspaces === undefined || workspaces === "undefined" || workspaces === []) ?
+                    (workspaces === undefined || workspaces === "undefined" || workspaces.length === 0) ?
                     (<p>You do not own or have access to any workspace. Add a workspace!</p>):
                     (
                         <ul className="UserSettings-List">
