@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import Invites from "./Invites"
 import AddButton from "../../../Components/AddButton";
 import AddIcon from "../../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
 import ModalAddWorkspace from "../ModalAddWorkspace/ModalAddWorkspace";
+import { saveSelectedWorkspace } from "../../../general_redux/Workspace/actions";
 import "./Dashboard.css"
 
 function Dashboard(props) {
-
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [modalAddWorkspaceStatus, setModalAddWorkspaceStatus] = useState(false);
     const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const workspaces = useSelector((state) => state.allWorkspaces.workspaces);
@@ -16,6 +19,12 @@ function Dashboard(props) {
 
     function addWorkspaceModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
+    }
+    function workspaceSelectionHandler(uuidOfSelectedWorkspace){
+        const theWorkspace = workspaces.find(workspace => workspace.uuid === uuidOfSelectedWorkspace);
+        dispatch(saveSelectedWorkspace(theWorkspace))
+        // useWorkspaceSelectionChange(uuidOfSelectedWorkspace);
+        navigate("/workspace");
     }
 
     return (
@@ -71,7 +80,7 @@ function Dashboard(props) {
                                     <p><small>{workspace.num_users_with_access === 0 ? "1 member" : workspace.num_users_with_access + 1 + " members"}</small></p>
                                 </div>
                                 <div>
-                                    <button className="Common-button-secondary">Open workspace</button>
+                                    <button className="Common-button-secondary" onClick={()=>workspaceSelectionHandler(workspace.uuid)}>Open workspace</button>
                                 </div>
                             </div>
                         ))}

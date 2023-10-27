@@ -6,8 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../general_redux/SignAndLogIn/actions';
-import {saveSelectedWorkspace} from '../../general_redux/Workspace/actions'
-import "./NavBar.css"
+import { saveSelectedWorkspace } from '../../general_redux/Workspace/actions'
+import "./NavBar.css";
 
 function NavBar(props) {
     const dispatch = useDispatch();
