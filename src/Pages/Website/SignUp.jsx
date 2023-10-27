@@ -122,7 +122,7 @@ function SignUp(props) {
                 console.error("There was a problem creating your account. Please try again later.")
             }
         }).catch((error) => {
-        console.error("Signup error: there was a problem signing up. [SignUp.jsx]");
+            console.error("Signup error: there was a problem signing up. [SignUp.jsx]");
         });
     };
 

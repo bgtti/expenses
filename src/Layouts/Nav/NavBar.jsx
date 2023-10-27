@@ -70,7 +70,7 @@ function NavBar(props) {
         >
             <ul className="navbar-nav">
             <li className="nav-item active">
-                <Link className="nav-link" to={'/'}>
+                <Link className="NavBar-SettingsBtn nav-link" to={'/'}>
                 Home
                 </Link>
             </li>
@@ -90,33 +90,38 @@ function NavBar(props) {
             )}
             {isLoggedIn.loggedIn && hasWorkspace && (
                 <>
-                    <li className="nav-item dropdown NavBar-dropdown-class">
-                        <div
-                            className={`nav-link dropdown-toggle NavBar-SettingsBtn${
-                                isDropdownOpen ? 'show' : ''} NavBar-SettingsBtn-Arrow${!otherWorkspaces ? 'noarrow' : ''}`}
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"
-                            id="dropdownMenuButton"
-                        >
-                            {selectedWorkspace && selectedWorkspace.abbreviation ? selectedWorkspace.abbreviation.toUpperCase() : "??"}
-                        </div>
-                        <div
-                            className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom NavBar-dropdown-menu-fixed-width" 
-                            aria-labelledby="dropdownMenuButton"
-                        >
-                            {otherWorkspaces && selectedWorkspace.abbreviation && otherWorkspaces.map((workspace, index) => (
-                                <Link className="dropdown-item" to={'/workspace'}  key={index}
-                                //state={{from: "Navbar", uuid: workspace.uuid}}
-                                onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>
-                                    {workspace.abbreviation.toUpperCase()}</Link>
-                            ))}
-                        </div>
+                    {!otherWorkspaces && (
+                        <li className="nav-item">
+                            <Link className="NavBar-SettingsBtn nav-link" to={'/workspace'} >
+                                {selectedWorkspace && selectedWorkspace.abbreviation ? selectedWorkspace.abbreviation : "??"}
+                            </Link>
+                        </li>
+                    )}
+                    {otherWorkspaces && (
+                        <li className="nav-item dropdown NavBar-dropdown-class">
+                            <div
+                                className={`nav-link dropdown-toggle NavBar-SettingsBtn${
+                                    isDropdownOpen ? 'show' : ''} NavBar-SettingsBtn-Arrow`}
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"
+                                id="dropdownMenuButton"
+                            >
+                                {selectedWorkspace && selectedWorkspace.abbreviation ? selectedWorkspace.abbreviation.toUpperCase() : "??"}
+                            </div>
+                            <div
+                                className="dropdown-menu dropdown-menu-right NavBar-dropdown-menu-custom NavBar-dropdown-menu-fixed-width" 
+                                aria-labelledby="dropdownMenuButton"
+                            >
+                                {otherWorkspaces.map((workspace, index) => (
+                                    <Link className="dropdown-item" to={'/workspace'}  key={index}
+                                    //state={{from: "Navbar", uuid: workspace.uuid}}
+                                    onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>
+                                        {workspace.abbreviation.toUpperCase()}</Link>
+                                ))}
+                                
+                            </div> 
                     </li>
-                    {/* <li className="nav-item">
-                        <Link className="NavBar-SettingsBtn nav-link" to={'/workspace'}>
-                        WorkSpace
-                        </Link>
-                    </li> */}
+                    )}
                     <li className="nav-item">
                         <Link className="NavBar-SettingsBtn nav-link" to={'/expenses'}>
                         Expenses
