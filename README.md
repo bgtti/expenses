@@ -37,6 +37,7 @@ Global state is managed using redux. This is found in the genral_redux folder wh
 - Change user name: MISSING
 - Change user email: MISSING
 - Change user password: MISSING
+- Email confirmation: MISSING
 - Delete account: TEST
 
 ### 2.Worspaces
@@ -73,15 +74,15 @@ Global state is managed using redux. This is found in the genral_redux folder wh
 
 #### 4.2 Group
 
-- Add group: \*\*\* WORKING ON IT
-- Edit group: MISSING
-- Delete group: MISSING
+- Add group: done
+- Edit group: done
+- Delete group: done
 
 #### 4.3 Account
 
-- Add account: MISSING
-- Edit account: MISSING
-- Delete account: MISSING
+- Add account: done
+- Edit account: done
+- Delete account: done
 
 ### 5.Expenses Settings
 

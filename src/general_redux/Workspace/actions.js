@@ -5,6 +5,7 @@ import APIURL from "../../config/api-url";
 import { getAuthHeader } from "../../config/authHeader"
 import { loaderOn, loaderOff } from "../Loader/actions";
 import { ExpenseNumberingFormat } from "../../constants/enums";
+import { toast } from 'react-toastify';
 
 // Actions for updating the state of a selected workspace
 // Objects such as groups and accounts are used in Workspace Settings
@@ -118,13 +119,14 @@ export const addSelectedWorkspaceGroup = (workspaceUuid, groupName, groupDescrip
             const response = await api.post(APIURL.ADD_GROUP, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error adding group: response status ${response.status}.`);
+                toast.error(`Error: group could not be added. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceGroup(data))
+                dispatch(setSelectedWorkspaceGroup(data));
+                toast.success(`Group added successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem adding groups.");
+            toast.error(`Error: group could not be added. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -145,13 +147,14 @@ export const editSelectedWorkspaceGroup = (groupUuid, groupName, groupDescriptio
             const response = await api.post(APIURL.EDIT_GROUP, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error editing group: response status ${response.status}.`);
+                toast.error(`Error: group could not be edited. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceGroup(data))
+                dispatch(setSelectedWorkspaceGroup(data));
+                toast.success(`Group edited successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem editing groups.");
+            toast.error(`Error: group could not be edited. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -169,13 +172,14 @@ export const deleteSelectedWorkspaceGroup = (groupUuid) => {
             const response = await api.delete(APIURL.DELETE_GROUP, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
 
             if (response.status !== 200) {
-                console.error(`Error deleting group: response status ${response.status}.`);
+                toast.error(`Error: group could not be deleted. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceGroup(data))
+                dispatch(setSelectedWorkspaceGroup(data));
+                toast.success(`Group deleted successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem deleting a group.");
+            toast.error(`Error: group could not be deleted. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -217,13 +221,14 @@ export const addSelectedWorkspaceAccount = (workspaceUuid, accountName, accountD
             const response = await api.post(APIURL.ADD_ACCOUNT, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error adding account: response status ${response.status}.`);
+                toast.error(`Error: workspace account could not be added. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceAccount(data))
+                dispatch(setSelectedWorkspaceAccount(data));
+                toast.success(`Workspace account added successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem adding accounts.");
+            toast.error(`Error: workspace account could not be added. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -244,13 +249,14 @@ export const editSelectedWorkspaceAccount = (accountUuid, accountName, accountDe
             const response = await api.post(APIURL.EDIT_ACCOUNT, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error editing account: response status ${response.status}.`);
+                toast.error(`Error: workspace account could not be edited. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceAccount(data))
+                dispatch(setSelectedWorkspaceAccount(data));
+                toast.success(`Workspace account edited successfully!`)
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem editing accounts.");
+            toast.error(`Error: workspace account could not be edited. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -268,13 +274,14 @@ export const deleteSelectedWorkspaceAccount = (accountUuid) => {
             const response = await api.delete(APIURL.DELETE_ACCOUNT, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
 
             if (response.status !== 200) {
-                console.error(`Error deleting account: response status ${response.status}.`);
+                toast.error(`Error: workspace account could not be deleted. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceAccount(data))
+                dispatch(setSelectedWorkspaceAccount(data));
+                toast.success(`Workspace account deleted successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem deleting a account.");
+            toast.error(`Error: workspace account could not be deleted. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -316,13 +323,14 @@ export const addSelectedExpenseCategory = (workspaceUuid, expenseCategoryName, e
             const response = await api.post(APIURL.ADD_EXPENSE_CATEGORY, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error adding expense category: response status ${response.status}.`);
+                toast.error(`Error: expense category could not be added. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceExpenseCategories(data))
+                dispatch(setSelectedWorkspaceExpenseCategories(data));
+                toast.success(`Expense category added successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem adding expense category.");
+            toast.error(`Error: expense category could not be added. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -343,13 +351,14 @@ export const editSelectedExpenseCategory = (expenseCategoryUuid, expenseCategory
             const response = await api.post(APIURL.EDIT_EXPENSE_CATEGORY, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error editing expense category: response status ${response.status}.`);
+                toast.error(`Error: expense category could not be edited. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceExpenseCategories(data))
+                dispatch(setSelectedWorkspaceExpenseCategories(data));
+                toast.success(`Expense category edited successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem editing expense category.");
+            toast.error(`Error: expense category could not be edited. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -367,13 +376,14 @@ export const deleteSelectedWorkspaceExpenseCategories = (expenseCategoryUuid) =>
             const response = await api.delete(APIURL.DELETE_EXPENSE_CATEGORY, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
 
             if (response.status !== 200) {
-                console.error(`Error deleting expense category: response status ${response.status}.`);
+                toast.error(`Error: expense category could not be deleted. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceExpenseCategories(data))
+                dispatch(setSelectedWorkspaceExpenseCategories(data));
+                toast.success(`Expense category deleted successfully!`);
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem deleting a expense category.");
+            toast.error(`Error: expense category could not be deleted. No server response.`);
         }
         dispatch(loaderOff());
     }
@@ -401,11 +411,12 @@ export const setSelectedWorkspaceExpenseNumbering = (selectedWorkspaceExpenseNum
     }
 }
 
-// Add expense category
+// Change expense numbering
 export const addSelectedExpenseNumberingPreference = (workspaceUuid, selectedWorkspaceExpenseNumbering) => {
     store.dispatch(loaderOn())
     if(!selectedWorkspaceExpenseNumbering || !Object.values(ExpenseNumberingFormat).includes(selectedWorkspaceExpenseNumbering)){
-        return console.error("Numbering format not supported.")// replace with proper error message
+        toast.error(`Error: expense numbering format not supported.`);
+        return
     }
     return async (dispatch) => {
         const requestData = {
@@ -418,12 +429,15 @@ export const addSelectedExpenseNumberingPreference = (workspaceUuid, selectedWor
 
             if (response.status !== 200) {
                 console.error(`Error setting expense numbering: response status ${response.status}.`);
+                toast.error(`Error: expense numbering could not be changed. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceExpenseNumbering(data))
+                dispatch(setSelectedWorkspaceExpenseNumbering(data));
+                toast.success(`Expense numbering changed successfully!`);
             }
         } catch (error) {
             console.error("Selected Workspace error: there was a problem setting expense numbering.");
+            toast.error(`Error: expense numbering could not be changed. No server response.`);
         }
         dispatch(loaderOff());
     }
