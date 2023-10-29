@@ -129,7 +129,7 @@ function ModalEditWorkspace(props) {
                     <label htmlFor="workspaceCurrency">Currency*:</label>
                     <select name="workspaceCurrency" id="workspaceCurrency" onChange={currencyFieldChangeHandler} 
                     className={`${currencyFieldState.isValid === false ? 'Modal-InputField-invalid' : ''}`} 
-                    onBlur={validateCurrencyFieldHandler} defaultValue={""} value={currencyFieldState.value} >
+                    onBlur={validateCurrencyFieldHandler} value={currencyFieldState.value} >
                         <option key={-1} value="">(select an option)</option>
                         {currency_list.map((currency, index)=>(
                             <option key={index} value={currency.code}>{currency.code} ({currency.name})</option>

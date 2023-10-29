@@ -180,13 +180,17 @@ function WorkspaceSettings(props) {
                 </ModalDeleteExpenseCategory>
                 )
             }
-            {
+            {/* {
                 selectedWorkspaceExpenseNumberingFormat &&
                 <ModalSetExpenseNumbering
                 className={modalSetExpenseNumberingStatus === false ? "modalSetExpenseNumberingHidden" : ""}
                 expenseNumberingModalToggler={expenseNumberingModalToggler}>
                 </ModalSetExpenseNumbering>
-            }
+            } */}
+            <ModalSetExpenseNumbering
+                className={modalSetExpenseNumberingStatus === false ? "modalSetExpenseNumberingHidden" : ""}
+                expenseNumberingModalToggler={expenseNumberingModalToggler}>
+                </ModalSetExpenseNumbering>
             
             <h2>Workspace Settings</h2>
             <hr />

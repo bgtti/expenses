@@ -88,9 +88,9 @@ Global state is managed using redux. This is found in the genral_redux folder wh
 
 #### 5.1 Category
 
-- Add category: MISSING
-- Edit category: MISSING
-- Delete category: MISSING
+- Add category: done
+- Edit category: done
+- Delete category: done
 
 #### 5.2 Tags
 
