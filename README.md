@@ -129,3 +129,21 @@ React folder structure: https://www.xenonstack.com/insights/reactjs-project-stru
 redux: https://www.youtube.com/watch?v=CVpUuw9XSjY
 token authentication: https://www.youtube.com/watch?v=8-W2O_R95Pk&t=793s
 middleware implementation: https://www.youtube.com/watch?v=JDZRfLGNWdc
+
+## NOTE ON EXPENSE NUMBERING
+
+If the preferred way to number expenses is Year Month Number, the year and month will be derived from the date of the expense. The number will be derived from a counter based on the number of expense inputs of the period (ie: the third expense you include with a date of January 2024 will be numbered 2024-01-003). The counter resets every month.
+In the case of 'Year Number' types, the counter will reset every year. So, for the 15th expense you include in 2024, the number will be 2024-015 (ie: independent of the month).
+In the case you choose only to use a counter, the number will never reset. In this case, you can also choose to have the counter starting with any positive number. The default start number is 0.
+
+Note that if you choose to chage the expensenumbering format, the new format will not be automatically applied to existing expenses.
+Similarly, if you change the date on an expense already created, the expense number will not be automatically changed (even if you have 'Year Month Number' set as the numbering type and you change the month).
+Also, deleting an expense will not automatically re-number other expenses.
+The reason for this is to avoid confusion and trouble in the case of an audit, where the reference numbers do not match old records, or any situation that would cause cunfusion in financial reporting.
+
+It is recommended that the user uses 'Year Month Number' type of formatting - or at least 'Year Number' - instead of only a number. The reason is the confusion that might be caused in the case of changes to expenses later on. If an expense is deleted from the system, this will cause a gap in your numbering. Similarly, if you change the date of an expense, the numbers will not represent the chronological order of events. Correcting the invoice number of all past invoices is easy - but also not recommended, since this may cause past financial references to mismatch your data. It is much easier to make corrections to dated numering, since the counter resets monthly or yearly, and thus less expenses will be affected by changes.
+
+## BUILD THIS OPTION:
+
+In case you made a correction and would like the expenses to be re-numbered as a consequence (for instance, to avoid gaps in the numbering in case of an expense deletion or in case you changed your numering settings), you can go to the Workspace settings, and under expense numbering click on 'Update Expense Numbers".
+If you do not want all past expenses to be re-numbered, you can filter all expenses within a date range and those will be re-numbered.

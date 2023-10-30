@@ -18,22 +18,26 @@
     margin-bottom: 10px;
 }
 
-.Modal-CloseModalIcon {
-    width: 20px;
-    align-self: flex-end;
-    cursor: pointer;
-    display: inline-block;
-    filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
-}
-
 .Modal-SubHeading-Info{
     color: var(--cMidGray);
 }
+.Modal-SubHeading-NoSpace{
+    margin: 0;
+}
+.Modal-SubHeading-Container-NoSpace>p {
+    margin: 0;
+}
+/* The following is used for input type text containers */
 .Modal-InputContainer {
     display: grid;
     grid-template-columns: 2fr 60%;
     grid-gap: 10px;
     margin-bottom: 5px;
+}
+@media only screen and (min-width: 800px) {
+    .Modal-InputContainer {
+        min-width: 400px;
+    }
 }
 .Modal-InputField-invalid{
     border: none;
@@ -49,10 +53,52 @@
     color: var(--cMidGray);
 }
 
-@media only screen and (min-width: 800px) {
-    .Modal-InputContainer {
-        min-width: 400px;
-    }
+/* The following is to be used on divs containing input radio button + label */
+.Modal-RadioBtnContainer>input{
+    margin-right: 5px;
+}
+.Modal-SpanExample{
+    color:var(--cMidGray);
+    font-style: italic;
+}
+
+/* The following is to be used on divs containing checkboxes */
+.Modal-CheckboxContainer>input[type='checkbox'] {
+    margin-right: 5px;
+}
+
+/* The following can be used in div containing inputs that have a dropdown effect (its display is a product of the choice of another input) */
+.Modal-DropdownContainerForFurtherInput{
+    margin-left: 15px;
+    padding-left: 5px;
+    border-left: 2px solid var(--cMidGray);
+}
+
+/* Buttons and Icons */
+
+.Modal-CloseModalIcon {
+    width: 20px;
+    align-self: flex-end;
+    cursor: pointer;
+    display: inline-block;
+    filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
+}
+.Modal-DivContainerWithPAndInfoIcon{
+    display:flex;
+    gap: 5px;
+    align-items: center !important;
+}
+.Modal-DivContainerWithPAndInfoIcon>p{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.Modal-Information-Icon{
+    width: 10px;
+    cursor: pointer;
+    display: block;
+    align-self: flex-start;
+    filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
+    cursor: help;
 }
 .Modal-PrimaryBtn {
     margin-top: 10px;

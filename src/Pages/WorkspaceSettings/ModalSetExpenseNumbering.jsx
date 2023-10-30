@@ -9,10 +9,13 @@ import "../../Assets/Styles/Modal.css"
 const ALLOWEDNUMDIGITS = ["3", "4", "5"]; 
 const ALLOWEDEXPENSENUMTYPES =  ["YMN", "YN", "N"]; 
 const ALLOWEDYEARDIGITS = ["2", "4"]; 
-const ALLOWEDNUMSEPARATOR = ["hyphen", "slash", "none"]; 
+const ALLOWEDNUMSEPARATOR = ["-", "/", ""]; 
 
 const MAX_PREFIX_LENGTH = "10";
 const MAX_START_NUMBER_LENGTH = "12";
+const YEAR = new Date().getFullYear();
+const THIS_YEAR = (new Date().getFullYear()).toString();
+const THIS_MONTH = (new Date().getMonth() + 1).toString()
 
 const ACTIONS = {
     SELECTED: 'selected',
@@ -20,6 +23,14 @@ const ACTIONS = {
     USER_INPUT: 'userInput',
     INPUT_BLUR: 'inputBlur'
 }
+// const ACTIONS_EXAMPLE = {
+//     NUM_DIGITS: 'numDigits',
+//     NUM_TYPE: 'numType',
+//     YEAR_DIGITS: 'yearDigits',
+//     SEPARATOR: 'separator',
+//     PREFIX: 'prefix',
+//     START_NUM: 'startNum'
+// }
 function prefixReducer(state, action){
     switch (action.type){
         case ACTIONS.SELECTED:
@@ -58,16 +69,23 @@ function startNumReducer(state, action){
             return state;
     }
 }
+// function currentFormatExample(state, action){
+//     switch (action.type){
+//         case ACTIONS_EXAMPLE.NUM_DIGITS:
+//             return {selected: true, value:state.value, isValid: null};
+//         default:
+//             return state;
+//     }
+// }
 
 function ModalSetExpenseNumbering(props) {
-
+    
     //TODO:
-    // validate form
-    // display "current format" - top of modal
-    // style the form
     // then fix backend to allow for info to be properly saved
     // adapt this form to get info from redux
     // check old code and delete what necessary: possibly enums too
+    // when form is saved, display appropriate message to user
+    // then go to other modals and set appropriate message to users as well (pages such as signup and log in)
 
     //Check the bellow:
     const styleClasses = props.className;
@@ -77,10 +95,10 @@ function ModalSetExpenseNumbering(props) {
     // const [checkedFieldFieldState, dispatchCheckedFieldState] = useReducer(checkedFieldReducer, { value: theFormat, isValid: true });
 
     //new code:
-    const [numDigitsSelected, setNumDigitsSelected] = useState('4');
+    const [numDigitsSelected, setNumDigitsSelected] = useState('3');
     const [expenseNumberTypeSelected, setExpenseNumberTypeSelected] = useState('YMN');
     const [yearDigitsSelected, setYearDigitsSelected] = useState('4');
-    const [numberSeparatorSelected, setNumberSeparatorSelected] = useState('hyphen');
+    const [numberSeparatorSelected, setNumberSeparatorSelected] = useState('-');
     const [prefixState, dispatchPrefix] = useReducer(prefixReducer, {
         selected: false,
         value: "",
@@ -91,6 +109,42 @@ function ModalSetExpenseNumbering(props) {
         value: 1,
         isValid: true,
     })
+    const [currentFormatState, setCurrentFormat] = useState('2023-01-0001');
+    const [formIsValid, setFormIsValid] = useState(true);
+    const {isValid: prefixStateIsValid} = prefixState;
+    const {isValid: startNumStateIsValid} = startNumState;
+
+    useEffect(()=>{
+        setFormIsValid(prefixStateIsValid && startNumStateIsValid);
+    }, [prefixStateIsValid, startNumStateIsValid])
+
+    useEffect(()=>{
+        let currPrefix = (prefixState.selected ? prefixState.value : null);
+        let currYear;
+        if(expenseNumberTypeSelected === "YMN" || expenseNumberTypeSelected === "YN"){
+            currYear = (yearDigitsSelected === "4" ? THIS_YEAR : THIS_YEAR.slice(-2))
+        } else {
+            currYear = null;
+        }
+        let currMonth = (expenseNumberTypeSelected == "YMN" ? THIS_MONTH : null)
+        let currSeparator = numberSeparatorSelected;
+        let currNum;
+        if (startNumState.selected){
+            let selectedValue = startNumState.value.toString();
+            if (startNumState.value !=="1"){
+                if (selectedValue.length >= parseInt(numDigitsSelected)){
+                    currNum = startNumState.value
+                } else {
+                    let numZeroes = parseInt(numDigitsSelected) - selectedValue.length
+                    currNum =`${"0".repeat(numZeroes)}${selectedValue}`;
+                }
+            }
+        } else {
+            currNum =`${"0".repeat(parseInt(numDigitsSelected)-1)}1`;
+        }
+        let currentFormat = `${currPrefix ? currPrefix+currSeparator : ""}${currYear ? currYear+currSeparator: ""}${currMonth ? currMonth+currSeparator: ""}${currNum}`
+        setCurrentFormat(currentFormat);
+    }, [numDigitsSelected,yearDigitsSelected, expenseNumberTypeSelected,numberSeparatorSelected, prefixState, startNumState])
 
     const handleNumDigitsSelected = event => {
         setNumDigitsSelected(event.target.value);
@@ -104,12 +158,12 @@ function ModalSetExpenseNumbering(props) {
     const handleNumberSeparatorSelected = event => {
         setNumberSeparatorSelected(event.target.value);
     }
-        function prefixSelectionHandler(event){
-        if (event.target.checked){
-            dispatchPrefix({type: ACTIONS.SELECTED})
-        } else {
-            dispatchPrefix({type: ACTIONS.UNSELECTED})
-        }
+    function prefixSelectionHandler(event){
+    if (event.target.checked){
+        dispatchPrefix({type: ACTIONS.SELECTED})
+    } else {
+        dispatchPrefix({type: ACTIONS.UNSELECTED})
+    }
     }
     function prefixChangeHandler(event){
         dispatchPrefix({type: ACTIONS.USER_INPUT, val: event.target.value})
@@ -152,67 +206,103 @@ function ModalSetExpenseNumbering(props) {
                         <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
                     </div>
                 </div>
-                <div>
-                    <p><b>Current format: 2023-01-0001.</b></p>
+                <div className="Modal-SubHeading-Container-NoSpace">
+                    <p className="Modal-SubHeading-Info">Workspace: {selectedWorkspace.abbreviation.toUpperCase()} | {selectedWorkspace.name}</p> 
+                    <p className="Modal-SubHeading-NoSpace"><b>Current format: { currentFormatState }</b></p>
                 </div>
-                <div>
+
+                <div className="Modal-InformationGroupingDiv">
                     <p>How many digits should the expense number have?</p>
-                    <input type="radio" id="3digits" name="numOfDigits" value="3" checked={numDigitsSelected === '3'} onChange={handleNumDigitsSelected}/>
-                    <label htmlFor="3digits">3 digits. Example: 001.</label><br></br>
-                    <input type="radio" id="4digits" name="numOfDigits" value="4" checked={numDigitsSelected === '4'}onChange={handleNumDigitsSelected}/>
-                    <label htmlFor="4digits">4 digits. Example: 0001.</label><br></br>
-                    <input type="radio" id="5digits" name="numOfDigits" value="5" checked={numDigitsSelected === '5'} onChange={handleNumDigitsSelected}/>
-                    <label htmlFor="5digits">5 digits. Example: 00001.</label><br></br>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="3digits" name="numOfDigits" value="3" checked={numDigitsSelected === '3'} onChange={handleNumDigitsSelected}/>
+                        <label htmlFor="3digits">3 digits. <span className="Modal-SpanExample">Example: 001.</span></label>
+                    </div>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="4digits" name="numOfDigits" value="4" checked={numDigitsSelected === '4'}onChange={handleNumDigitsSelected}/>
+                        <label htmlFor="4digits">4 digits. <span className="Modal-SpanExample">Example: 0001.</span></label>
+                    </div>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="5digits" name="numOfDigits" value="5" checked={numDigitsSelected === '5'} onChange={handleNumDigitsSelected}/>
+                        <label htmlFor="5digits">5 digits. <span className="Modal-SpanExample">Example: 00001.</span></label> 
+                    </div>
                 </div>
-                <div>
+
+                <div className="Modal-InformationGroupingDiv">
                     <p>Choose the preferred way you would like your invoices to be numbered:</p>
-                    <input type="radio" id="YMN" name="expenseNumberType" value="YMN" checked={expenseNumberTypeSelected === 'YMN'} onChange={handleExpenseNumberTypeSelected}/>
-                    <label htmlFor="YMN">include year and month in expense number. Example: 202312001.</label><br></br>
-                    <input type="radio" id="YN" name="expenseNumberType" value="YN" checked={expenseNumberTypeSelected === 'YN'} onChange={handleExpenseNumberTypeSelected}/>
-                    <label htmlFor="YN">include year in expense number. Example: 2023001.</label><br></br>
-                    <input type="radio" id="N" name="expenseNumberType" value="N" checked={expenseNumberTypeSelected === 'N'} onChange={handleExpenseNumberTypeSelected}/>
-                    <label htmlFor="N">use number only. Example: 001.</label><br></br>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="YMN" name="expenseNumberType" value="YMN" checked={expenseNumberTypeSelected === 'YMN'} onChange={handleExpenseNumberTypeSelected}/>
+                        <label htmlFor="YMN">include year and month in expense number. <span className="Modal-SpanExample">Example: 202312001.</span></label>
+                    </div>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="YN" name="expenseNumberType" value="YN" checked={expenseNumberTypeSelected === 'YN'} onChange={handleExpenseNumberTypeSelected}/>
+                        <label htmlFor="YN">include year in expense number. <span className="Modal-SpanExample">Example: 2023001.</span></label>
+                    </div>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="N" name="expenseNumberType" value="N" checked={expenseNumberTypeSelected === 'N'} onChange={handleExpenseNumberTypeSelected}/>
+                        <label htmlFor="N">use number only. <span className="Modal-SpanExample">Example: 001. [Not recommended!]</span></label>
+                    </div>
                 </div>
-                <div>
-                    <p>Choose number of year digits:</p>
-                    <input type="radio" id="y2" name="yearDigits" value="2" checked={yearDigitsSelected === '2'} onChange={handleYearDigitsSelected}/>
-                    <label htmlFor="y2">2-digits. Example: 23001 or 2301001.</label><br/>
-                    <input type="radio" id="y4" name="yearDigits" value="4" checked={yearDigitsSelected === '2'} onChange={handleYearDigitsSelected}/>
-                    <label htmlFor="y4">4-digits. Example: 2023001 or 202301001.</label><br/>
-                </div>
-                <div>
+                {
+                    (expenseNumberTypeSelected !== 'N') && (
+                        <div className="Modal-InformationGroupingDiv Modal-DropdownContainerForFurtherInput">
+                            <p>Choose number of year digits:</p>
+                            <div className="Modal-RadioBtnContainer">
+                                <input type="radio" id="y2" name="yearDigits" value="2" checked={yearDigitsSelected === '2'} onChange={handleYearDigitsSelected}/>
+                                <label htmlFor="y2">2-digits. <span className="Modal-SpanExample">Example: 23001 or 2301001.</span></label>
+                            </div>
+                            <div className="Modal-RadioBtnContainer">
+                                <input type="radio" id="y4" name="yearDigits" value="4" checked={yearDigitsSelected === '4'} onChange={handleYearDigitsSelected}/>
+                                <label htmlFor="y4">4-digits. <span className="Modal-SpanExample">Example: 2023001 or 202301001.</span></label>
+                            </div>
+                        </div>
+                    )
+                }
+                {
+                    (expenseNumberTypeSelected === 'N') && (
+                        <div className="Modal-CheckboxContainer Modal-DropdownContainerForFurtherInput">
+                            <div className="Modal-CheckboxContainer">
+                                <input type="checkbox" id="includeCustomNumber" name="includeCustomNumber" value="includeCustomNumber" checked={startNumState.selected} onChange={startNumberSelectionHandler}/>
+                                <label htmlFor="includeCustomNumber">Custom start number</label>
+                            </div>
+                            {startNumState.selected && (
+                                <div className="Modal-InputContainer">
+                                    <label htmlFor="customNumber">Start numbering from:</label>
+                                    <input type="number" id="customNumber" name="customNumber" minLength="1" maxLength={MAX_START_NUMBER_LENGTH} min="1" max={"9".repeat(parseInt(MAX_START_NUMBER_LENGTH))} onChange={startNumChangeHandler} onBlur={startNumValidationHandler} value={startNumState.value} className={`${startNumState.isValid === false ? "Modal-InputField-invalid" : ""}`}/>
+                                </div>
+                            )}
+                        </div>
+                    )
+                }
+                
+                <div className="Modal-InformationGroupingDiv">
                     <p>Would you like to use a number separator?</p>
-                    <input type="radio" id="hyphen" name="numberSeparator" value="hyphen" checked={numberSeparatorSelected === 'hyphen'} onChange={handleNumberSeparatorSelected}/>
-                    <label htmlFor="hyphen">Separate using hyphen. Example: 2023-001 or 2023-01-001.</label><br/>
-                    <input type="radio" id="slash" name="numberSeparator" value="slash" checked={numberSeparatorSelected === 'slash'} onChange={handleNumberSeparatorSelected}/>
-                    <label htmlFor="slash">Separate using slash. Example: 2023/001 or 2023/01/001.</label><br/>
-                    <input type="radio" id="noSeparator" name="numberSeparator" value="none" checked={numberSeparatorSelected === 'none'}  onChange={handleNumberSeparatorSelected}/>
-                    <label htmlFor="noSeparator">No separator. Example: 2023001 or 202301001.</label><br/>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="hyphen" name="numberSeparator" value="-" checked={numberSeparatorSelected === '-'} onChange={handleNumberSeparatorSelected}/>
+                        <label htmlFor="hyphen">Separate using hyphen. <span className="Modal-SpanExample">Example: 2023-001 or 2023-01-001.</span></label>
+                        </div>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="slash" name="numberSeparator" value="/" checked={numberSeparatorSelected === '/'} onChange={handleNumberSeparatorSelected}/>
+                        <label htmlFor="slash">Separate using slash. <span className="Modal-SpanExample">Example: 2023/001 or 2023/01/001.</span></label></div>
+                    <div className="Modal-RadioBtnContainer">
+                        <input type="radio" id="noSeparator" name="numberSeparator" value="" checked={numberSeparatorSelected === ''}  onChange={handleNumberSeparatorSelected}/>
+                        <label htmlFor="noSeparator">No separator. <span className="Modal-SpanExample">Example: 2023001 or 202301001.</span></label></div>
                 </div>
+
                 <div>
-                    <input type="checkbox" id="includePrefix" name="includePrefix" value="includePrefix"  checked={prefixState.selected} onChange={prefixSelectionHandler}/>
-                    <label htmlFor="includePrefix"> Include custom prefix</label><br/>
+                    <div className="Modal-CheckboxContainer">
+                        <input type="checkbox" id="includePrefix" name="includePrefix" value="includePrefix"  checked={prefixState.selected} onChange={prefixSelectionHandler}/>
+                        <label htmlFor="includePrefix"> Include custom prefix</label>
+                    </div>
                     { prefixState.selected && (
-                        <div>
+                        <div className="Modal-InputContainer">
                             <label htmlFor="prefix">Prefix number with:</label>
                             <input type="text" id="prefix" name="prefix" minLength="1" maxLength={MAX_PREFIX_LENGTH} onChange={prefixChangeHandler} onBlur={prefixValidationHandler} value={prefixState.value} className={`${prefixState.isValid === false ? "Modal-InputField-invalid" : ""}`}/>
                         </div>
                     )}
-                    
                 </div>
-                <div>
-                    <input type="checkbox" id="includeCustomNumber" name="includeCustomNumber" value="includeCustomNumber" checked={startNumState.selected} onChange={startNumberSelectionHandler}/>
-                    <label htmlFor="includeCustomNumber">Custom start number</label><br/>
-                    {startNumState.selected && (
-                        <div>
-                            <label htmlFor="customNumber">Start numbering from:</label>
-                            <input type="number" id="customNumber" name="customNumber" minLength="1" maxLength={MAX_START_NUMBER_LENGTH} min="1" max={"9".repeat(parseInt(MAX_START_NUMBER_LENGTH))} onChange={startNumChangeHandler} onBlur={startNumValidationHandler} value={startNumState.value} className={`${startNumState.isValid === false ? "Modal-InputField-invalid" : ""}`}/>
-                        </div>
-                    )}
-                    
-                </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Select format</button>
-                {/* include in button: disabled={!formIsValid} */}
+
+                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Select format</button>
+
             </form>
         </ModalWrapper>
     )
