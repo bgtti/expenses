@@ -28,6 +28,34 @@ Global state is managed using redux. This is found in the genral_redux folder wh
 
 ## App Status
 
+TO-DO:
+Set up favorite workspace:
+BE:
+
+- when user creates his/her first workspace, set it as favorite
+- then send this workspace's settings (group, expense numbering,etc) to the front end upon log-in
+  FE:
+- handle redux accordingly - including nav bar
+
+Then:
+
+- check workspace settings if those are being imported correctly
+- check that when workspace is changed, the new WS settings are being imported
+
+Also: upon WS creation, add default accounts: bank account and cash account should be defaults
+
+Then:
+
+- when implement alowing favorite workspace to be changed upon addition of second workspace
+
+Then:
+
+- implement the option 'Board' as WS's dashboard
+
+Then:
+
+- Ready to implement subsequent missing parts(start with expenses).
+
 ### 1.Account
 
 - Sign-up: ready
@@ -114,6 +142,14 @@ Global state is managed using redux. This is found in the genral_redux folder wh
   https://www.npmjs.com/package/react-toastify
   https://www.material-tailwind.com/docs/react/alert
   or custom alert messages
+
+### 8.To-dos and notes
+
+- Allow users to add a to-do to dashboard: MISSING
+- Allow users to add a to-do to WS board: MISSING
+- Allow users to pin notes to dashboard: MISSING
+- Allow users to pin notes to WS board: MISSING
+- Allow users to assign a to-do to other persons whose WS they share: MISSING
 
 ## Design Ideas:
 

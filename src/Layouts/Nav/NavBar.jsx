@@ -118,9 +118,8 @@ function NavBar(props) {
                                     onClick={()=>{selectedWorkspaceChangeHandler(workspace.uuid)}}>
                                         {workspace.abbreviation.toUpperCase()}</Link>
                                 ))}
-                                
                             </div> 
-                    </li>
+                        </li>
                     )}
                     <li className="nav-item">
                         <Link className="NavBar-SettingsBtn nav-link" to={'/expenses'}>

@@ -4,7 +4,7 @@ import api from '../../config/axios';
 import APIURL from "../../config/api-url";
 import { getAuthHeader } from "../../config/authHeader"
 import { loaderOn, loaderOff } from "../Loader/actions";
-import { ExpenseNumberingFormat } from "../../constants/enums";
+import { ExpenseNumberingFormat, ExpenseNumberSeparators } from "../../constants/enums";
 import { toast } from 'react-toastify';
 
 // Actions for updating the state of a selected workspace
@@ -41,6 +41,7 @@ export const removeSelectedWorkspaceFromStorage = () => {
     }
 }
 
+// When user changes into a new workspace
 export const saveSelectedWorkspace = (selectedWorkspace) => {
     store.dispatch(loaderOn())
     if (!selectedWorkspace){
@@ -80,6 +81,38 @@ export const setSelectedWorkspaceOnLogIn = (selectedWorkspace) => {
             selectedWorkspaceExpenseCategories: undefined,
             selectedWorkspaceExpenseNumberingFormat: undefined,
         })
+    }
+}
+//*********** GET ALL WORKSPACE SETTINGS ***********
+export const getAllWorkspaceSettings = (selectedWorkspace) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) =>{
+        const requestData = {
+            workspace_uuid: selectedWorkspace.uuid,
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.GET_WORKSPACE_SETTINGS, requestData, config);
+
+            if (response.status !== 200) {
+                toast.error(`Error: not able to retrieve workspace settings. Server response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
+                dispatch({
+                        type: ActionTypes.SET_SELECTED_WORKSPACE,
+                        selectedWorkspace: selectedWorkspace, 
+                        selectedWorkspaceGroups: data.groups,
+                        selectedWorkspaceAccounts:  data.accounts,
+                        selectedWorkspaceExpenseCategories: data.expense_categories,
+                        selectedWorkspaceExpenseNumberingFormat: data.expense_numbering_settings,
+                    })
+                toast.success(`Group added successfully!`);
+            }
+        } catch (error) {
+            toast.error(`Error: not able to retrieve workspace settings. No server response.`);
+        }
+        dispatch(loaderOff());
     }
 }
 
@@ -391,37 +424,25 @@ export const deleteSelectedWorkspaceExpenseCategories = (expenseCategoryUuid) =>
 
 //*********** EXPENSE  NUMBERING ***********
 //Setting expense numbering information
-//Default numbering = YY-MM-Number
-export const setSelectedWorkspaceExpenseNumbering = (selectedWorkspaceExpenseNumbering) => {
-    if (!selectedWorkspaceExpenseNumbering || !Object.values(ExpenseNumberingFormat).includes(selectedWorkspaceExpenseNumbering)) {
-        sessionStorage.setItem("selectedWorkspaceExpenseNumbering", ExpenseNumberingFormat.YYMMNum);
-        return (dispatch) => {
-            dispatch({
-                type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
-                selectedWorkspaceExpenseNumbering: ExpenseNumberingFormat.YYMMNum,
-            })
-        }
-    };
-    sessionStorage.setItem("selectedWorkspaceExpenseNumbering", JSON.stringify(selectedWorkspaceExpenseNumbering));
-    return (dispatch) => {
-        dispatch({
-            type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
-            selectedWorkspaceExpenseNumbering: selectedWorkspaceExpenseNumbering
-        })
-    }
-}
-
-// Change expense numbering
-export const addSelectedExpenseNumberingPreference = (workspaceUuid, selectedWorkspaceExpenseNumbering) => {
+export const addSelectedExpenseNumberingPreference = (workspaceUuid, expenseNumberDigits, expenseNumberFormat, expenseNumberStart, expenseNumberYearDigits, expenseNumberSeparator, expenseNumberCustomPrefix) => {
     store.dispatch(loaderOn())
-    if(!selectedWorkspaceExpenseNumbering || !Object.values(ExpenseNumberingFormat).includes(selectedWorkspaceExpenseNumbering)){
+    if(!expenseNumberFormat || !Object.values(ExpenseNumberingFormat).includes(expenseNumberFormat)){
         toast.error(`Error: expense numbering format not supported.`);
+        return
+    }
+    if(!expenseNumberSeparator || !Object.values(ExpenseNumberSeparators).includes(expenseNumberSeparator)){
+        toast.error(`Error: expense numbering separator not supported.`);
         return
     }
     return async (dispatch) => {
         const requestData = {
             workspace_uuid: workspaceUuid,
-            expense_numbering: selectedWorkspaceExpenseNumbering,
+            expense_number_digits: expenseNumberDigits,
+            expense_number_format: expenseNumberFormat,
+            expense_number_start: expenseNumberStart,
+            expense_number_year_digits:expenseNumberYearDigits,
+            expense_number_separator:expenseNumberSeparator,
+            expense_number_custom_prefix:expenseNumberCustomPrefix,
         };
         const config = getAuthHeader()
         try {
@@ -432,8 +453,14 @@ export const addSelectedExpenseNumberingPreference = (workspaceUuid, selectedWor
                 toast.error(`Error: expense numbering could not be changed. Server response ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(setSelectedWorkspaceExpenseNumbering(data));
+                sessionStorage.setItem("selectedWorkspaceExpenseNumbering", JSON.stringify(data));
                 toast.success(`Expense numbering changed successfully!`);
+                return (dispatch) => {
+                    dispatch({
+                        type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
+                        selectedWorkspaceExpenseNumbering: data
+                    })
+                }
             }
         } catch (error) {
             console.error("Selected Workspace error: there was a problem setting expense numbering.");

@@ -83,23 +83,6 @@
     display: inline-block;
     filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
 }
-.Modal-DivContainerWithPAndInfoIcon{
-    display:flex;
-    gap: 5px;
-    align-items: center !important;
-}
-.Modal-DivContainerWithPAndInfoIcon>p{
-    margin: 0 !important;
-    padding: 0 !important;
-}
-.Modal-Information-Icon{
-    width: 10px;
-    cursor: pointer;
-    display: block;
-    align-self: flex-start;
-    filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
-    cursor: help;
-}
 .Modal-PrimaryBtn {
     margin-top: 10px;
     cursor: pointer;

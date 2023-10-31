@@ -4,6 +4,10 @@ import { logIn } from "../../general_redux/SignAndLogIn/actions";
 import { useNavigate } from "react-router-dom";
 import "./Website.css";
 
+//To-do: implement counter for wrong log-in attempts in BE
+//review code in this page: remove timeout
+//implement error messages appropriately
+
 function LogIn(props) {
     //used for form validation
     const emailReducer = (state, action) => {

@@ -67,11 +67,13 @@ export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, work
     sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
     sessionStorage.setItem("workspaces", workspacesDataString);
 
+    //NO LONGER SETTING A SELECTED WORKSPACE UPON LOG IN: FORCE USER TO CHOOSE WORKSPACE TO RETRIEVE SETTINGS DATA
     // Check if there is selected workspace - if not, set it
     if (localStorage.getItem("selectedWorkspace") === null || JSON.parse(localStorage.getItem("selectedWorkspace")) === undefined) {
         if (favoriteWorkspaceData) {
             store.dispatch(setSelectedWorkspaceOnLogIn(favoriteWorkspaceData));
-        } else {
+        } 
+        else {
             store.dispatch(setSelectedWorkspaceOnLogIn(sortedWorkspaces[0]));
         }
     }
