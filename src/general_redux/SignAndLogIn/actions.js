@@ -5,6 +5,7 @@ import { loaderOn, loaderOff } from "../Loader/actions";
 import { workspaceInfoSetAsUndefined, saveWorkspaceInfo, removeWorkspaceInfoFromStorage } from "../UserSettingsWorkspaces/actions"
 import { removeInvitesInfoFromStorage, invitesInfoSetAsUndefined, saveInvitesInfo } from "../Invites/actions"
 import { removeSelectedWorkspaceFromStorage } from "../Workspace/actions"
+import { toast } from 'react-toastify';
 import store from "../store";
 
 //Actions for Sign Up, Log In, and Log out
@@ -21,7 +22,7 @@ export const signUp = (name, email, password) =>{
             const response = await api.post(APIURL.SIGNUP, requestData);
 
             if (response.status !== 200) {
-                console.error(`Signup error: response status ${response.status}.`);
+                toast.error(`Error: not able to sign up. Server response status ${response.status}.`);
                 dispatch(logOut())
             } else {
                 const data = response.data;
@@ -44,7 +45,7 @@ export const signUp = (name, email, password) =>{
                 dispatch(workspaceInfoSetAsUndefined())
             }
         } catch (error) {
-            console.error("Signup error: there was a problem signing up.");
+            toast.error(`Error: not able to sign up. No server response.`);
         }
         dispatch(loaderOff())
     };

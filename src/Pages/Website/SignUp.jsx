@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { signUp } from "../../general_redux/SignAndLogIn/actions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { toast } from 'react-toastify';
 import "./Website.css";;
 
 function SignUp(props) {
@@ -119,10 +120,10 @@ function SignUp(props) {
             if(userIsLoggedIn){
                 navigate("/dashboard");
             } else {
-                console.error("There was a problem creating your account. Please try again later.")
+                toast.error(`There was a problem creating your account. Please try again laterxxx.`);
             }
         }).catch((error) => {
-            console.error("Signup error: there was a problem signing up. [SignUp.jsx]");
+            toast.error(`Oops... could not sign you in.`);
         });
     };
 
@@ -136,6 +137,7 @@ function SignUp(props) {
                     id="signupName"
                     name="signupName"
                     type="text"
+                    maxLength="200"
                     value={nameState.value}
                     onChange={nameChangeHandler}
                     onBlur={validateNameHandler}
@@ -148,6 +150,8 @@ function SignUp(props) {
                     id="signupEmail"
                     name="signupEmail"
                     type="email"
+                    minLength="3"
+                    maxLength="320"
                     value={emailState.value}
                     onChange={emailChangeHandler}
                     onBlur={validateEmailHandler}
@@ -159,6 +163,7 @@ function SignUp(props) {
                 <input
                     id="signupPassword"
                     name="signupPassword"
+                    autoComplete="new-password"
                     type="password"
                     minLength="6"
                     maxLength="60"
@@ -173,6 +178,7 @@ function SignUp(props) {
                 <input
                     id="signupPasswordRepeat"
                     name="signupPasswordRepeat"
+                    autoComplete="new-password"
                     type="password"
                     minLength="6"
                     maxLength="60"
