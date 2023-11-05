@@ -15,6 +15,7 @@ import "../../../Assets/Styles/Common.css"
 
 
 function UserSettings(props) {
+    const userIsLoggedIn = useSelector((state) => state.isLoggedIn.loggedIn);
     const userInfo = useSelector((state) => state.isLoggedIn.user);
     // const hasWorkspace = useSelector((state) => state.allWorkspaces.hasWorkspaces);
     const workspaces = useSelector((state) => state.allWorkspaces.workspaces);
@@ -25,13 +26,13 @@ function UserSettings(props) {
     const [workspaceToEditUuid, setWorkspaceToEditUuid] = useState("");
     const [workspaceToDeleteUuid, setWorkspaceToDeleteUuid] = useState("");
 
-    useEffect(()=>{
-        if (modalEditWorkspaceStatus === false){
-            setTimeout(()=>{
+    useEffect(() => {
+        if (modalEditWorkspaceStatus === false) {
+            setTimeout(() => {
                 setWorkspaceToEditUuid("");
             }, 500)
         }
-    },[modalEditWorkspaceStatus]) 
+    }, [modalEditWorkspaceStatus])
     function addWorkspaceModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddWorkspaceStatus(false) : setModalAddWorkspaceStatus(true);
     }
@@ -48,75 +49,79 @@ function UserSettings(props) {
     return (
         <section className={`UserSettings Common-padding Common-expand-flex-1 ${props.className}`}>
             <ModalAddWorkspace
-            className={modalAddWorkspaceStatus === false ? "modalAddWorkspaceHidden" : ""}
-            addWorkspaceModalToggler={addWorkspaceModalToggler}>
+                className={modalAddWorkspaceStatus === false ? "modalAddWorkspaceHidden" : ""}
+                addWorkspaceModalToggler={addWorkspaceModalToggler}>
             </ModalAddWorkspace>
             {
                 (workspaceToEditUuid === "") ?
-                ("") :
-                (
-                    <ModalEditWorkspace
-                    className={modalEditWorkspaceStatus === false ? "modalEditWorkspaceHidden" : ""}
-                    editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={workspaceToEditUuid}>
-                    </ModalEditWorkspace>
-                )
+                    ("") :
+                    (
+                        <ModalEditWorkspace
+                            className={modalEditWorkspaceStatus === false ? "modalEditWorkspaceHidden" : ""}
+                            editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={workspaceToEditUuid}>
+                        </ModalEditWorkspace>
+                    )
             }
             {
                 (workspaceToDeleteUuid === "") ?
-                ("") :
-                (
-                    <ModalDeleteWorkspace
-                    className={modalDeleteWorkspaceStatus === false ? "modalDeleteWorkspaceHidden" : ""}
-                    deleteWorkspaceModalToggler={deleteWorkspaceModalToggler} uuid={workspaceToDeleteUuid}>
-                    </ModalDeleteWorkspace>
-                )
+                    ("") :
+                    (
+                        <ModalDeleteWorkspace
+                            className={modalDeleteWorkspaceStatus === false ? "modalDeleteWorkspaceHidden" : ""}
+                            deleteWorkspaceModalToggler={deleteWorkspaceModalToggler} uuid={workspaceToDeleteUuid}>
+                        </ModalDeleteWorkspace>
+                    )
             }
             <ModalDeleteUserAccount
-            className={modalDeleteUserAccountStatus === false ? "modalDeleteUserAccountHidden" : ""}
-            deleteAccountModalToggler={deleteAccountModalToggler}>
+                className={modalDeleteUserAccountStatus === false ? "modalDeleteUserAccountHidden" : ""}
+                deleteAccountModalToggler={deleteAccountModalToggler}>
             </ModalDeleteUserAccount>
             <h2>User Settings</h2>
             <hr />
-            <section>
-                <h3>Account</h3>
-                <p><b>Name:</b> {userInfo.name}</p>
-                <p><b>Email:</b> {userInfo.email}</p>
-                <AddButton name="Delete Account" className="Common-button-secondary" 
-                    onClickFunction={deleteAccountModalToggler}>
-                    <img src={trashIcon} alt="delete user" className="UserSettings-Icon-light" />
-                </AddButton>
-            </section> 
+            {
+                userIsLoggedIn && (
+                    <section>
+                        <h3>Account</h3>
+                        <p><b>Name:</b> {userInfo.name}</p>
+                        <p><b>Email:</b> {userInfo.email}</p>
+                        <AddButton name="Delete Account" className="Common-button-secondary"
+                            onClickFunction={deleteAccountModalToggler}>
+                            <img src={trashIcon} alt="delete user" className="UserSettings-Icon-light" />
+                        </AddButton>
+                    </section>
+                )
+            }
             <hr />
             <section>
                 <h3>Work Spaces</h3>
-                <p>You can have up to 10 different organizations.</p> 
+                <p>You can have up to 10 different organizations.</p>
                 <AddButton name="Add Workspace" className="Common-button-primary" onClickFunction={addWorkspaceModalToggler}
-                disable={(workspaces && workspaces.length) > 9 ? true : false}>
+                    disable={(workspaces && workspaces.length) > 9 ? true : false}>
                     <img src={AddIcon} alt="Add icon" />
                 </AddButton>
                 {
                     (workspaces === undefined || workspaces === "undefined" || workspaces.length === 0) ?
-                    (<p>You do not own or have access to any workspace. Add a workspace!</p>):
-                    (
-                        <ul className="UserSettings-List">
-                            {workspaces.map((workspace, index) => (
-                                <li className="UserSettings-ListItem" key={index}>
-                                    <div className="UserSettings-ListBullet"></div>
-                                    <div><b>{workspace.abbreviation.toUpperCase()}</b></div>
-                                    <div>{workspace.name}</div>
-                                    <div>Members: {workspace.num_users_with_access}</div>
-                                    <img role="button" src={editIcon} alt="edit element" className="UserSettings-Icon" 
-                                        onClick={()=>{setWorkspaceToEditUuid(`${workspace.uuid}`); editWorkspaceModalToggler("open");}} />
-                                    <img role="button" src={trashIcon} alt="delete element" className="UserSettings-Icon" 
-                                        onClick={()=>{setWorkspaceToDeleteUuid(`${workspace.uuid}`); deleteWorkspaceModalToggler("open");}}/>
-                                </li>
+                        (<p>You do not own or have access to any workspace. Add a workspace!</p>) :
+                        (
+                            <ul className="UserSettings-List">
+                                {workspaces.map((workspace, index) => (
+                                    <li className="UserSettings-ListItem" key={index}>
+                                        <div className="UserSettings-ListBullet"></div>
+                                        <div><b>{workspace.abbreviation.toUpperCase()}</b></div>
+                                        <div>{workspace.name}</div>
+                                        <div>Members: {workspace.num_users_with_access}</div>
+                                        <img role="button" src={editIcon} alt="edit element" className="UserSettings-Icon"
+                                            onClick={() => { setWorkspaceToEditUuid(`${workspace.uuid}`); editWorkspaceModalToggler("open"); }} />
+                                        <img role="button" src={trashIcon} alt="delete element" className="UserSettings-Icon"
+                                            onClick={() => { setWorkspaceToDeleteUuid(`${workspace.uuid}`); deleteWorkspaceModalToggler("open"); }} />
+                                    </li>
                                 ))}
-                        </ul>
-                    ) 
+                            </ul>
+                        )
                 }
             </section>
         </section>
-        
+
     )
 }
 

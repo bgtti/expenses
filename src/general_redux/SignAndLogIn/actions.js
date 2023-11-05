@@ -4,13 +4,13 @@ import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
 import { workspaceInfoSetAsUndefined, saveWorkspaceInfo, removeWorkspaceInfoFromStorage } from "../UserSettingsWorkspaces/actions"
 import { removeInvitesInfoFromStorage, invitesInfoSetAsUndefined, saveInvitesInfo } from "../Invites/actions"
-import { removeSelectedWorkspaceFromStorage } from "../Workspace/actions"
+import { removeSelectedWorkspaceFromStorage, setSelectedWorkspace } from "../Workspace/actions"
 import { toast } from 'react-toastify';
 import store from "../store";
 
 //Actions for Sign Up, Log In, and Log out
 
-export const signUp = (name, email, password) =>{ 
+export const signUp = (name, email, password) => {
     store.dispatch(loaderOn())
     return async (dispatch) => {
         const requestData = {
@@ -28,15 +28,15 @@ export const signUp = (name, email, password) =>{
                 const data = response.data;
                 let user = { name: data.user.name, email: data.user.email };
 
-                if (data.hasOwnProperty("invites")){
+                if (data.hasOwnProperty("invites")) {
                     dispatch(saveInvitesInfo(data.has_invites, data.invites))
                 } else {
                     dispatch(invitesInfoSetAsUndefined())
                 }
-                
+
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
-                
+
                 dispatch({
                     type: ActionTypes.LOG_IN,
                     token: data.access_token,
@@ -61,7 +61,7 @@ export const logIn = (email, password) => {
             const response = await api.post(APIURL.LOGIN, requestData);
 
             if (response.status !== 200) {
-                console.error(`Log in error: response status ${response.status}.`);
+                toast.error(`Error: not able to log in. Server response status ${response.status}.`);
                 dispatch(logOut())
             } else {
                 const data = response.data;
@@ -72,9 +72,11 @@ export const logIn = (email, password) => {
                 } else {
                     dispatch(invitesInfoSetAsUndefined())
                 }
-
+                if (data.has_workspaces) {
+                    dispatch(setSelectedWorkspace(data.favorite_workspace, data.favorite_workspace_settings))
+                }
                 dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
-                
+
                 sessionStorage.setItem("access_token", data.access_token);
                 sessionStorage.setItem("user", JSON.stringify(user));
 
@@ -85,7 +87,7 @@ export const logIn = (email, password) => {
                 });
             }
         } catch (error) {
-            console.error("Login error: there was a problem logging in.");
+            toast.error(`Error: not able to log in. No server response.`);
         }
         dispatch(loaderOff())
     };
@@ -93,17 +95,16 @@ export const logIn = (email, password) => {
 
 export const logOut = () => {
     store.dispatch(loaderOn())
-    store.dispatch(removeWorkspaceInfoFromStorage())
-    store.dispatch(removeSelectedWorkspaceFromStorage())
-    store.dispatch(removeInvitesInfoFromStorage())
-    sessionStorage.removeItem("access_token");
-    sessionStorage.removeItem("user");
-
     return (dispatch) => {
+        store.dispatch(removeWorkspaceInfoFromStorage())
+        store.dispatch(removeSelectedWorkspaceFromStorage())
+        store.dispatch(removeInvitesInfoFromStorage())
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("user");
         dispatch({
-        type: ActionTypes.LOG_OUT,
-        token: undefined,
-        user: undefined
+            type: ActionTypes.LOG_OUT,
+            // token: undefined,
+            // user: undefined
         })
         dispatch(loaderOff())
     };

@@ -2,7 +2,8 @@ import APIURL from "../../config/api-url";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
-import { setSelectedWorkspaceOnLogIn } from "../Workspace/actions"
+import { setSelectedWorkspace } from "../Workspace/actions"
+import { toast } from 'react-toastify';
 import store from "../store";
 
 export const workspaceInfoSetAsUndefined = () => {
@@ -19,7 +20,7 @@ export const workspaceInfoSetAsUndefined = () => {
     }
 };
 
-export const removeWorkspaceInfoFromStorage = () =>{
+export const removeWorkspaceInfoFromStorage = () => {
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_WORKSPACE_INFO_UNDEFINED,
@@ -35,10 +36,10 @@ export const removeWorkspaceInfoFromStorage = () =>{
 
 export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, workspacesData) => {
 
-    if (!hasWorkspacesData && workspacesData.length > 0){
+    if (!hasWorkspacesData && workspacesData.length > 0) {
         return store.dispatch(workspaceInfoSetAsUndefined())
-    } 
-    if (!hasWorkspacesData && workspacesData.length > 0){
+    }
+    if (!hasWorkspacesData && workspacesData.length > 0) {
         console.warn("Has workspace set to false, but workspaces were found.");
         hasWorkspacesData = true;
     }
@@ -46,7 +47,7 @@ export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, work
         console.error("Has workspaces set to true, but workspaces not received.")
         return
     }
-    if (!favoriteWorkspaceData){
+    if (!favoriteWorkspaceData) {
         favoriteWorkspaceData = undefined;
     }
 
@@ -67,16 +68,16 @@ export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, work
     sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
     sessionStorage.setItem("workspaces", workspacesDataString);
 
-    //NO LONGER SETTING A SELECTED WORKSPACE UPON LOG IN: FORCE USER TO CHOOSE WORKSPACE TO RETRIEVE SETTINGS DATA
+    //SETTING SELECTED WORKSPACE ON LOG IN
     // Check if there is selected workspace - if not, set it
-    if (localStorage.getItem("selectedWorkspace") === null || JSON.parse(localStorage.getItem("selectedWorkspace")) === undefined) {
-        if (favoriteWorkspaceData) {
-            store.dispatch(setSelectedWorkspaceOnLogIn(favoriteWorkspaceData));
-        } 
-        else {
-            store.dispatch(setSelectedWorkspaceOnLogIn(sortedWorkspaces[0]));
-        }
-    }
+    // if (localStorage.getItem("selectedWorkspace") === null || JSON.parse(localStorage.getItem("selectedWorkspace")) === undefined) {
+    //     if (favoriteWorkspaceData) {
+    //         store.dispatch(setSelectedWorkspace(favoriteWorkspaceData));
+    //     }
+    //     else {
+    //         store.dispatch(setSelectedWorkspace(sortedWorkspaces[0]));
+    //     }
+    // }
 
     return (dispatch) => {
         dispatch({
@@ -106,13 +107,15 @@ export const addWorkspace = (name, abbreviation, currency) => {
             const response = await api.post(APIURL.ADD_WORKSPACE, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error adding workspace: response status ${response.status}.`);
+                toast.error(`Error: not able to add workspace. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
                 dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
+                dispatch(setSelectedWorkspace(data.favorite_workspace, data.favorite_workspace_settings))
+                toast.success(`Workspace added successfully!`);
             }
         } catch (error) {
-            console.error("Workspace error: there was a problem adding workspace.");
+            toast.error(`Error: not able to add workspace. No server response.`);
         }
         dispatch(loaderOff());
     };

@@ -1,4 +1,4 @@
-import store from "../store"; 
+import store from "../store";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
 import APIURL from "../../config/api-url";
@@ -41,52 +41,31 @@ export const removeSelectedWorkspaceFromStorage = () => {
     }
 }
 
-// When user changes into a new workspace
-export const saveSelectedWorkspace = (selectedWorkspace) => {
-    store.dispatch(loaderOn())
-    if (!selectedWorkspace){
+//This action is used when settings is given by another function (such as the logIn action, or when adding a new workspace)
+//Requires two objects: one with basic selectedWorkspace info (uuid, name, currency, and abbreviation) and it's settings (which includes groups, categories, etc)
+export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSettings) => {
+    if (!selectedWorkspace || !selectedWorkspaceSettings) {
+        toast.error("Error: could not select workspace.")
         return (dispatch) => {
             dispatch(selectedWorkspaceSetAsUndefined())
-            dispatch(loaderOff())
         }
-    }; 
+    };
     sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE,
             selectedWorkspace: selectedWorkspace,
-            selectedWorkspaceGroups: undefined, //might want to change this later
-            selectedWorkspaceAccounts: undefined,//might want to change this later
-            selectedWorkspaceExpenseCategories: undefined, //might want to change this later
-            selectedWorkspaceExpenseNumberingFormat: undefined, //might want to change this later
-        })
-        dispatch(loaderOff())
-    }
-}
-
-//This action is used within saveWorkspaceInfo when no sessionStorage object for selectedWorkspace is found
-export const setSelectedWorkspaceOnLogIn = (selectedWorkspace) => {
-    if (!selectedWorkspace) {
-        return (dispatch) => {
-            dispatch(selectedWorkspaceSetAsUndefined())
-        }
-    }; 
-    sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
-    return (dispatch) => {
-        dispatch({
-            type: ActionTypes.SET_SELECTED_WORKSPACE,
-            selectedWorkspace: selectedWorkspace,
-            selectedWorkspaceGroups: undefined,
-            selectedWorkspaceAccounts: undefined,
-            selectedWorkspaceExpenseCategories: undefined,
-            selectedWorkspaceExpenseNumberingFormat: undefined,
+            selectedWorkspaceGroups: selectedWorkspaceSettings.groups,
+            selectedWorkspaceAccounts: selectedWorkspaceSettings.accounts,
+            selectedWorkspaceExpenseCategories: selectedWorkspaceSettings.expense_categories,
+            selectedWorkspaceExpenseNumberingFormat: selectedWorkspaceSettings.expense_numbering_settings,
         })
     }
 }
 //*********** GET ALL WORKSPACE SETTINGS ***********
 export const getAllWorkspaceSettings = (selectedWorkspace) => {
     store.dispatch(loaderOn())
-    return async (dispatch) =>{
+    return async (dispatch) => {
         const requestData = {
             workspace_uuid: selectedWorkspace.uuid,
         };
@@ -100,14 +79,13 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
                 const data = response.data;
                 sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
                 dispatch({
-                        type: ActionTypes.SET_SELECTED_WORKSPACE,
-                        selectedWorkspace: selectedWorkspace, 
-                        selectedWorkspaceGroups: data.groups,
-                        selectedWorkspaceAccounts:  data.accounts,
-                        selectedWorkspaceExpenseCategories: data.expense_categories,
-                        selectedWorkspaceExpenseNumberingFormat: data.expense_numbering_settings,
-                    })
-                toast.success(`Group added successfully!`);
+                    type: ActionTypes.SET_SELECTED_WORKSPACE,
+                    selectedWorkspace: selectedWorkspace,
+                    selectedWorkspaceGroups: data.groups,
+                    selectedWorkspaceAccounts: data.accounts,
+                    selectedWorkspaceExpenseCategories: data.expense_categories,
+                    selectedWorkspaceExpenseNumberingFormat: data.expense_numbering_settings,
+                })
             }
         } catch (error) {
             toast.error(`Error: not able to retrieve workspace settings. No server response.`);
@@ -140,7 +118,7 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
 // Add group
 export const addSelectedWorkspaceGroup = (workspaceUuid, groupName, groupDescription, groupCode) => {
     store.dispatch(loaderOn())
-    return async (dispatch) =>{
+    return async (dispatch) => {
         const requestData = {
             workspace_uuid: workspaceUuid,
             name: groupName,
@@ -426,11 +404,11 @@ export const deleteSelectedWorkspaceExpenseCategories = (expenseCategoryUuid) =>
 //Setting expense numbering information
 export const addSelectedExpenseNumberingPreference = (workspaceUuid, expenseNumberDigits, expenseNumberFormat, expenseNumberStart, expenseNumberYearDigits, expenseNumberSeparator, expenseNumberCustomPrefix) => {
     store.dispatch(loaderOn())
-    if(!expenseNumberFormat || !Object.values(ExpenseNumberingFormat).includes(expenseNumberFormat)){
+    if (!expenseNumberFormat || !Object.values(ExpenseNumberingFormat).includes(expenseNumberFormat)) {
         toast.error(`Error: expense numbering format not supported.`);
         return
     }
-    if(!expenseNumberSeparator || !Object.values(ExpenseNumberSeparators).includes(expenseNumberSeparator)){
+    if (!expenseNumberSeparator || !Object.values(ExpenseNumberSeparators).includes(expenseNumberSeparator)) {
         toast.error(`Error: expense numbering separator not supported.`);
         return
     }
@@ -440,9 +418,9 @@ export const addSelectedExpenseNumberingPreference = (workspaceUuid, expenseNumb
             expense_number_digits: expenseNumberDigits,
             expense_number_format: expenseNumberFormat,
             expense_number_start: expenseNumberStart,
-            expense_number_year_digits:expenseNumberYearDigits,
-            expense_number_separator:expenseNumberSeparator,
-            expense_number_custom_prefix:expenseNumberCustomPrefix,
+            expense_number_year_digits: expenseNumberYearDigits,
+            expense_number_separator: expenseNumberSeparator,
+            expense_number_custom_prefix: expenseNumberCustomPrefix,
         };
         const config = getAuthHeader()
         try {

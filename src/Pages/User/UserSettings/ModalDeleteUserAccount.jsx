@@ -1,6 +1,9 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from 'react-toastify';
 import { logOut } from "../../../general_redux/SignAndLogIn/actions";
+import { loaderOff, loaderOn } from "../../../general_redux/Loader/actions";
 import APIURL from "../../../config/api-url";
 import api from '../../../config/axios';
 import ModalWrapper from "../../../Components/ModalWrapper";
@@ -12,14 +15,19 @@ function ModalDeleteUserAccount(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const token = useSelector((state) => state.isLoggedIn.token);
-    const styleClasses = 'ModalDeleteUserAccount '+ props.className;
+    const styleClasses = 'ModalDeleteUserAccount ' + props.className;
+
     function closeThisModal() {
         props.deleteAccountModalToggler("close");
     }
-    async function handleDeleteAccount() {
+
+    async function handleDeleteAccount(event) {
+        event.preventDefault();
+        dispatch(loaderOn())
+
         const config = {
             headers: {
-            Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         };
 
@@ -28,17 +36,20 @@ function ModalDeleteUserAccount(props) {
             const response = await api.post(APIURL.DELETE_USER_ACCOUNT, null, config);
 
             if (response.status === 200) {
-                closeThisModal()
                 // Logout the user if the account deletion is successful
                 dispatch(logOut());
                 navigate("/signup");
+                toast.success(`Account deleted successfully!`);
             } else {
                 // Handle any errors that occur during the account deletion
+                dispatch(loaderOff())
+                toast.error(`Error: not able to delete account.`);
                 throw new Error("Account deletion failed");
             }
         } catch (error) {
-            console.error(error);
-            // Display an error message to the user or handle the error in any other way
+            // Display an error message to the user
+            dispatch(loaderOff())
+            toast.error(`Error: not able to delete account. ${error}`);
         }
     }
 
@@ -48,7 +59,7 @@ function ModalDeleteUserAccount(props) {
                 <div className="Modal-Heading">
                     <h2>Account Deletion</h2>
                     <div>
-                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal}/>
+                        <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
                     </div>
                 </div>
                 <p><b>Are you sure you want to delete your account?</b></p>
