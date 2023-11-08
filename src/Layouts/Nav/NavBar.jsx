@@ -92,7 +92,7 @@ function NavBar(props) {
                             {!otherWorkspaces && (
                                 <li className="nav-item">
                                     <Link className="NavBar-SettingsBtn nav-link" to={'/workspace'} >
-                                        {selectedWorkspace && selectedWorkspace.abbreviation ? selectedWorkspace.abbreviation : "??"}
+                                        {selectedWorkspace && selectedWorkspace.abbreviation ? selectedWorkspace.abbreviation.toUpperCase() : "??"}
                                     </Link>
                                 </li>
                             )}
@@ -124,7 +124,7 @@ function NavBar(props) {
                                     Expenses
                                 </Link>
                             </li>
-                            {otherWorkspaces && selectedWorkspace && selectedWorkspace.uuid && (
+                            {selectedWorkspace && selectedWorkspace.uuid && (
                                 <li>
                                     <Link className="NavBar-SettingsBtn nav-link" to={'/workspacesettings'}
                                         state={{ uuid: selectedWorkspace.uuid }}>

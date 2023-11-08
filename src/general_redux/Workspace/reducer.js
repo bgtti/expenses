@@ -1,5 +1,5 @@
 //Data of selected workspace
-import {DEFAULT_EXPENSE_NUMBERING} from "../../constants/constants"
+import { DEFAULT_EXPENSE_NUMBERING } from "../../constants/constants"
 
 const checkWorkspace = () => {
     let token = sessionStorage.getItem("access_token");
@@ -9,12 +9,12 @@ const checkWorkspace = () => {
     let selectedWorkspaceExpenseCategories = sessionStorage.getItem("selectedWorkspaceExpenseCategories");
     let selectedWorkspaceExpenseNumberingFormat = sessionStorage.getItem("selectedWorkspaceExpenseNumberingFormat");
 
-    if (selectedWorkspace){
+    if (selectedWorkspace) {
         selectedWorkspace = JSON.parse(selectedWorkspace);
-    } 
+    }
     if (selectedWorkspaceGroups) {
         selectedWorkspaceGroups = JSON.parse(selectedWorkspaceGroups);
-    } 
+    }
     if (selectedWorkspaceAccounts) {
         selectedWorkspaceAccounts = JSON.parse(selectedWorkspaceAccounts);
     }
@@ -23,7 +23,7 @@ const checkWorkspace = () => {
     }
     if (selectedWorkspaceExpenseNumberingFormat) {
         selectedWorkspaceExpenseNumberingFormat = JSON.parse(selectedWorkspaceExpenseNumberingFormat);
-    }  
+    }
     if (token) {
         return {
             selectedWorkspace: selectedWorkspace,
@@ -60,6 +60,14 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspaceAccounts: undefined,
                 selectedWorkspaceExpenseCategories: undefined,
                 selectedWorkspaceExpenseNumberingFormat: undefined,
+            }
+        case 'SET_SELECTED_WORKSPACE_ONLY':
+            return {
+                selectedWorkspace: action.selectedWorkspace,
+                selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
+                selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
         case 'SET_SELECTED_WORKSPACE_GROUP':
             return {

@@ -62,6 +62,24 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
         })
     }
 }
+
+// This action is used to edit the selectedWorkspace's basic info only
+// It is used in editWorkspace() from UserSettingsWorkspaces
+export const setEditedSelectedWorkspaceInfo = (selectedWorkspace) => {
+    if (!selectedWorkspace) {
+        toast.error("Error: could not edit selected workspace.")
+        return (dispatch) => {
+            dispatch(selectedWorkspaceSetAsUndefined())
+        }
+    };
+    sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_SELECTED_WORKSPACE_ONLY,
+            selectedWorkspace: selectedWorkspace
+        })
+    }
+}
 //*********** GET ALL WORKSPACE SETTINGS ***********
 export const getAllWorkspaceSettings = (selectedWorkspace) => {
     store.dispatch(loaderOn())

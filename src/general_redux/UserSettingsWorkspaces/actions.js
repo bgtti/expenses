@@ -2,7 +2,7 @@ import APIURL from "../../config/api-url";
 import { ActionTypes } from "../types";
 import api from '../../config/axios';
 import { loaderOn, loaderOff } from "../Loader/actions";
-import { setSelectedWorkspace } from "../Workspace/actions"
+import { setSelectedWorkspace, setEditedSelectedWorkspaceInfo } from "../Workspace/actions"
 import { toast } from 'react-toastify';
 import store from "../store";
 
@@ -140,13 +140,21 @@ export const editWorkspace = (name, abbreviation, currency, uuid) => {
             const response = await api.post(APIURL.EDIT_WORKSPACE, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error editing workspace: response status ${response.status}.`);
+                toast.error(`Error: not able to edit workspace. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
+                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces));
+                let selectedWS = store.getState().selectedWorkspace;
+                let allWorkspaces = data.workspaces
+                allWorkspaces.forEach(ws => {
+                    if (ws.uuid === selectedWS.selectedWorkspace.uuid) {
+                        dispatch(setEditedSelectedWorkspaceInfo(ws));
+                    }
+                })
+                toast.success(`Workspace edited successfully!`);
             }
         } catch (error) {
-            console.error("Workspace error: there was a problem editting workspace.");
+            toast.error(`Error: not able to edit workspace. No server response.`);
         }
         dispatch(loaderOff());
     };
@@ -168,13 +176,14 @@ export const deleteWorkspace = (uuid) => {
             const response = await api.post(APIURL.DELETE_WORKSPACE, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error deleting workspace: response status ${response.status}.`);
+                toast.error(`Error: not able to delete workspace. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
-                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces))
+                dispatch(saveWorkspaceInfo(data.has_workspaces, data.favorite_workspace, data.workspaces));
+                toast.success(`Workspace deleted successfully!`);
             }
         } catch (error) {
-            console.error("Workspace error: there was a problem deleting workspace.");
+            toast.error(`Error: not able to delete workspace. No server response.`);
         }
         dispatch(loaderOff());
     };
