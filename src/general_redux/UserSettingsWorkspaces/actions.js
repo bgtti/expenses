@@ -68,17 +68,6 @@ export const saveWorkspaceInfo = (hasWorkspacesData, favoriteWorkspaceData, work
     sessionStorage.setItem("favoriteWorkspaces", favoriteWorkspaceData);
     sessionStorage.setItem("workspaces", workspacesDataString);
 
-    //SETTING SELECTED WORKSPACE ON LOG IN
-    // Check if there is selected workspace - if not, set it
-    // if (localStorage.getItem("selectedWorkspace") === null || JSON.parse(localStorage.getItem("selectedWorkspace")) === undefined) {
-    //     if (favoriteWorkspaceData) {
-    //         store.dispatch(setSelectedWorkspace(favoriteWorkspaceData));
-    //     }
-    //     else {
-    //         store.dispatch(setSelectedWorkspace(sortedWorkspaces[0]));
-    //     }
-    // }
-
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_ALL_WORKSPACE_INFO,

@@ -82,17 +82,20 @@ function WorkspaceSettings(props) {
 
     //UseEffect bellow bugged. Fix after fixing numbering modal
     useEffect(() => {
-        let currPrefix = selectedWorkspaceExpenseNumberingFormat.number_custom_prefix;
+        let currPrefix = null;
+        if (selectedWorkspaceExpenseNumberingFormat.number_custom_prefix) {
+            currPrefix = selectedWorkspaceExpenseNumberingFormat.number_custom_prefix;
+        }
         let currYear;
         if (selectedWorkspaceExpenseNumberingFormat.number_format === "YMN" || selectedWorkspaceExpenseNumberingFormat.number_format === "YN") {
-            currYear = (selectedWorkspaceExpenseNumberingFormat.number_year_digits === "4" ? THIS_YEAR : THIS_YEAR.slice(-2))
+            currYear = (selectedWorkspaceExpenseNumberingFormat.number_year_digits === 4 ? THIS_YEAR : THIS_YEAR.slice(-2))
         } else {
             currYear = null;
         }
         let currMonth = (selectedWorkspaceExpenseNumberingFormat.number_format == "YMN" ? THIS_MONTH : null)
         let currSeparator = selectedWorkspaceExpenseNumberingFormat.number_separator;
         let startNum = selectedWorkspaceExpenseNumberingFormat.number_start;
-        let numDigitsSelected = selectedWorkspaceExpenseNumberingFormat
+        let numDigitsSelected = selectedWorkspaceExpenseNumberingFormat.number_digits;
         let currNum;
         if (startNum > 1) {
             let startNumString = startNum.toString()

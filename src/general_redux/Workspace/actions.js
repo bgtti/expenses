@@ -4,7 +4,6 @@ import api from '../../config/axios';
 import APIURL from "../../config/api-url";
 import { getAuthHeader } from "../../config/authHeader"
 import { loaderOn, loaderOff } from "../Loader/actions";
-import { ExpenseNumberingFormat, ExpenseNumberSeparators } from "../../constants/enums";
 import { toast } from 'react-toastify';
 
 // Actions for updating the state of a selected workspace
@@ -51,6 +50,10 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
         }
     };
     sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
+    sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(selectedWorkspaceSettings.groups));
+    sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(selectedWorkspaceSettings.accounts));
+    sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(selectedWorkspaceSettings.expense_categories));
+    sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(selectedWorkspaceSettings.expense_numbering_settings));
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE,
@@ -96,6 +99,10 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
             } else {
                 const data = response.data;
                 sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data.groups));
+                sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(data.accounts));
+                sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data.expense_categories));
+                sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(data.expense_numbering_settings));
                 dispatch({
                     type: ActionTypes.SET_SELECTED_WORKSPACE,
                     selectedWorkspace: selectedWorkspace,
@@ -106,7 +113,7 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
                 })
             }
         } catch (error) {
-            toast.error(`Error: not able to retrieve workspace settings. No server response.`);
+            toast.error(`Error: not able to retrieve workspace settings. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -151,11 +158,12 @@ export const addSelectedWorkspaceGroup = (workspaceUuid, groupName, groupDescrip
                 toast.error(`Error: group could not be added. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceGroup(data));
                 toast.success(`Group added successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: group could not be added. No server response.`);
+            toast.error(`Error: group could not be added. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -179,11 +187,12 @@ export const editSelectedWorkspaceGroup = (groupUuid, groupName, groupDescriptio
                 toast.error(`Error: group could not be edited. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceGroup(data));
                 toast.success(`Group edited successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: group could not be edited. No server response.`);
+            toast.error(`Error: group could not be edited. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -204,11 +213,12 @@ export const deleteSelectedWorkspaceGroup = (groupUuid) => {
                 toast.error(`Error: group could not be deleted. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceGroup(data));
                 toast.success(`Group deleted successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: group could not be deleted. No server response.`);
+            toast.error(`Error: group could not be deleted. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -253,11 +263,12 @@ export const addSelectedWorkspaceAccount = (workspaceUuid, accountName, accountD
                 toast.error(`Error: workspace account could not be added. Server response ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceAccount(data));
                 toast.success(`Workspace account added successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: workspace account could not be added. No server response.`);
+            toast.error(`Error: workspace account could not be added. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -281,11 +292,12 @@ export const editSelectedWorkspaceAccount = (accountUuid, accountName, accountDe
                 toast.error(`Error: workspace account could not be edited. Server response ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceAccount(data));
                 toast.success(`Workspace account edited successfully!`)
             }
         } catch (error) {
-            toast.error(`Error: workspace account could not be edited. No server response.`);
+            toast.error(`Error: workspace account could not be edited. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -306,11 +318,12 @@ export const deleteSelectedWorkspaceAccount = (accountUuid) => {
                 toast.error(`Error: workspace account could not be deleted. Server response ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceAccount(data));
                 toast.success(`Workspace account deleted successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: workspace account could not be deleted. No server response.`);
+            toast.error(`Error: workspace account could not be deleted. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -355,11 +368,12 @@ export const addSelectedExpenseCategory = (workspaceUuid, expenseCategoryName, e
                 toast.error(`Error: expense category could not be added. Server response ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceExpenseCategories(data));
                 toast.success(`Expense category added successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: expense category could not be added. No server response.`);
+            toast.error(`Error: expense category could not be added. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -383,11 +397,12 @@ export const editSelectedExpenseCategory = (expenseCategoryUuid, expenseCategory
                 toast.error(`Error: expense category could not be edited. Server response ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceExpenseCategories(data));
                 toast.success(`Expense category edited successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: expense category could not be edited. No server response.`);
+            toast.error(`Error: expense category could not be edited. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -408,11 +423,12 @@ export const deleteSelectedWorkspaceExpenseCategories = (expenseCategoryUuid) =>
                 toast.error(`Error: expense category could not be deleted. Server response ${response.status}.`);
             } else {
                 const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceExpenseCategories(data));
                 toast.success(`Expense category deleted successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: expense category could not be deleted. No server response.`);
+            toast.error(`Error: expense category could not be deleted. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
@@ -422,13 +438,10 @@ export const deleteSelectedWorkspaceExpenseCategories = (expenseCategoryUuid) =>
 //Setting expense numbering information
 export const addSelectedExpenseNumberingPreference = (workspaceUuid, expenseNumberDigits, expenseNumberFormat, expenseNumberStart, expenseNumberYearDigits, expenseNumberSeparator, expenseNumberCustomPrefix) => {
     store.dispatch(loaderOn())
-    if (!expenseNumberFormat || !Object.values(ExpenseNumberingFormat).includes(expenseNumberFormat)) {
-        toast.error(`Error: expense numbering format not supported.`);
-        return
-    }
-    if (!expenseNumberSeparator || !Object.values(ExpenseNumberSeparators).includes(expenseNumberSeparator)) {
-        toast.error(`Error: expense numbering separator not supported.`);
-        return
+    if (!expenseNumberFormat) {
+        store.dispatch(loaderOff());
+        toast.error(`Error: missing numbering format.`);
+        return;
     }
     return async (dispatch) => {
         const requestData = {
@@ -445,22 +458,18 @@ export const addSelectedExpenseNumberingPreference = (workspaceUuid, expenseNumb
             const response = await api.post(APIURL.SET_EXPENSE_NUMBERING_FORMAT, requestData, config);
 
             if (response.status !== 200) {
-                console.error(`Error setting expense numbering: response status ${response.status}.`);
                 toast.error(`Error: expense numbering could not be changed. Server response ${response.status}.`);
             } else {
                 const data = response.data;
                 sessionStorage.setItem("selectedWorkspaceExpenseNumbering", JSON.stringify(data));
                 toast.success(`Expense numbering changed successfully!`);
-                return (dispatch) => {
-                    dispatch({
-                        type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
-                        selectedWorkspaceExpenseNumbering: data
-                    })
-                }
+                dispatch({
+                    type: ActionTypes.SET_SELECTED_EXPENSE_NUMBERING,
+                    selectedWorkspaceExpenseNumberingFormat: data
+                })
             }
         } catch (error) {
-            console.error("Selected Workspace error: there was a problem setting expense numbering.");
-            toast.error(`Error: expense numbering could not be changed. No server response.`);
+            toast.error(`Error: expense numbering could not be changed. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }
