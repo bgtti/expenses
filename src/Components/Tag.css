@@ -1,0 +1,31 @@
+.Tag-Container {
+ padding-left: 8px;
+}
+
+.Tag:before {
+ content: " ";
+ display: block;
+ width: 0;
+ height: 0;
+ border-top: 9px solid transparent;
+ border-bottom: 10px solid transparent;
+ border-right: 8px solid var(--beforeColour);
+ position: absolute;
+ top: 50%;
+ margin-top: -9px;
+ right: 100%;
+ z-index: 2;
+}
+
+.Tag {
+ text-decoration: none;
+ padding: 1px 4px 1px 2px;
+ position: relative;
+ display: block;
+ float: left;
+ position: relative;
+ font-size: 10px;
+ height: 18px;
+ border-top-right-radius: 3px;
+ border-bottom-right-radius: 3px;
+}

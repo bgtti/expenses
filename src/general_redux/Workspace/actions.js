@@ -13,6 +13,7 @@ export const selectedWorkspaceSetAsUndefined = () => {
         sessionStorage.setItem("selectedWorkspace", undefined);
         sessionStorage.setItem("selectedWorkspaceGroups", undefined);
         sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
+        sessionStorage.getItem("selectedWorkspaceTags", undefined);
         sessionStorage.setItem("selectedWorkspaceExpenseCategories", undefined);
         sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", undefined);
         dispatch({
@@ -35,6 +36,7 @@ export const removeSelectedWorkspaceFromStorage = () => {
         sessionStorage.removeItem("selectedWorkspace");
         sessionStorage.removeItem("selectedWorkspaceGroups");
         sessionStorage.removeItem("selectedWorkspaceAccounts");
+        sessionStorage.removeItem("selectedWorkspaceTags");
         sessionStorage.removeItem("selectedWorkspaceExpenseCategories");
         sessionStorage.removeItem("selectedWorkspaceExpenseNumberingFormat");
     }
@@ -52,6 +54,7 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
     sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
     sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(selectedWorkspaceSettings.groups));
     sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(selectedWorkspaceSettings.accounts));
+    sessionStorage.getItem("selectedWorkspaceTags", JSON.stringify(selectedWorkspaceSettings.tags));
     sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(selectedWorkspaceSettings.expense_categories));
     sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(selectedWorkspaceSettings.expense_numbering_settings));
     return (dispatch) => {
@@ -60,6 +63,7 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
             selectedWorkspace: selectedWorkspace,
             selectedWorkspaceGroups: selectedWorkspaceSettings.groups,
             selectedWorkspaceAccounts: selectedWorkspaceSettings.accounts,
+            selectedWorkspaceTags: selectedWorkspaceSettings.tags,
             selectedWorkspaceExpenseCategories: selectedWorkspaceSettings.expense_categories,
             selectedWorkspaceExpenseNumberingFormat: selectedWorkspaceSettings.expense_numbering_settings,
         })
@@ -101,6 +105,7 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
                 sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
                 sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data.groups));
                 sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(data.accounts));
+                sessionStorage.getItem("selectedWorkspaceTags", JSON.stringify(data.tags));
                 sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data.expense_categories));
                 sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(data.expense_numbering_settings));
                 dispatch({
@@ -108,6 +113,7 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
                     selectedWorkspace: selectedWorkspace,
                     selectedWorkspaceGroups: data.groups,
                     selectedWorkspaceAccounts: data.accounts,
+                    selectedWorkspaceTags: data.tags,
                     selectedWorkspaceExpenseCategories: data.expense_categories,
                     selectedWorkspaceExpenseNumberingFormat: data.expense_numbering_settings,
                 })
@@ -324,6 +330,109 @@ export const deleteSelectedWorkspaceAccount = (accountUuid) => {
             }
         } catch (error) {
             toast.error(`Error: workspace account could not be deleted. No server response or request rejected.`);
+        }
+        dispatch(loaderOff());
+    }
+}
+
+//*********** TAGS ***********
+//Getting tag information
+export const setSelectedWorkspaceTag = (selectedWorkspaceTags) => {
+    if (!selectedWorkspaceTags) {
+        sessionStorage.setItem("selectedWorkspaceTags", undefined);
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SET_SELECTED_WORKSPACE_TAG,
+                selectedWorkspaceTags: undefined,
+            })
+        }
+    };
+    sessionStorage.setItem("selectedWorkspaceTags", JSON.stringify(selectedWorkspaceTags));
+    return (dispatch) => {
+        dispatch({
+            type: ActionTypes.SET_SELECTED_WORKSPACE_TAG,
+            selectedWorkspaceTags: selectedWorkspaceTags
+        })
+    }
+}
+
+// Add tag
+export const addSelectedWorkspaceTag = (workspaceUuid, tagName, tagColour) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            workspace_uuid: workspaceUuid,
+            name: tagName,
+            colour: tagColour
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.ADD_TAG, requestData, config);
+
+            if (response.status !== 200) {
+                toast.error(`Error: workspace tag could not be added. Server response ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceTags", JSON.stringify(data));
+                dispatch(setSelectedWorkspaceTag(data));
+                toast.success(`Workspace tag added successfully!`);
+            }
+        } catch (error) {
+            toast.error(`Error: workspace tag could not be added. No server response or request rejected.`);
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Edit tag
+export const editSelectedWorkspaceTag = (tagUuid, tagName, tagColour) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            tag_uuid: tagUuid,
+            name: tagName,
+            colour: tagColour,
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.EDIT_TAG, requestData, config);
+
+            if (response.status !== 200) {
+                toast.error(`Error: workspace tag could not be edited. Server response ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceTags", JSON.stringify(data));
+                dispatch(setSelectedWorkspaceTag(data));
+                toast.success(`Workspace tag edited successfully!`)
+            }
+        } catch (error) {
+            toast.error(`Error: workspace tag could not be edited. No server response or request rejected.`);
+        }
+        dispatch(loaderOff());
+    }
+}
+
+// Delete tag
+export const deleteSelectedWorkspaceTag = (tagUuid) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            tag_uuid: tagUuid,
+        };
+        let token = sessionStorage.getItem("access_token");
+        try {
+            const response = await api.delete(APIURL.DELETE_TAG, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
+
+            if (response.status !== 200) {
+                toast.error(`Error: workspace tag could not be deleted. Server response ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceTags", JSON.stringify(data));
+                dispatch(setSelectedWorkspaceTag(data));
+                toast.success(`Workspace tag deleted successfully!`);
+            }
+        } catch (error) {
+            toast.error(`Error: workspace tag could not be deleted. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }

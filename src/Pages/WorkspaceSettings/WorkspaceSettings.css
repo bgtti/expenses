@@ -1,11 +1,13 @@
-.WorkspaceSettings h2{
+.WorkspaceSettings h2 {
     margin: 20px 0;
 }
+
 .WorkspaceSettings section {
     margin-bottom: 20px;
 }
+
 .WorkspaceSettings-List {
-    list-style-type: none; 
+    list-style-type: none;
     margin: 0;
     padding: 0;
 }
@@ -16,28 +18,33 @@
     align-items: center;
 
 }
-.WorkspaceSettings-ListBullet{
+
+.WorkspaceSettings-ListBullet {
     width: 5px;
     height: 5px;
     background-color: var(--cOrange);
     border-radius: 50%;
 }
-.WorkspaceSettings-Icon{
+
+.WorkspaceSettings-Icon {
     width: 15px;
     cursor: pointer;
 }
-.WorkspaceSettings-Icon-light{
+
+.WorkspaceSettings-Icon-light {
     filter: var(--cBlueLightFilter);
 }
 
-.WorkspaceSettings-checkboxContainer{
+.WorkspaceSettings-checkboxContainer {
     display: flex;
     gap: 10px
 }
-.WorkspaceSettings-checkboxContainer>input[type="checkbox"]{
+
+.WorkspaceSettings-checkboxContainer>input[type="checkbox"] {
     outline: var(--cOrange);
 }
-.WorkspaceSettings-checkboxContainer>input[type="checkbox"]:checked{
+
+.WorkspaceSettings-checkboxContainer>input[type="checkbox"]:checked {
     accent-color: var(--cOrange);
 }
 
@@ -51,33 +58,47 @@
 .modalEditWorkspaceHidden {
     display: none;
 }
-.modalAddGroupHidden{
-    display:none;
+
+.modalAddGroupHidden {
+    display: none;
 }
+
 .modalAddAccountHidden {
     display: none;
 }
+
+.modalAddTagHidden {
+    display: none;
+}
+
 .modalAddExpenseCategoryHidden {
     display: none;
 }
+
 .modalEditGroupHidden {
     display: none;
 }
+
 .modalEditAccountHidden {
     display: none;
 }
+
 .modalEditExpenseCategoryHidden {
     display: none;
 }
+
 .modalDeleteGroupHidden {
     display: none;
 }
+
 .modalDeleteAccountHidden {
     display: none;
 }
+
 .modalDeleteExpenseCategoryHidden {
     display: none;
 }
+
 .modalSetExpenseNumberingHidden {
     display: none;
 }

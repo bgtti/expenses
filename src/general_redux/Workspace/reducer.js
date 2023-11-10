@@ -6,6 +6,7 @@ const checkWorkspace = () => {
     let selectedWorkspace = sessionStorage.getItem("selectedWorkspace");
     let selectedWorkspaceGroups = sessionStorage.getItem("selectedWorkspaceGroups");
     let selectedWorkspaceAccounts = sessionStorage.getItem("selectedWorkspaceAccounts");
+    let selectedWorkspaceTags = sessionStorage.getItem("selectedWorkspaceTags");
     let selectedWorkspaceExpenseCategories = sessionStorage.getItem("selectedWorkspaceExpenseCategories");
     let selectedWorkspaceExpenseNumberingFormat = sessionStorage.getItem("selectedWorkspaceExpenseNumberingFormat");
 
@@ -18,6 +19,9 @@ const checkWorkspace = () => {
     if (selectedWorkspaceAccounts) {
         selectedWorkspaceAccounts = JSON.parse(selectedWorkspaceAccounts);
     }
+    if (selectedWorkspaceTags) {
+        selectedWorkspaceTags = JSON.parse(selectedWorkspaceTags);
+    }
     if (selectedWorkspaceExpenseCategories) {
         selectedWorkspaceExpenseCategories = JSON.parse(selectedWorkspaceExpenseCategories);
     }
@@ -29,6 +33,7 @@ const checkWorkspace = () => {
             selectedWorkspace: selectedWorkspace,
             selectedWorkspaceGroups: selectedWorkspaceGroups,
             selectedWorkspaceAccounts: selectedWorkspaceAccounts,
+            selectedWorkspaceTags: selectedWorkspaceTags,
             selectedWorkspaceExpenseCategories: selectedWorkspaceExpenseCategories,
             selectedWorkspaceExpenseNumberingFormat: selectedWorkspaceExpenseNumberingFormat,
         };
@@ -37,6 +42,7 @@ const checkWorkspace = () => {
             selectedWorkspace: undefined,
             selectedWorkspaceGroups: undefined,
             selectedWorkspaceAccounts: undefined,
+            selectedWorkspaceTags: undefined,
             selectedWorkspaceExpenseCategories: undefined,
             selectedWorkspaceExpenseNumberingFormat: DEFAULT_EXPENSE_NUMBERING,
         };
@@ -50,6 +56,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: action.selectedWorkspace,
                 selectedWorkspaceGroups: action.selectedWorkspaceGroups,
                 selectedWorkspaceAccounts: action.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: action.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: action.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: action.selectedWorkspaceExpenseNumberingFormat,
             }
@@ -58,6 +65,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: undefined,
                 selectedWorkspaceGroups: undefined,
                 selectedWorkspaceAccounts: undefined,
+                selectedWorkspaceTags: undefined,
                 selectedWorkspaceExpenseCategories: undefined,
                 selectedWorkspaceExpenseNumberingFormat: undefined,
             }
@@ -66,6 +74,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: action.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
@@ -74,6 +83,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: action.selectedWorkspaceGroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
@@ -82,6 +92,16 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
                 selectedWorkspaceAccounts: action.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: state.selectedWorkspaceTags,
+                selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
+                selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
+            }
+        case 'SET_SELECTED_WORKSPACE_TAG':
+            return {
+                selectedWorkspace: state.selectedWorkspace,
+                selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: action.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
@@ -90,6 +110,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: action.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
@@ -98,6 +119,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: action.selectedWorkspaceExpenseNumberingFormat,
             }

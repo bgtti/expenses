@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Tag from "../../Components/Tag";
 import ModalEditWorkspace from "../User/ModalEditWorkspace/ModalEditWorkspace";
 import ModalAddGroup from "./ModalAddGroup";
 import ModalAddAccount from "./ModalAddAccount";
+import ModalAddTag from "./ModalAddTag";
+import ModalEditTag from "./ModalEditTag";
 import ModalAddExpenseCategory from "./ModalAddExpenseCategory";
 import ModalEditGroup from "./ModalEditGroup";
 import ModalEditAccount from "./ModalEditAccount"
@@ -34,20 +37,24 @@ function WorkspaceSettings(props) {
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
     const selectedWorkspaceAccounts = useSelector((state) => state.selectedWorkspace.selectedWorkspaceAccounts);
+    const selectedWorkspaceTags = useSelector((state) => state.selectedWorkspace.selectedWorkspaceTags);
     const selectedWorkspaceExpenseCategories = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseCategories);
     const selectedWorkspaceExpenseNumberingFormat = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseNumberingFormat);
     const [currentNumFormatState, setCurrentNumFormat] = useState('2023-01-0001');
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
     const [modalAddAccountStatus, setModalAddAccountStatus] = useState(false);
+    const [modalAddTagStatus, setModalAddTagStatus] = useState(false);
     const [modalAddExpenseCategoryStatus, setModalAddExpenseCategoryStatus] = useState(false);
     const [modalEditGroupStatus, setModalEditGroupStatus] = useState(false);
     const [modalEditAccountStatus, setModalEditAccountStatus] = useState(false);
+    const [modalEditTagStatus, setModalEditTagStatus] = useState(false);
     const [modalEditExpenseCategoryStatus, setModalEditExpenseCategoryStatus] = useState(false);
     const [modalSetExpenseNumberingStatus, setModalSetExpenseNumberingStatus] = useState(false);
     //const [workspaceToEditUuid, setGroupToEditUuid] = useState("");
     const [groupToEditUuid, setGroupToEditUuid] = useState("");
     const [accountToEditUuid, setAccountToEditUuid] = useState("");
+    const [tagToEditUuid, setTagToEditUuid] = useState("");
     const [expenseCategoryToEditUuid, setExpenseCategoryToEditUuid] = useState("");
     const [modalDeleteGroupStatus, setModalDeleteGroupStatus] = useState(false);
     const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
@@ -75,12 +82,18 @@ function WorkspaceSettings(props) {
     }, [modalEditAccountStatus])
 
     useEffect(() => {
+        if (modalEditTagStatus === false) {
+            setTagToEditUuid("");
+        }
+    }, [modalEditTagStatus])
+
+    useEffect(() => {
         if (modalEditExpenseCategoryStatus === false) {
             setExpenseCategoryToEditUuid("");
         }
     }, [modalEditExpenseCategoryStatus])
 
-    //UseEffect bellow bugged. Fix after fixing numbering modal
+    // useEffect bellow used to display the current expense numbering format used in workspace
     useEffect(() => {
         let currPrefix = null;
         if (selectedWorkspaceExpenseNumberingFormat.number_custom_prefix) {
@@ -121,6 +134,9 @@ function WorkspaceSettings(props) {
     function addAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddAccountStatus(false) : setModalAddAccountStatus(true);
     }
+    function addTagModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalAddTagStatus(false) : setModalAddTagStatus(true);
+    }
     function addExpenseCategoryModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddExpenseCategoryStatus(false) : setModalAddExpenseCategoryStatus(true);
     }
@@ -129,6 +145,9 @@ function WorkspaceSettings(props) {
     }
     function editAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditAccountStatus(false) : setModalEditAccountStatus(true);
+    }
+    function editTagModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditTagStatus(false) : setModalEditTagStatus(true);
     }
     function editExpenseCategoryModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditExpenseCategoryStatus(false) : setModalEditExpenseCategoryStatus(true);
@@ -161,6 +180,10 @@ function WorkspaceSettings(props) {
                         className={modalAddAccountStatus === false ? "modalAddAccountHidden" : ""}
                         addAccountModalToggler={addAccountModalToggler}>
                     </ModalAddAccount>
+                    <ModalAddTag
+                        className={modalAddTagStatus === false ? "modalAddTagHidden" : ""}
+                        addTagModalToggler={addTagModalToggler}>
+                    </ModalAddTag>
                     <ModalAddExpenseCategory className={modalAddExpenseCategoryStatus === false ? "modalAddExpenseCategoryHidden" : ""}
                         addExpenseCategoryModalToggler={addExpenseCategoryModalToggler}>
                     </ModalAddExpenseCategory>
@@ -181,6 +204,14 @@ function WorkspaceSettings(props) {
                         className={modalEditAccountStatus === false ? "modalEditAccountHidden" : ""}
                         editAccountModalToggler={editAccountModalToggler} uuid={accountToEditUuid}>
                     </ModalEditAccount>
+                )
+            }
+            {tagToEditUuid &&
+                (
+                    <ModalEditTag
+                        className={modalEditTagStatus === false ? "modalEditTagHidden" : ""}
+                        editTagModalToggler={editTagModalToggler} uuid={tagToEditUuid}>
+                    </ModalEditTag>
                 )
             }
             {expenseCategoryToEditUuid &&
@@ -300,20 +331,34 @@ function WorkspaceSettings(props) {
                                             </ul>
                                         )
                                 }
-                                {/* <ul className="WorkspaceSettings-List">
-                        <li className="WorkspaceSettings-ListItem">
-                            <div className="WorkspaceSettings-ListBullet"></div>
-                            <div>Bank</div>
-                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
-                        </li>
-                        <li className="WorkspaceSettings-ListItem">
-                            <div className="WorkspaceSettings-ListBullet"></div>
-                            <div>Cash</div>
-                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
-                        </li>
-                    </ul> */}
+                            </div>
+                            <br />
+                            <div>
+                                <h4>Tags</h4>
+                                <p>You can set colourful description tags.</p>
+                                <AddButton name="Add Tag" className="Common-button-primary"
+                                    onClickFunction={addTagModalToggler}>
+                                    <img src={AddIcon} alt="Add icon" />
+                                </AddButton>
+                                {
+                                    (!selectedWorkspaceTags) ?
+                                        (<p>You have no tags yet.</p>) :
+                                        (
+                                            <ul className="WorkspaceSettings-List">
+                                                {selectedWorkspaceTags.map((tag, index) => (
+                                                    <li className="WorkspaceSettings-ListItem" key={index}>
+                                                        <div className="WorkspaceSettings-ListBullet"></div>
+                                                        <Tag colour={tag.colour} name={tag.name}></Tag>
+                                                        {/* <div>{tag.name}</div> */}
+                                                        <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
+                                                            onClick={() => { setTagToEditUuid(`${tag.uuid}`); editTagModalToggler("open"); }} />
+                                                        {/* <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
+                                                            onClick={() => { setTagToDeleteUuid(`${tag.uuid}`); deleteTagModalToggler("open"); }} /> */}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )
+                                }
                             </div>
                         </section>
                         <hr />
@@ -344,48 +389,15 @@ function WorkspaceSettings(props) {
                                             </ul>
                                         )
                                 }
-                                {/* <ul className="WorkspaceSettings-List">
-                        <li className="WorkspaceSettings-ListItem">
-                            <div className="WorkspaceSettings-ListBullet"></div>
-                            <div>Utilities</div>
-                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
-                        </li>
-                        <li className="WorkspaceSettings-ListItem">
-                            <div className="WorkspaceSettings-ListBullet"></div>
-                            <div>Marketing</div>
-                            <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon" />
-                            <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon" />
-                        </li>
-                    </ul> */}
+
                             </div>
                             <br />
-                            {/* <div>
-                    <h4>Expense Tags</h4>
-                    <p>tags here...</p>
-                </div>
-                <br />
-                <div>
-                    <h4>Expense Tax Rules</h4>
-                    <p>tax rules here here...</p>
-                </div>
-                <br /> */}
                             <div>
                                 <h4>Expenses numbering</h4>
                                 <p>Expense numbering format: {currentNumFormatState}</p>
                                 <AddButton name="Edit Expense Numbering" className="Common-button-secondary" onClickFunction={expenseNumberingModalToggler}>
                                     <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />
                                 </AddButton>
-                                {/* <form action="">
-                        <div className="WorkspaceSettings-checkboxContainer">
-                            <input type="checkbox" id="option1" name="option1" value="option1" checked/>
-                            <label htmlFor="option1">YY-MM-number</label><br />
-                        </div>
-                        <div className="WorkspaceSettings-checkboxContainer">
-                            <input type="checkbox" id="option2" name="option2" value="option2" />
-                            <label htmlFor="option2">Number</label><br />
-                        </div>
-                    </form> */}
                             </div>
                         </section>
                         {/* <hr />

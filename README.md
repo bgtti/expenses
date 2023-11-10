@@ -110,7 +110,7 @@ Then:
 
 #### 5.3 Numbering
 
-- Add numbering choice: MISSING
+- Add numbering choice: done
 
 ### 6.Admin Panel
 
@@ -124,6 +124,8 @@ Then:
   https://www.npmjs.com/package/react-toastify
   https://www.material-tailwind.com/docs/react/alert
   or custom alert messages
+- replace console.logs or check error messages in modals
+- add hints to forms (eg: log in and sign up)
 
 ### 8.To-dos and notes
 

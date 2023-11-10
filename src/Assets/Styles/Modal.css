@@ -7,26 +7,30 @@
     flex-direction: column;
     gap: 10px;
 }
-.Modal-Heading{
+
+.Modal-Heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.Modal-Container>h2{
+.Modal-Container>h2 {
     color: var(--cBlueDark);
     margin-bottom: 10px;
 }
 
-.Modal-SubHeading-Info{
+.Modal-SubHeading-Info {
     color: var(--cMidGray);
 }
-.Modal-SubHeading-NoSpace{
+
+.Modal-SubHeading-NoSpace {
     margin: 0;
 }
+
 .Modal-SubHeading-Container-NoSpace>p {
     margin: 0;
 }
+
 /* The following is used for input type text containers */
 .Modal-InputContainer {
     display: grid;
@@ -34,31 +38,36 @@
     grid-gap: 10px;
     margin-bottom: 5px;
 }
+
 @media only screen and (min-width: 800px) {
     .Modal-InputContainer {
         min-width: 400px;
     }
 }
-.Modal-InputField-invalid{
+
+.Modal-InputField-invalid {
     border: none;
     border: 2px solid var(--cRed);
     background: var(--cRedBackground);
 }
+
 /* The following is used for group (div) of paragraphs with less space between each other: */
-.Modal-InformationGroupingDiv>p{
+.Modal-InformationGroupingDiv>p {
     margin-top: 0;
     margin-bottom: 0;
 }
-.Modal-InformationGroupingDiv-Pgray{
+
+.Modal-InformationGroupingDiv-Pgray {
     color: var(--cMidGray);
 }
 
 /* The following is to be used on divs containing input radio button + label */
-.Modal-RadioBtnContainer>input{
+.Modal-RadioBtnContainer>input {
     margin-right: 5px;
 }
-.Modal-SpanExample{
-    color:var(--cMidGray);
+
+.Modal-SpanExample {
+    color: var(--cMidGray);
     font-style: italic;
 }
 
@@ -68,10 +77,32 @@
 }
 
 /* The following can be used in div containing inputs that have a dropdown effect (its display is a product of the choice of another input) */
-.Modal-DropdownContainerForFurtherInput{
+.Modal-DropdownContainerForFurtherInput {
     margin-left: 15px;
     padding-left: 5px;
     border-left: 2px solid var(--cMidGray);
+}
+
+/* Input type=color -- Colour Picker */
+.Modal-InputColorPicker {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+.Modal-InputColorPicker::-webkit-color-swatch {
+    border-radius: 5px;
+    border: none;
+}
+
+.Modal-InputColorPicker::-moz-color-swatch {
+    border-radius: 5px;
+    border: none;
 }
 
 /* Buttons and Icons */
@@ -83,6 +114,7 @@
     display: inline-block;
     filter: invert(14%) sepia(33%) saturate(388%) hue-rotate(152deg) brightness(94%) contrast(91%);
 }
+
 .Modal-PrimaryBtn {
     margin-top: 10px;
     cursor: pointer;
@@ -91,13 +123,14 @@
     background-color: var(--cOrange);
     border-radius: 5px;
 }
+
 .Modal-DangerBtn {
     border: 2px solid var(--cRed);
     background-color: var(--cRed);
     color: var(--cRedLight);
 }
 
-.Modal-PrimaryBtn:disabled{
+.Modal-PrimaryBtn:disabled {
     cursor: not-allowed;
     background: #ccc;
     border-color: #ccc;
@@ -109,6 +142,7 @@
         border-color: var(--cOrangeDarker);
         box-shadow: var(--cBoxShadowOrangeBtn);
     }
+
     .Modal-DangerBtn:hover {
         border-color: var(--cRed);
         box-shadow: var(--cBoxShadowRedBtn);

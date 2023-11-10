@@ -87,7 +87,7 @@ export const logIn = (email, password) => {
                 });
             }
         } catch (error) {
-            toast.error(`Error: not able to log in. No server response.`);
+            toast.error(`Error: not able to log in. Check your credentials and try again.`);
         }
         dispatch(loaderOff())
     };
