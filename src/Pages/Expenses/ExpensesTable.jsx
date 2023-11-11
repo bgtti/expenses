@@ -10,9 +10,10 @@ function ExpensesTable() {
                     <th>Expense Nr</th>
                     <th>Description</th>
                     <th>Amount</th>
+                    <th>Category</th>
                     <th>Group</th>
-                    <th>Type</th>
                     <th>Account</th>
+                    <th>Tags</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,14 +27,15 @@ function ExpensesTable() {
                             exNr={expense.exNr}
                             exDescription={expense.exDescription}
                             exAmount={expense.exAmount}
+                            category={expense.type}
                             project={expense.project}
-                            type={expense.type}
-                            account={expense.account}>
+                            account={expense.account}
+                            tag={expense.tag ? expense.tag : ""}>
                         </ExpenseItem>
                     )))
                 }
-                
-                
+
+
             </tbody>
 
         </table>

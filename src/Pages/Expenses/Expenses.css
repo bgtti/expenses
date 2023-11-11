@@ -1,5 +1,5 @@
 /* EXPENSES */
-.Expenses{
+.Expenses {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -8,18 +8,20 @@
 }
 
 /* EXPENSES FILTER */
-.ExpensesFilter{
+.ExpensesFilter {
     width: 100%;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 5px;
     margin-bottom: 10px;
 }
-.ExpensesFilter-Header{
+
+.ExpensesFilter-Header {
     display: flex;
     gap: 10px;
     padding-right: 10px;
 }
-.ExpensesFilter-Header div{
+
+.ExpensesFilter-Header div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,24 +29,29 @@
     border-right: none;
     padding: 0 10px;
 }
+
 .ExpensesFilter-Header div img {
     width: 15px;
 }
+
 .ExpensesFilter-Header div h2 {
     font-size: 1.15em;
-    margin:0;
+    margin: 0;
 }
-.ExpensesFilter-Year-Btn{
+
+.ExpensesFilter-Year-Btn {
     margin-left: auto;
 }
-.ExpensesFilter-Form{
+
+.ExpensesFilter-Form {
     border: 3px solid var(--cBlueDark);
     border-top: none;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 5px;
 }
-.ExpensesFilter-Form fieldset{
+
+.ExpensesFilter-Form fieldset {
     border: none;
     border: 2px solid #eee;
     border-radius: 5px;
@@ -57,55 +64,66 @@
     grid-gap: 10px;
     margin-bottom: 5px;
 }
-.ExpensesFilter-Form fieldset div{
+
+.ExpensesFilter-Form fieldset div {
     padding-left: 10px;
 }
-@media only screen and (min-width: 800px){
-    .ExpensesFilter-Form fieldset{
+
+@media only screen and (min-width: 800px) {
+    .ExpensesFilter-Form fieldset {
         display: grid;
         grid-template-columns: 2fr repeat(3, 25%);
     }
+
     .ExpensesFilter-Form fieldset div {
         padding-left: 0;
     }
 }
-.ExpensesFilter-Form fieldset legend{
+
+.ExpensesFilter-Form fieldset legend {
     padding: 0 10px;
     color: var(--cBlueLight);
     font-size: 1em;
 }
+
 .ExpensesFilter-Form fieldset div label {
     margin-right: 5px;
 }
+
 .ExpensesFilter-Form fieldset div input {
     border: none;
     border-bottom: 2px solid var(--cLightGray);
 }
+
 .ExpensesFilter-Form fieldset div select {
     border: none;
     border: 2px solid var(--cLightGray);
     border-radius: 5px;
 }
-.ExpensesFilter-ApplyFilterBtn{
+
+.ExpensesFilter-ApplyFilterBtn {
     margin-left: 5px;
 }
+
 /* Filter open only */
-.ExpensesFilter-Header-Open{
+.ExpensesFilter-Header-Open {
     border: 3px solid var(--cBlueDark);
     border-bottom: none;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     justify-content: space-between;
 }
+
 .ExpensesFilter-Header-Open div {
     border: none;
 }
-.ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn img{
+
+.ExpensesFilter-Header-Open .ExpensesFilter-OpenFilterMenuBtn img {
     transform: rotate(180deg);
 }
 
 /* Filter closed only */
-.ExpensesFilter-FormClosed{
+.ExpensesFilter-FormClosed {
     display: none;
 }
 
@@ -115,8 +133,34 @@
     width: 100%;
 }
 
+/* EXPENSE ITEM */
+.ExpenseItem-Date {
+    padding: 5px 5px 5px 10px !important;
+}
+
+.ExpenseItem-DateSpanContainer {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap: -5px; */
+}
+
+.ExpenseItem-Date-DayMonth {
+    color: var(--cBlueDark);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.ExpenseItem-Date-Year {
+    display: inline-block;
+    font-weight: bold;
+    color: var(--cMidGray);
+    font-size: 0.8rem;
+    margin-top: -5px;
+}
+
 /* EXPENSES ITEM -- ICONS */
-.ExpenseItem-Icon{
+.ExpenseItem-Icon {
     width: 20px;
     cursor: pointer;
 }
@@ -158,7 +202,7 @@
 /* TABLE FOR MOBILE  VIEW */
 /* Source: https: //elvery.net/demo/responsive-tables/ from https: //medium.com/appnroll-publication/5-practical-solutions-to-make-responsive-data-tables-ff031c48b122*/
 @media only screen and (max-width: 800px) {
-    .ExpensesTable{
+    .ExpensesTable {
         width: 100%;
     }
 
@@ -172,9 +216,10 @@
         display: block;
     }
 
-    .ExpensesTable tbody{
+    .ExpensesTable tbody {
         background-color: none;
     }
+
     /* Hide table headers (but not display: none;, for accessibility) */
     .ExpensesTable thead tr {
         position: absolute;
@@ -212,6 +257,7 @@
         text-align: left;
         font-weight: bold;
     }
+
     /* .ExpensesTable tr,
     .ExpensesTable td {
         padding: 10px;
@@ -223,4 +269,10 @@
     .ExpensesTable td:before {
         content: attr(data-title);
     }
+}
+
+/* ******* MODAL ADD EXPENSE ********* */
+.Expense-ModalAddExpense-TagDiv {
+    display: inline-flex;
+    align-items: center;
 }

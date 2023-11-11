@@ -93,7 +93,7 @@ function WorkspaceSettings() {
         } else {
             currYear = null;
         }
-        let currMonth = (selectedWorkspaceExpenseNumberingFormat.number_format == "YMN" ? THIS_MONTH : null)
+        let currMonth = (selectedWorkspaceExpenseNumberingFormat.number_format === "YMN" ? THIS_MONTH : null)
         let currSeparator = selectedWorkspaceExpenseNumberingFormat.number_separator;
         let startNum = selectedWorkspaceExpenseNumberingFormat.number_start;
         let numDigitsSelected = selectedWorkspaceExpenseNumberingFormat.number_digits;

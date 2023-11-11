@@ -13,7 +13,6 @@ function Expenses(props) {
     // const [settingsStatus, setSettingsStatus] = useState(false);
 
     function addExpenseModalToggler(openOrClose) {
-        console.log(modalAddExpenseStatus)
         openOrClose === "close" ? setModalAddExpenseStatus(false) : setModalAddExpenseStatus(true);
     }
     // function settingsToggler(openOrClose) {
@@ -21,12 +20,12 @@ function Expenses(props) {
     // }
 
     return (
-        <section className={`Expenses ${props.className} Common-expand-flex-1 Common-padding`}> 
+        <section className={`Expenses ${props.className} Common-expand-flex-1 Common-padding`}>
             <ModalAddExpense
                 className={modalAddExpenseStatus === false ? "modalAddExpenseHidden" : ""}
                 addExpenseModalToggler={addExpenseModalToggler}>
             </ModalAddExpense>
-            <AddButton 
+            <AddButton
                 name="Add new expense" btnAction="open" className="Expenses-AddExpenseBtn Common-button-primary"
                 onClickFunction={addExpenseModalToggler}><img src={AddIcon} alt="Add icon" /></AddButton>
             <ExpensesFilter></ExpensesFilter>
@@ -37,4 +36,3 @@ function Expenses(props) {
 }
 export default Expenses
 
-    

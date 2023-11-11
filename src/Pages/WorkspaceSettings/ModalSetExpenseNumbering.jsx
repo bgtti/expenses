@@ -99,7 +99,7 @@ function ModalSetExpenseNumbering(props) {
         } else {
             currYear = null;
         }
-        let currMonth = (expenseNumberTypeSelected == "YMN" ? THIS_MONTH : null)
+        let currMonth = (expenseNumberTypeSelected === "YMN" ? THIS_MONTH : null)
         let currSeparator = numberSeparatorSelected;
         let currNum;
         if (startNumState.selected) {
