@@ -1,46 +1,71 @@
-.Common-hidden{
-    display:none;
+.Common-hidden {
+    display: none;
 }
 
 /* Should be used in all main components inside the Main component*/
-.Common-padding{
+.Common-padding {
     padding-left: 10px;
     padding-right: 10px;
 }
 
 /* Should be used in main area between Nav and Footer */
-.Common-expand-flex-1{
-    flex:1;
+.Common-expand-flex-1 {
+    flex: 1;
 }
 
+/* Page Titles and Subtitles */
+.Common-H2 {
+    font-weight: bold;
+    color: var(--cBlueDark);
+}
+
+.Common-H3 {
+    font-size: 1.5rem;
+    color: var(--cBlueDark);
+    margin-bottom: 15px;
+}
+
+.Common-H4 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    /* color: var(--cBlueDark); */
+    margin-bottom: 10px;
+}
+
+/* Buttons */
 .Common-button-primary,
 .Common-button-secondary,
 .Common-button-tertiary,
-.Common-button-danger{
+.Common-button-danger {
     cursor: pointer;
     font-weight: bold;
     border-radius: 5px;
     border: 2px solid;
 }
+
 .Common-button-primary {
     border: 2px solid var(--cOrange);
     background-color: var(--cOrange);
 }
+
 .Common-button-secondary {
     background-color: var(--cBlueDark);
     border-color: var(--cBlueDark);
     color: var(--cBlueLight);
 }
+
 .Common-button-tertiary {
     background-color: var(--cBlueLight);
     border-color: var(--cBlueDark);
     color: var(--cBlueDark);
 }
+
 .Common-button-danger {
     background-color: var(--cRed);
     border-color: var(--cRed);
     color: var(--cRedBackground);
 }
+
 .Common-button-primary:disabled,
 .Common-button-secondary:disabled,
 .Common-button-tertiary:disabled,
@@ -50,20 +75,24 @@
     border-color: #ccc;
     color: var(--cGray);
 }
+
 @media (hover: hover) {
     .Common-button-primary:hover {
         border-color: var(--cOrangeDarker);
         box-shadow: var(--cBoxShadowOrangeBtn);
     }
+
     .Common-button-secondary:hover,
     .Common-button-tertiary:hover {
         border-color: var(--cBlueDarker);
         box-shadow: var(--cBoxShadowBlueBtn);
     }
-    .Common-button-danger:hover{
+
+    .Common-button-danger:hover {
         border-color: var(--cRedDarker);
         box-shadow: var(--cBoxShadowRedBtn);
     }
+
     .Common-button-primary:hover:disabled,
     .Common-button-secondary:hover:disabled,
     .Common-button-tertiary:hover:disabled,

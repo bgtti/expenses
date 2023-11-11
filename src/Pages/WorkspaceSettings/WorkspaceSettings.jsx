@@ -12,6 +12,7 @@ import ModalEditAccount from "./ModalEditAccount"
 import ModalEditExpenseCategory from "./ModalEditExpenseCategory";
 import ModalDeleteGroup from "./ModalDeleteGroup";
 import ModalDeleteAccount from "./ModalDeleteAccount";
+import ModalDeleteTag from "./ModalDeleteTag";
 import ModalDeleteExpenseCategory from "./ModalDeleteExpenseCategory";
 import ModalSetExpenseNumbering from "./ModalSetExpenseNumbering";
 //import { ExpenseNumberingFormat } from "../../constants/enums";
@@ -22,18 +23,11 @@ import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created 
 import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
-//WORK IN PROGRESS: 
-// Create add/edit/delete expense category modal: BE & test
-// Finish ModalSetExpenseNumbering
-// Check Http requests: put to edit, and post to add
-// Add action to upload all data to this page
-
 const THIS_YEAR = (new Date().getFullYear()).toString();
 const THIS_MONTH = (new Date().getMonth() + 1).toString()
 
-function WorkspaceSettings(props) {
-    // const styleClasses = 'WorkspaceSettings ' + props.className;
-    // the word 'account' bellow refers to the object belonging to the WS, not the user's account
+function WorkspaceSettings() {
+    // Note the word 'account' bellow refers to the object belonging to the WS, not the user's account
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
     const selectedWorkspaceAccounts = useSelector((state) => state.selectedWorkspace.selectedWorkspaceAccounts);
@@ -58,16 +52,12 @@ function WorkspaceSettings(props) {
     const [expenseCategoryToEditUuid, setExpenseCategoryToEditUuid] = useState("");
     const [modalDeleteGroupStatus, setModalDeleteGroupStatus] = useState(false);
     const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
+    const [modalDeleteTagStatus, setModalDeleteTagStatus] = useState(false);
     const [modalDeleteExpenseCategoryStatus, setModalDeleteExpenseCategoryStatus] = useState(false);
     const [groupToDeleteUuid, setGroupToDeleteUuid] = useState("");
     const [accountToDeleteUuid, setAccountToDeleteUuid] = useState("");
+    const [tagToDeleteUuid, setTagToDeleteUuid] = useState("");
     const [expenseCategoryToDeleteUuid, setExpenseCategoryToDeleteUuid] = useState("");
-
-    // useEffect(()=>{
-    //     if (modalEditWorkspaceStatus === false){
-    //         setGroupToEditUuid("");
-    //     }
-    // },[modalEditWorkspaceStatus]) 
 
     useEffect(() => {
         if (modalEditGroupStatus === false) {
@@ -125,9 +115,7 @@ function WorkspaceSettings(props) {
         setCurrentNumFormat(currentFormat);
     }, [selectedWorkspaceExpenseNumberingFormat])
 
-    function editWorkspaceModalToggler(openOrClose) {
-        openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
-    }
+    // Togglers for add, edit, and delete modals
     function addGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddGroupStatus(false) : setModalAddGroupStatus(true);
     }
@@ -139,6 +127,9 @@ function WorkspaceSettings(props) {
     }
     function addExpenseCategoryModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddExpenseCategoryStatus(false) : setModalAddExpenseCategoryStatus(true);
+    }
+    function editWorkspaceModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditWorkspaceStatus(false) : setModalEditWorkspaceStatus(true);
     }
     function editGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditGroupStatus(false) : setModalEditGroupStatus(true);
@@ -158,6 +149,9 @@ function WorkspaceSettings(props) {
     function deleteAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteAccountStatus(false) : setModalDeleteAccountStatus(true);
     }
+    function deleteTagModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteTagStatus(false) : setModalDeleteTagStatus(true);
+    }
     function deleteExpenseCategoryModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteExpenseCategoryStatus(false) : setModalDeleteExpenseCategoryStatus(true);
     }
@@ -165,7 +159,7 @@ function WorkspaceSettings(props) {
         openOrClose === "close" ? setModalSetExpenseNumberingStatus(false) : setModalSetExpenseNumberingStatus(true);
     }
     return (
-        <section className={`WorkspaceSettings Common-padding Common-expand-flex-1 ${props.className}`}>
+        <section className={`WorkspaceSettings Common-padding Common-expand-flex-1`}>
             {selectedWorkspace.uuid &&
                 (<>
                     <ModalEditWorkspace
@@ -238,6 +232,14 @@ function WorkspaceSettings(props) {
                     </ModalDeleteAccount>
                 )
             }
+            {tagToDeleteUuid &&
+                (
+                    <ModalDeleteTag
+                        className={modalDeleteTagStatus === false ? "modalDeleteTagHidden" : ""}
+                        deleteTagModalToggler={deleteTagModalToggler} uuid={tagToDeleteUuid}>
+                    </ModalDeleteTag>
+                )
+            }
             {expenseCategoryToDeleteUuid &&
                 (
                     <ModalDeleteExpenseCategory
@@ -246,20 +248,12 @@ function WorkspaceSettings(props) {
                     </ModalDeleteExpenseCategory>
                 )
             }
-            {/* {
-                selectedWorkspaceExpenseNumberingFormat &&
-                <ModalSetExpenseNumbering
-                className={modalSetExpenseNumberingStatus === false ? "modalSetExpenseNumberingHidden" : ""}
-                expenseNumberingModalToggler={expenseNumberingModalToggler}>
-                </ModalSetExpenseNumbering>
-            } */}
             <ModalSetExpenseNumbering
                 className={modalSetExpenseNumberingStatus === false ? "modalSetExpenseNumberingHidden" : ""}
                 expenseNumberingModalToggler={expenseNumberingModalToggler}>
             </ModalSetExpenseNumbering>
 
-            <h2>Workspace Settings</h2>
-            <hr />
+            <h2 className="Common-H2">Workspace Settings</h2>
             {(!selectedWorkspace) ?
                 (<section>
                     <h3>Oops, an error occurred.</h3>
@@ -269,20 +263,33 @@ function WorkspaceSettings(props) {
                 (
                     <>
                         <section>
-                            <h3>{selectedWorkspace.abbreviation.toUpperCase()} | {selectedWorkspace.name}</h3>
-                            <p><b>Name:</b> {selectedWorkspace.name}</p>
-                            <p><b>Base currency:</b> {selectedWorkspace.currency}</p>
-                            <p><b>Access:</b> you have not shared this workspace with anyone</p>
+                            <h3 className="Common-H3">This Workspace</h3>
+                            <table className="WorkspaceSettings-WorkspaceInfoTable">
+                                <tbody>
+                                    <tr>
+                                        <th>Name:</th><td>{selectedWorkspace.name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Abbrev.:</th><td>{selectedWorkspace.abbreviation.toUpperCase()}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Currency:</th><td>{selectedWorkspace.currency}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Access:</th><td><i>you have not shared this workspace with anyone</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
                             <AddButton name="Edit Workspace" className="Common-button-secondary" onClickFunction={editWorkspaceModalToggler}>
                                 <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />
                             </AddButton>
                         </section>
                         <hr />
                         <section>
-                            <h3>General Workspace Settings</h3>
-                            <br />
+                            <h3 className="Common-H3">General Workspace Settings</h3>
                             <div>
-                                <h4>Groups</h4>
+                                <h4 className="Common-H4">Groups</h4>
                                 <p>You can group expenses by project, rental property, product, service, or any transactional good your company offers.</p>
                                 <AddButton name="Add Group" className="Common-button-primary" onClickFunction={addGroupModalToggler}>
                                     <img src={AddIcon} alt="Add icon" />
@@ -291,18 +298,34 @@ function WorkspaceSettings(props) {
                                     (!selectedWorkspaceGroups) ?
                                         (<p>You have no groups yet.</p>) :
                                         (
-                                            <ul className="WorkspaceSettings-List">
-                                                {selectedWorkspaceGroups.map((group, index) => (
-                                                    <li className="WorkspaceSettings-ListItem" key={index}>
-                                                        <div className="WorkspaceSettings-ListBullet"></div>
-                                                        <div>{group.name}</div>
-                                                        <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setGroupToEditUuid(`${group.uuid}`); editGroupModalToggler("open"); }} />
-                                                        <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setGroupToDeleteUuid(`${group.uuid}`); deleteGroupModalToggler("open"); }} />
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                            <table className="WorkspaceSettings-Table ">
+                                                <tbody>
+                                                    <tr >
+                                                        <th>Group</th>
+                                                        <th>Description</th>
+                                                        <th>Code</th>
+                                                    </tr>
+                                                    {selectedWorkspaceGroups.map((group, index) => (
+                                                        <tr key={index}>
+                                                            <td className="WorkspaceSettings-Table-tdBullet"><div className="WorkspaceSettings-Table-YellowDiv"></div>{group.name}</td>
+                                                            <td className={group.description ? "" : "WorkspaceSettings-Table-tdInfo"}>
+                                                                {group.description ? group.description : "-"}
+                                                            </td>
+                                                            <td className={group.description ? "" : "WorkspaceSettings-Table-tdInfo"}>
+                                                                {group.code ? group.code : "-"}
+                                                            </td>
+                                                            <td className="WorkspaceSettings-Table-tdIcon">
+                                                                <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
+                                                                    onClick={() => { setGroupToEditUuid(`${group.uuid}`); editGroupModalToggler("open"); }} />
+                                                            </td>
+                                                            <td className="WorkspaceSettings-Table-tdIcon">
+                                                                <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
+                                                                    onClick={() => { setGroupToDeleteUuid(`${group.uuid}`); deleteGroupModalToggler("open"); }} />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         )
                                 }
                             </div>
@@ -349,11 +372,10 @@ function WorkspaceSettings(props) {
                                                     <li className="WorkspaceSettings-ListItem" key={index}>
                                                         <div className="WorkspaceSettings-ListBullet"></div>
                                                         <Tag colour={tag.colour} name={tag.name}></Tag>
-                                                        {/* <div>{tag.name}</div> */}
                                                         <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
                                                             onClick={() => { setTagToEditUuid(`${tag.uuid}`); editTagModalToggler("open"); }} />
-                                                        {/* <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setTagToDeleteUuid(`${tag.uuid}`); deleteTagModalToggler("open"); }} /> */}
+                                                        <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
+                                                            onClick={() => { setTagToDeleteUuid(`${tag.uuid}`); deleteTagModalToggler("open"); }} />
                                                     </li>
                                                 ))}
                                             </ul>

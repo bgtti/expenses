@@ -6,6 +6,60 @@
     margin-bottom: 20px;
 }
 
+.WorkspaceSettings-WorkspaceInfoTable td {
+    padding-left: 10px !important;
+}
+
+/* Table per settings  */
+.WorkspaceSettings-Table {
+    border: 2px solid var(--cSuperLightGray);
+}
+
+.WorkspaceSettings-Table tr:nth-child(even) {
+    background-color: var(--cSuperLightGray);
+}
+
+.WorkspaceSettings-Table-YellowDiv {
+    width: 2.5px;
+    height: 20px;
+    background-color: var(--cOrange);
+    margin-left: -5px;
+}
+
+.WorkspaceSettings-Table td {
+    font-size: 0.9rem;
+}
+
+.WorkspaceSettings-Table th,
+td {
+    padding: 5px;
+}
+
+.WorkspaceSettings-Table th {
+    color: var(--cBlueDark);
+    font-size: 0.9rem;
+    padding-right: 10px;
+}
+
+.WorkspaceSettings-Table-tdBullet {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 5px;
+    padding-right: 10px;
+}
+
+.WorkspaceSettings-Table-tdInfo {
+    text-align: center;
+    color: var(--cMidGray);
+}
+
+.WorkspaceSettings-Table-tdIcon {
+    padding-left: 15px;
+}
+
+/* List (see if necessary... */
+
 .WorkspaceSettings-List {
     list-style-type: none;
     margin: 0;
@@ -92,6 +146,10 @@
 }
 
 .modalDeleteAccountHidden {
+    display: none;
+}
+
+.modalDeleteTagHidden {
     display: none;
 }
 

@@ -1,11 +1,12 @@
-:root{
-  --cGray: rgb(59, 59, 59); 
-  --cMidGray:#81868a;
+:root {
+  --cGray: rgb(59, 59, 59);
+  --cMidGray: #81868a;
   --cLightGray: rgb(203, 203, 203);
+  --cSuperLightGray: rgb(241, 242, 247);
   /* new ones: https: //m2.material.io/design/color/applying-color-to-ui.html#top-and-bottom-app-bars */
   /* Primary: cBlueDark, secondary: cOrange, tertiary: cBlueLight */
   /* use cBlueDark for darkmode background */
-  --cBlueDark:#232F34;
+  --cBlueDark: #232F34;
   --cBlueDarker: #11171a;
   --cBoxShadowBlueBtn: inset 0px 0px 10px #0d1214;
   --cBlueLight: #b4c1cc;
@@ -13,10 +14,10 @@
   --cBlue: #344955;
   /* --cBlueLight: #1c282e; */
   --cOrange: #F9AA33;
-  --cOrangeFilter:invert(76%) sepia(54%) saturate(942%) hue-rotate(332deg) brightness(99%) contrast(97%);
+  --cOrangeFilter: invert(76%) sepia(54%) saturate(942%) hue-rotate(332deg) brightness(99%) contrast(97%);
   --cOrangeDarker: #cf8e2c;
   --cBoxShadowOrangeBtn: inset 0px 0px 10px #cf8e2c;
-  --cRed:#94280A;
+  --cRed: #94280A;
   --cRedLight: #efe9e7;
   --cRedDarker: #5d1a07;
   --cRedBackground: #e1c2ba;
@@ -28,20 +29,24 @@
     sans-serif;
 }
 
-html, body {
-  height: 100%;
-}
+html,
 body {
-  margin: 0;
-}
-body>*{
   height: 100%;
 }
 
-.dark-mode{
+body {
+  margin: 0;
+}
+
+body>* {
+  height: 100%;
+}
+
+.dark-mode {
   background-color: black;
   color: white;
 }
+
 /* 
 https: //www.geeksforgeeks.org/how-to-make-dark-mode-for-websites-using-html-css-javascript/
 function darkMode() {

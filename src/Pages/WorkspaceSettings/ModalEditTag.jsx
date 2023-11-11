@@ -1,10 +1,10 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editSelectedWorkspaceTag } from '../../general_redux/Workspace/actions';
+import { toast } from 'react-toastify';
 import Tag from "../../Components/Tag";
 import ModalWrapper from "../../Components/ModalWrapper";
 import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-import { toast } from 'react-toastify';
 import "../../Assets/Styles/Modal.css"
 
 //We are only validating the form for Name, since 'Description' and 'Code' are not required fields
@@ -51,7 +51,7 @@ function ModalEditTag(props) {
   setColourFieldState("#595d66");
  };
  function closeThisModal() {
-  props.addTagModalToggler("close"); ///PROPS
+  props.editTagModalToggler("close"); ///PROPS
   setTimeout(() => {
    clearAllFields();
   }, 150);
@@ -67,7 +67,7 @@ function ModalEditTag(props) {
    return toast.error(`Error: name invalid. Name should have between 1 and 30 characters.`);
   }
 
-  dispatch(editSelectedWorkspaceTag(selectedWorkspace.uuid, nameField, colourField));
+  dispatch(editSelectedWorkspaceTag(theTag.uuid, nameField, colourField));
  };
 
  return (

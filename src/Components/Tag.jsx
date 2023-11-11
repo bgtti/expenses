@@ -5,7 +5,7 @@ function Tag(props) {
  const colourWithTransparency = addOpacity(props.colour, 0.2)
  const theStyle = {
   "--beforeColour": colourWithTransparency,
-  "background-color": colourWithTransparency,
+  "backgroundColor": colourWithTransparency,
   "color": colour
  }
 

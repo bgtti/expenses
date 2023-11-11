@@ -1,9 +1,9 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addSelectedExpenseNumberingPreference } from '../../general_redux/Workspace/actions';
+import { toast } from 'react-toastify';
 import ModalWrapper from "../../Components/ModalWrapper";
 import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-import { toast } from 'react-toastify';
 import "../../Assets/Styles/Modal.css"
 
 const ALLOWEDNUMDIGITS = ["3", "4", "5"];
