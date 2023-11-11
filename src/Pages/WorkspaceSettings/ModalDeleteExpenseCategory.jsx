@@ -36,8 +36,8 @@ function ModalDeleteExpenseCategory(props) {
                         (
                             <div className="Modal-InformationGroupingDiv">
                                 <p><b>Category name: {theCategory.name}</b></p>
-                                <p className="Modal-InformationGroupingDiv-Pgray">Category description: {theCategory.description}</p>
-                                <p className="Modal-InformationGroupingDiv-Pgray">Category code: {theCategory.code}</p>
+                                <p className="Modal-InformationGroupingDiv-Pgray">Category description: {theCategory.description ? theCategory.description : "-"}</p>
+                                <p className="Modal-InformationGroupingDiv-Pgray">Category code: {theCategory.code ? theCategory.code : "-"}</p>
                             </div>
                         ) :
                         (<p><b>Category not found.</b></p>)

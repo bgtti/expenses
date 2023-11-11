@@ -20,7 +20,6 @@ import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
 import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
-import "./WorkspaceSettings.css";
 import "../../Assets/Styles/Common.css"
 
 const THIS_YEAR = (new Date().getFullYear()).toString();
@@ -45,7 +44,6 @@ function WorkspaceSettings() {
     const [modalEditTagStatus, setModalEditTagStatus] = useState(false);
     const [modalEditExpenseCategoryStatus, setModalEditExpenseCategoryStatus] = useState(false);
     const [modalSetExpenseNumberingStatus, setModalSetExpenseNumberingStatus] = useState(false);
-    //const [workspaceToEditUuid, setGroupToEditUuid] = useState("");
     const [groupToEditUuid, setGroupToEditUuid] = useState("");
     const [accountToEditUuid, setAccountToEditUuid] = useState("");
     const [tagToEditUuid, setTagToEditUuid] = useState("");
@@ -163,22 +161,22 @@ function WorkspaceSettings() {
             {selectedWorkspace.uuid &&
                 (<>
                     <ModalEditWorkspace
-                        className={modalEditWorkspaceStatus === false ? "modalEditWorkspaceHidden" : ""}
+                        className={modalEditWorkspaceStatus === false ? "Common-hidden" : ""}
                         editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={selectedWorkspace.uuid}>
                     </ModalEditWorkspace>
                     <ModalAddGroup
-                        className={modalAddGroupStatus === false ? "modalAddGroupHidden" : ""}
+                        className={modalAddGroupStatus === false ? "Common-hidden" : ""}
                         addGroupModalToggler={addGroupModalToggler}>
                     </ModalAddGroup>
                     <ModalAddAccount
-                        className={modalAddAccountStatus === false ? "modalAddAccountHidden" : ""}
+                        className={modalAddAccountStatus === false ? "Common-hidden" : ""}
                         addAccountModalToggler={addAccountModalToggler}>
                     </ModalAddAccount>
                     <ModalAddTag
-                        className={modalAddTagStatus === false ? "modalAddTagHidden" : ""}
+                        className={modalAddTagStatus === false ? "Common-hidden" : ""}
                         addTagModalToggler={addTagModalToggler}>
                     </ModalAddTag>
-                    <ModalAddExpenseCategory className={modalAddExpenseCategoryStatus === false ? "modalAddExpenseCategoryHidden" : ""}
+                    <ModalAddExpenseCategory className={modalAddExpenseCategoryStatus === false ? "Common-hidden" : ""}
                         addExpenseCategoryModalToggler={addExpenseCategoryModalToggler}>
                     </ModalAddExpenseCategory>
                 </>
@@ -187,7 +185,7 @@ function WorkspaceSettings() {
             {groupToEditUuid &&
                 (
                     <ModalEditGroup
-                        className={modalEditGroupStatus === false ? "modalEditGroupHidden" : ""}
+                        className={modalEditGroupStatus === false ? "Common-hidden" : ""}
                         editGroupModalToggler={editGroupModalToggler} uuid={groupToEditUuid}>
                     </ModalEditGroup>
                 )
@@ -195,7 +193,7 @@ function WorkspaceSettings() {
             {accountToEditUuid &&
                 (
                     <ModalEditAccount
-                        className={modalEditAccountStatus === false ? "modalEditAccountHidden" : ""}
+                        className={modalEditAccountStatus === false ? "Common-hidden" : ""}
                         editAccountModalToggler={editAccountModalToggler} uuid={accountToEditUuid}>
                     </ModalEditAccount>
                 )
@@ -203,7 +201,7 @@ function WorkspaceSettings() {
             {tagToEditUuid &&
                 (
                     <ModalEditTag
-                        className={modalEditTagStatus === false ? "modalEditTagHidden" : ""}
+                        className={modalEditTagStatus === false ? "Common-hidden" : ""}
                         editTagModalToggler={editTagModalToggler} uuid={tagToEditUuid}>
                     </ModalEditTag>
                 )
@@ -211,7 +209,7 @@ function WorkspaceSettings() {
             {expenseCategoryToEditUuid &&
                 (
                     <ModalEditExpenseCategory
-                        className={modalEditExpenseCategoryStatus === false ? "modalEditExpenseCategoryHidden" : ""}
+                        className={modalEditExpenseCategoryStatus === false ? "Common-hidden" : ""}
                         editExpenseCategoryModalToggler={editExpenseCategoryModalToggler} uuid={expenseCategoryToEditUuid}>
                     </ModalEditExpenseCategory>
                 )
@@ -219,7 +217,7 @@ function WorkspaceSettings() {
             {groupToDeleteUuid &&
                 (
                     <ModalDeleteGroup
-                        className={modalDeleteGroupStatus === false ? "modalDeleteGroupHidden" : ""}
+                        className={modalDeleteGroupStatus === false ? "Common-hidden" : ""}
                         deleteGroupModalToggler={deleteGroupModalToggler} uuid={groupToDeleteUuid}>
                     </ModalDeleteGroup>
                 )
@@ -227,7 +225,7 @@ function WorkspaceSettings() {
             {accountToDeleteUuid &&
                 (
                     <ModalDeleteAccount
-                        className={modalDeleteAccountStatus === false ? "modalDeleteAccountHidden" : ""}
+                        className={modalDeleteAccountStatus === false ? "Common-hidden" : ""}
                         deleteAccountModalToggler={deleteAccountModalToggler} uuid={accountToDeleteUuid}>
                     </ModalDeleteAccount>
                 )
@@ -235,7 +233,7 @@ function WorkspaceSettings() {
             {tagToDeleteUuid &&
                 (
                     <ModalDeleteTag
-                        className={modalDeleteTagStatus === false ? "modalDeleteTagHidden" : ""}
+                        className={modalDeleteTagStatus === false ? "Common-hidden" : ""}
                         deleteTagModalToggler={deleteTagModalToggler} uuid={tagToDeleteUuid}>
                     </ModalDeleteTag>
                 )
@@ -243,17 +241,17 @@ function WorkspaceSettings() {
             {expenseCategoryToDeleteUuid &&
                 (
                     <ModalDeleteExpenseCategory
-                        className={modalDeleteExpenseCategoryStatus === false ? "modalDeleteExpenseCategoryHidden" : ""}
+                        className={modalDeleteExpenseCategoryStatus === false ? "Common-hidden" : ""}
                         deleteExpenseCategoryModalToggler={deleteExpenseCategoryModalToggler} uuid={expenseCategoryToDeleteUuid}>
                     </ModalDeleteExpenseCategory>
                 )
             }
             <ModalSetExpenseNumbering
-                className={modalSetExpenseNumberingStatus === false ? "modalSetExpenseNumberingHidden" : ""}
+                className={modalSetExpenseNumberingStatus === false ? "Common-hidden" : ""}
                 expenseNumberingModalToggler={expenseNumberingModalToggler}>
             </ModalSetExpenseNumbering>
 
-            <h2 className="Common-H2">Workspace Settings</h2>
+            <h2>Workspace Settings</h2>
             {(!selectedWorkspace) ?
                 (<section>
                     <h3>Oops, an error occurred.</h3>
@@ -263,8 +261,8 @@ function WorkspaceSettings() {
                 (
                     <>
                         <section>
-                            <h3 className="Common-H3">This Workspace</h3>
-                            <table className="WorkspaceSettings-WorkspaceInfoTable">
+                            <h3>This Workspace</h3>
+                            <table className="Common-InfoTable">
                                 <tbody>
                                     <tr>
                                         <th>Name:</th><td>{selectedWorkspace.name}</td>
@@ -282,23 +280,23 @@ function WorkspaceSettings() {
                             </table>
 
                             <AddButton name="Edit Workspace" className="Common-button-secondary" onClickFunction={editWorkspaceModalToggler}>
-                                <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />
+                                <img src={editIcon} alt="edit element" className="Common-Icon-light" />
                             </AddButton>
                         </section>
                         <hr />
                         <section>
-                            <h3 className="Common-H3">General Workspace Settings</h3>
+                            <h3>General Workspace Settings</h3>
                             <div>
-                                <h4 className="Common-H4">Groups</h4>
+                                <h4>Groups</h4>
                                 <p>You can group expenses by project, rental property, product, service, or any transactional good your company offers.</p>
                                 <AddButton name="Add Group" className="Common-button-primary" onClickFunction={addGroupModalToggler}>
                                     <img src={AddIcon} alt="Add icon" />
                                 </AddButton>
                                 {
-                                    (!selectedWorkspaceGroups) ?
-                                        (<p>You have no groups yet.</p>) :
+                                    (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) ?
+                                        (<p className="Common-PSInfo-P">You have no groups yet.</p>) :
                                         (
-                                            <table className="WorkspaceSettings-Table ">
+                                            <table className="Common-Table ">
                                                 <tbody>
                                                     <tr >
                                                         <th>Group</th>
@@ -307,19 +305,19 @@ function WorkspaceSettings() {
                                                     </tr>
                                                     {selectedWorkspaceGroups.map((group, index) => (
                                                         <tr key={index}>
-                                                            <td className="WorkspaceSettings-Table-tdBullet"><div className="WorkspaceSettings-Table-YellowDiv"></div>{group.name}</td>
-                                                            <td className={group.description ? "" : "WorkspaceSettings-Table-tdInfo"}>
+                                                            <td className="Common-Table-tdBullet"><div className="Common-Table-YellowDiv"></div>{group.name}</td>
+                                                            <td className={group.description ? "" : "Common-Table-tdInfo"}>
                                                                 {group.description ? group.description : "-"}
                                                             </td>
-                                                            <td className={group.description ? "" : "WorkspaceSettings-Table-tdInfo"}>
+                                                            <td className={group.description ? "" : "Common-Table-tdInfo"}>
                                                                 {group.code ? group.code : "-"}
                                                             </td>
-                                                            <td className="WorkspaceSettings-Table-tdIcon">
-                                                                <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={editIcon} alt="edit element" className="Common-Icon"
                                                                     onClick={() => { setGroupToEditUuid(`${group.uuid}`); editGroupModalToggler("open"); }} />
                                                             </td>
-                                                            <td className="WorkspaceSettings-Table-tdIcon">
-                                                                <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={trashIcon} alt="delete element" className="Common-Icon"
                                                                     onClick={() => { setGroupToDeleteUuid(`${group.uuid}`); deleteGroupModalToggler("open"); }} />
                                                             </td>
                                                         </tr>
@@ -337,21 +335,37 @@ function WorkspaceSettings() {
                                     <img src={AddIcon} alt="Add icon" />
                                 </AddButton>
                                 {
-                                    (!selectedWorkspaceAccounts) ?
-                                        (<p>You have no accounts yet.</p>) :
+                                    (!selectedWorkspaceAccounts || selectedWorkspaceAccounts.length === 0) ?
+                                        (<p className="Common-PSInfo-P">You have no accounts yet.</p>) :
                                         (
-                                            <ul className="WorkspaceSettings-List">
-                                                {selectedWorkspaceAccounts.map((account, index) => (
-                                                    <li className="WorkspaceSettings-ListItem" key={index}>
-                                                        <div className="WorkspaceSettings-ListBullet"></div>
-                                                        <div>{account.name}</div>
-                                                        <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setAccountToEditUuid(`${account.uuid}`); editAccountModalToggler("open"); }} />
-                                                        <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setAccountToDeleteUuid(`${account.uuid}`); deleteAccountModalToggler("open"); }} />
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                            <table className="Common-Table ">
+                                                <tbody>
+                                                    <tr >
+                                                        <th>Account</th>
+                                                        <th>Description</th>
+                                                        <th>Code</th>
+                                                    </tr>
+                                                    {selectedWorkspaceAccounts.map((account, index) => (
+                                                        <tr key={index}>
+                                                            <td className="Common-Table-tdBullet"><div className="Common-Table-YellowDiv"></div>{account.name}</td>
+                                                            <td className={account.description ? "" : "Common-Table-tdInfo"}>
+                                                                {account.description ? account.description : "-"}
+                                                            </td>
+                                                            <td className={account.description ? "" : "Common-Table-tdInfo"}>
+                                                                {account.code ? account.code : "-"}
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={editIcon} alt="edit element" className="Common-Icon"
+                                                                    onClick={() => { setAccountToEditUuid(`${account.uuid}`); editAccountModalToggler("open"); }} />
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={trashIcon} alt="delete element" className="Common-Icon"
+                                                                    onClick={() => { setAccountToDeleteUuid(`${account.uuid}`); deleteAccountModalToggler("open"); }} />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         )
                                 }
                             </div>
@@ -364,21 +378,29 @@ function WorkspaceSettings() {
                                     <img src={AddIcon} alt="Add icon" />
                                 </AddButton>
                                 {
-                                    (!selectedWorkspaceTags) ?
-                                        (<p>You have no tags yet.</p>) :
+                                    (!selectedWorkspaceTags || selectedWorkspaceTags.length === 0) ?
+                                        (<p className="Common-PSInfo-P">You have no tags yet.</p>) :
                                         (
-                                            <ul className="WorkspaceSettings-List">
-                                                {selectedWorkspaceTags.map((tag, index) => (
-                                                    <li className="WorkspaceSettings-ListItem" key={index}>
-                                                        <div className="WorkspaceSettings-ListBullet"></div>
-                                                        <Tag colour={tag.colour} name={tag.name}></Tag>
-                                                        <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setTagToEditUuid(`${tag.uuid}`); editTagModalToggler("open"); }} />
-                                                        <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setTagToDeleteUuid(`${tag.uuid}`); deleteTagModalToggler("open"); }} />
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                            <table className="Common-Table ">
+                                                <tbody>
+                                                    <tr >
+                                                        <th>Tag</th>
+                                                    </tr>
+                                                    {selectedWorkspaceTags.map((tag, index) => (
+                                                        <tr key={index}>
+                                                            <td className="Common-Table-tdBullet"><div className="Common-Table-YellowDiv"></div><Tag colour={tag.colour} name={tag.name}></Tag></td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={editIcon} alt="edit element" className="Common-Icon"
+                                                                    onClick={() => { setTagToEditUuid(`${tag.uuid}`); editTagModalToggler("open"); }} />
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={trashIcon} alt="delete element" className="Common-Icon"
+                                                                    onClick={() => { setTagToDeleteUuid(`${tag.uuid}`); deleteTagModalToggler("open"); }} />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         )
                                 }
                             </div>
@@ -386,7 +408,6 @@ function WorkspaceSettings() {
                         <hr />
                         <section>
                             <h3>Expense Settings</h3>
-                            <br />
                             <div>
                                 <h4>Expense category</h4>
                                 <p>You can assign a type of expense to each item.</p>
@@ -394,21 +415,37 @@ function WorkspaceSettings() {
                                     <img src={AddIcon} alt="Add icon" />
                                 </AddButton>
                                 {
-                                    (!selectedWorkspaceExpenseCategories) ?
-                                        (<p>You have no category yet.</p>) :
+                                    (!selectedWorkspaceExpenseCategories || selectedWorkspaceExpenseCategories.length === 0) ?
+                                        (<p className="Common-PSInfo-P">You have no category yet.</p>) :
                                         (
-                                            <ul className="WorkspaceSettings-List">
-                                                {selectedWorkspaceExpenseCategories.map((category, index) => (
-                                                    <li className="WorkspaceSettings-ListItem" key={index}>
-                                                        <div className="WorkspaceSettings-ListBullet"></div>
-                                                        <div>{category.name}</div>
-                                                        <img role="button" src={editIcon} alt="edit element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setExpenseCategoryToEditUuid(`${category.uuid}`); editExpenseCategoryModalToggler("open"); }} />
-                                                        <img role="button" src={trashIcon} alt="delete element" className="WorkspaceSettings-Icon"
-                                                            onClick={() => { setExpenseCategoryToDeleteUuid(`${category.uuid}`); deleteExpenseCategoryModalToggler("open"); }} />
-                                                    </li>
-                                                ))}
-                                            </ul>
+                                            <table className="Common-Table ">
+                                                <tbody>
+                                                    <tr >
+                                                        <th>Expense Category</th>
+                                                        <th>Description</th>
+                                                        <th>Code</th>
+                                                    </tr>
+                                                    {selectedWorkspaceExpenseCategories.map((category, index) => (
+                                                        <tr key={index}>
+                                                            <td className="Common-Table-tdBullet"><div className="Common-Table-YellowDiv"></div>{category.name}</td>
+                                                            <td className={category.description ? "" : "Common-Table-tdInfo"}>
+                                                                {category.description ? category.description : "-"}
+                                                            </td>
+                                                            <td className={category.description ? "" : "Common-Table-tdInfo"}>
+                                                                {category.code ? category.code : "-"}
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={editIcon} alt="edit element" className="Common-Icon"
+                                                                    onClick={() => { setExpenseCategoryToEditUuid(`${category.uuid}`); editExpenseCategoryModalToggler("open"); }} />
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={trashIcon} alt="delete element" className="Common-Icon"
+                                                                    onClick={() => { setExpenseCategoryToDeleteUuid(`${category.uuid}`); deleteExpenseCategoryModalToggler("open"); }} />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         )
                                 }
 
@@ -416,9 +453,9 @@ function WorkspaceSettings() {
                             <br />
                             <div>
                                 <h4>Expenses numbering</h4>
-                                <p>Expense numbering format: {currentNumFormatState}</p>
+                                <p>Current format: {currentNumFormatState}</p>
                                 <AddButton name="Edit Expense Numbering" className="Common-button-secondary" onClickFunction={expenseNumberingModalToggler}>
-                                    <img src={editIcon} alt="edit element" className="WorkspaceSettings-Icon-light" />
+                                    <img src={editIcon} alt="edit element" className="Common-Icon-light" />
                                 </AddButton>
                             </div>
                         </section>

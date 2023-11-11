@@ -10,7 +10,6 @@ import AddIcon from "../../../Assets/Images/add.png"; //Source: Plus icons creat
 import trashIcon from '../../../Assets/Images/trash.png'; // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 // import "../../../Assets/Styles/Settings.css";
 import "../User.css"
-import "./UserSettings.css"
 import "../../../Assets/Styles/Common.css"
 
 
@@ -49,7 +48,7 @@ function UserSettings(props) {
     return (
         <section className={`UserSettings Common-padding Common-expand-flex-1 ${props.className}`}>
             <ModalAddWorkspace
-                className={modalAddWorkspaceStatus === false ? "modalAddWorkspaceHidden" : ""}
+                className={modalAddWorkspaceStatus === false ? "Common-hidden" : ""}
                 addWorkspaceModalToggler={addWorkspaceModalToggler}>
             </ModalAddWorkspace>
             {
@@ -57,7 +56,7 @@ function UserSettings(props) {
                     ("") :
                     (
                         <ModalEditWorkspace
-                            className={modalEditWorkspaceStatus === false ? "modalEditWorkspaceHidden" : ""}
+                            className={modalEditWorkspaceStatus === false ? "Common-hidden" : ""}
                             editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={workspaceToEditUuid}>
                         </ModalEditWorkspace>
                     )
@@ -67,26 +66,33 @@ function UserSettings(props) {
                     ("") :
                     (
                         <ModalDeleteWorkspace
-                            className={modalDeleteWorkspaceStatus === false ? "modalDeleteWorkspaceHidden" : ""}
+                            className={modalDeleteWorkspaceStatus === false ? "Common-hidden" : ""}
                             deleteWorkspaceModalToggler={deleteWorkspaceModalToggler} uuid={workspaceToDeleteUuid}>
                         </ModalDeleteWorkspace>
                     )
             }
             <ModalDeleteUserAccount
-                className={modalDeleteUserAccountStatus === false ? "modalDeleteUserAccountHidden" : ""}
+                className={modalDeleteUserAccountStatus === false ? "Common-hidden" : ""}
                 deleteAccountModalToggler={deleteAccountModalToggler}>
             </ModalDeleteUserAccount>
             <h2>User Settings</h2>
-            <hr />
             {
                 userIsLoggedIn && (
                     <section>
                         <h3>Account</h3>
-                        <p><b>Name:</b> {userInfo.name}</p>
-                        <p><b>Email:</b> {userInfo.email}</p>
+                        <table className="Common-InfoTable">
+                            <tbody>
+                                <tr>
+                                    <th>Name:</th><td>{userInfo.name}</td>
+                                </tr>
+                                <tr>
+                                    <th>E-mail</th><td>{userInfo.email}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <AddButton name="Delete Account" className="Common-button-secondary"
                             onClickFunction={deleteAccountModalToggler}>
-                            <img src={trashIcon} alt="delete user" className="UserSettings-Icon-light" />
+                            <img src={trashIcon} alt="delete user" className="Common-Icon-light" />
                         </AddButton>
                     </section>
                 )
@@ -101,22 +107,34 @@ function UserSettings(props) {
                 </AddButton>
                 {
                     (workspaces === undefined || workspaces === "undefined" || workspaces.length === 0) ?
-                        (<p>You do not own or have access to any workspace. Add a workspace!</p>) :
+                        (<p className="Common-PSInfo-P">You do not own or have access to any workspace. Add a workspace!</p>) :
                         (
-                            <ul className="UserSettings-List">
-                                {workspaces.map((workspace, index) => (
-                                    <li className="UserSettings-ListItem" key={index}>
-                                        <div className="UserSettings-ListBullet"></div>
-                                        <div><b>{workspace.abbreviation.toUpperCase()}</b></div>
-                                        <div>{workspace.name}</div>
-                                        <div>Members: {workspace.num_users_with_access}</div>
-                                        <img role="button" src={editIcon} alt="edit element" className="UserSettings-Icon"
-                                            onClick={() => { setWorkspaceToEditUuid(`${workspace.uuid}`); editWorkspaceModalToggler("open"); }} />
-                                        <img role="button" src={trashIcon} alt="delete element" className="UserSettings-Icon"
-                                            onClick={() => { setWorkspaceToDeleteUuid(`${workspace.uuid}`); deleteWorkspaceModalToggler("open"); }} />
-                                    </li>
-                                ))}
-                            </ul>
+                            <table className="Common-Table ">
+                                <tbody>
+                                    <tr >
+                                        <th>Abbrev.</th>
+                                        <th>WS Name</th>
+                                        <th>Shared with</th>
+                                    </tr>
+                                    {workspaces.map((workspace, index) => (
+                                        <tr key={index}>
+                                            <td className="Common-Table-tdBullet"><div className="Common-Table-YellowDiv"></div>{workspace.abbreviation.toUpperCase()}</td>
+                                            <td>
+                                                {workspace.name}
+                                            </td>
+                                            <td>
+                                                Members: {workspace.num_users_with_access}
+                                            </td>
+                                            <td className="Common-Table-tdIcon">
+                                                <img role="button" src={editIcon} alt="edit element" className="Common-Icon" onClick={() => { setWorkspaceToEditUuid(`${workspace.uuid}`); editWorkspaceModalToggler("open"); }} />
+                                            </td>
+                                            <td className="Common-Table-tdIcon">
+                                                <img role="button" src={trashIcon} alt="delete element" className="Common-Icon" onClick={() => { setWorkspaceToDeleteUuid(`${workspace.uuid}`); deleteWorkspaceModalToggler("open"); }} />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         )
                 }
             </section>
