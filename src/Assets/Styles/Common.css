@@ -39,6 +39,11 @@ h4 {
     color: var(--cMidGray);
 }
 
+/* Red text */
+.Common-Text-Red {
+    color: var(--cRed);
+}
+
 /* Sections */
 
 section {
@@ -46,6 +51,23 @@ section {
 }
 
 /* Buttons */
+.Common-button {
+    margin: 10px 0;
+    padding: 5px 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid;
+}
+
+.Common-button img {
+    width: 15px;
+}
+
+/* the bellow can be deleted once BTN elements are replaced with buttons and added .Common-button classNames  */
 .Common-button-primary,
 .Common-button-secondary,
 .Common-button-tertiary,
@@ -87,6 +109,16 @@ section {
     background: #ccc;
     border-color: #ccc;
     color: var(--cGray);
+}
+
+.Common-button-mini {
+    font-size: 0.8rem;
+    padding: 2px 5px;
+}
+
+.Common-button-mini>img {
+    height: 0.9rem;
+    width: auto;
 }
 
 @media (hover: hover) {
@@ -154,6 +186,14 @@ section {
     background-color: var(--cSuperLightGray);
 }
 
+.Common-Table-WhiteBg tr>* {
+    background-color: white;
+}
+
+.Common-Table-GrayRow>* {
+    background-color: var(--cSuperLightGray) !important;
+}
+
 .Common-Table-YellowDiv {
     width: 2.5px;
     height: 20px;
@@ -166,7 +206,7 @@ section {
 }
 
 .Common-Table th,
-td {
+.Common-Table td {
     padding: 5px;
 }
 
@@ -191,4 +231,17 @@ td {
 
 .Common-Table-tdIcon {
     padding-left: 15px;
+}
+
+/* Special table rows */
+/* .Common-Table-InfoRow {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+} */
+
+.Common-Table-InfoRow>* {
+    height: 10px;
+    font-size: 0.7rem !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
 }
