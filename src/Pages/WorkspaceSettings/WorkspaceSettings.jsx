@@ -338,7 +338,7 @@ function WorkspaceSettings() {
                                     (!selectedWorkspaceAccounts || selectedWorkspaceAccounts.length === 0) ?
                                         (<p className="Common-PSInfo-P">You have no accounts yet.</p>) :
                                         (
-                                            <table className="Common-Table ">
+                                            <table className="Common-Table">
                                                 <tbody>
                                                     <tr >
                                                         <th>Account</th>

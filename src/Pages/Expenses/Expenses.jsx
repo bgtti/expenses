@@ -33,6 +33,7 @@ function Expenses(props) {
                 <img src={AddIcon} alt="Add icon" />
                 Add new expense
             </button>
+            <ExpensesFilter></ExpensesFilter>
             <h2>Expenses Table</h2>
             <ExpensesTable></ExpensesTable>
         </section>
