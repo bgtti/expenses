@@ -5,6 +5,7 @@ import APIURL from "../../config/api-url";
 import { getAuthHeader } from "../../config/authHeader"
 import { loaderOn, loaderOff } from "../Loader/actions";
 import { toast } from 'react-toastify';
+import { getArrayOfSubgroups } from './helpers'
 
 // Actions for updating the state of a selected workspace
 // Objects such as groups and accounts are used in Workspace Settings
@@ -12,15 +13,13 @@ export const selectedWorkspaceSetAsUndefined = () => {
     return (dispatch) => {
         sessionStorage.setItem("selectedWorkspace", undefined);
         sessionStorage.setItem("selectedWorkspaceGroups", undefined);
+        sessionStorage.setItem("selectedWorkspaceSubgroups", undefined);
         sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
         sessionStorage.getItem("selectedWorkspaceTags", undefined);
         sessionStorage.setItem("selectedWorkspaceExpenseCategories", undefined);
         sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", undefined);
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_UNDEFINED,
-            // selectedWorkspace: undefined,
-            // selectedWorkspaceGroups: undefined,
-            // selectedWorkspaceAccounts: undefined,
         })
     }
 };
@@ -29,12 +28,10 @@ export const removeSelectedWorkspaceFromStorage = () => {
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_UNDEFINED,
-            // selectedWorkspace: undefined,
-            // selectedWorkspaceGroups: undefined,
-            // selectedWorkspaceAccounts: undefined,
         })
         sessionStorage.removeItem("selectedWorkspace");
         sessionStorage.removeItem("selectedWorkspaceGroups");
+        sessionStorage.removeItem("selectedWorkspaceSubgroups");
         sessionStorage.removeItem("selectedWorkspaceAccounts");
         sessionStorage.removeItem("selectedWorkspaceTags");
         sessionStorage.removeItem("selectedWorkspaceExpenseCategories");
@@ -51,8 +48,14 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
             dispatch(selectedWorkspaceSetAsUndefined())
         }
     };
+    let subgroups = []
+    if (selectedWorkspaceSettings.groups && selectedWorkspaceSettings.groups.length > 0) {
+        subgroups = getArrayOfSubgroups(selectedWorkspaceSettings.groups)
+    }
+    sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(subgroups));
     sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
     sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(selectedWorkspaceSettings.groups));
+    sessionStorage.setItem("selectedWorkspaceSubgroups", JSON.stringify(subgroups));
     sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(selectedWorkspaceSettings.accounts));
     sessionStorage.getItem("selectedWorkspaceTags", JSON.stringify(selectedWorkspaceSettings.tags));
     sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(selectedWorkspaceSettings.expense_categories));
@@ -62,6 +65,7 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
             type: ActionTypes.SET_SELECTED_WORKSPACE,
             selectedWorkspace: selectedWorkspace,
             selectedWorkspaceGroups: selectedWorkspaceSettings.groups,
+            selectedWorkspaceSubgroups: subgroups,
             selectedWorkspaceAccounts: selectedWorkspaceSettings.accounts,
             selectedWorkspaceTags: selectedWorkspaceSettings.tags,
             selectedWorkspaceExpenseCategories: selectedWorkspaceSettings.expense_categories,
@@ -108,10 +112,16 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
                 sessionStorage.getItem("selectedWorkspaceTags", JSON.stringify(data.tags));
                 sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data.expense_categories));
                 sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(data.expense_numbering_settings));
+                let subgroups = []
+                if (data.groups && data.groups.length > 0) {
+                    subgroups = getArrayOfSubgroups(data.groups)
+                }
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(subgroups));
                 dispatch({
                     type: ActionTypes.SET_SELECTED_WORKSPACE,
                     selectedWorkspace: selectedWorkspace,
                     selectedWorkspaceGroups: data.groups,
+                    selectedWorkspaceSubgroups: subgroups,
                     selectedWorkspaceAccounts: data.accounts,
                     selectedWorkspaceTags: data.tags,
                     selectedWorkspaceExpenseCategories: data.expense_categories,
@@ -135,14 +145,27 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
                 type: ActionTypes.SET_SELECTED_WORKSPACE_GROUP,
                 selectedWorkspaceGroups: undefined,
             })
+            dispatch({
+                type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
+                selectedWorkspaceSubgroups: undefined,
+            })
         }
     };
+    let subgroups = []
+    if (selectedWorkspaceGroups.length > 0) {
+        subgroups = getArrayOfSubgroups(selectedWorkspaceGroups)
+    }
     sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(selectedWorkspaceGroups));
+    sessionStorage.setItem("selectedWorkspaceSubgroups", JSON.stringify(subgroups));
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_GROUP,
             selectedWorkspaceGroups: selectedWorkspaceGroups
-        })
+        });
+        dispatch({
+            type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
+            selectedWorkspaceGroups: subgroups
+        });
     }
 }
 
@@ -230,7 +253,7 @@ export const deleteSelectedWorkspaceGroup = (groupUuid) => {
     }
 }
 //*********** SUBGROUPS ***********
-// Add group
+// Add subgroup
 export const addSelectedWorkspaceSubgroup = (groupUuid, subgroupName, subgroupDescription, subgroupCode) => {
     store.dispatch(loaderOn())
     return async (dispatch) => {
@@ -245,15 +268,69 @@ export const addSelectedWorkspaceSubgroup = (groupUuid, subgroupName, subgroupDe
             const response = await api.post(APIURL.ADD_SUBGROUP, requestData, config);
 
             if (response.status !== 200) {
-                toast.error(`Error: subgroup could not be added. Server response status ${response.status}.`);
+                toast.error(`Error: sub-group could not be added. Server response status ${response.status}.`);
             } else {
                 const data = response.data;
                 sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
                 dispatch(setSelectedWorkspaceGroup(data));
-                toast.success(`Subgroup added successfully!`);
+                toast.success(`Sub-group added successfully!`);
             }
         } catch (error) {
-            toast.error(`Error: subgroup could not be added. No server response or request rejected.`);
+            toast.error(`Error: sub-group could not be added. No server response or request rejected.`);
+        }
+        dispatch(loaderOff());
+    }
+}
+// edit subgroup
+export const editSelectedWorkspaceSubgroup = (groupUuid, subgroupUuid, subgroupName, subgroupDescription, subgroupCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            group_uuid: groupUuid,
+            subgroup_uuid: subgroupUuid,
+            name: subgroupName,
+            description: subgroupDescription,
+            code: subgroupCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.EDIT_SUBGROUP, requestData, config);
+
+            if (response.status !== 200) {
+                toast.error(`Error: sub-group could not be edited. Server response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
+                dispatch(setSelectedWorkspaceGroup(data));
+                toast.success(`Sub-group edited successfully!`);
+            }
+        } catch (error) {
+            toast.error(`Error: sub-group could not be edited. No server response or request rejected.`);
+        }
+        dispatch(loaderOff());
+    }
+}
+// Delete group
+export const deleteSelectedWorkspaceSubgroup = (subgroupUuid) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            subgroup_uuid: subgroupUuid,
+        };
+        let token = sessionStorage.getItem("access_token");
+        try {
+            const response = await api.delete(APIURL.DELETE_SUBGROUP, { headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, }, data: JSON.stringify(requestData) });
+
+            if (response.status !== 200) {
+                toast.error(`Error: sub-group could not be deleted. Server response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
+                dispatch(setSelectedWorkspaceGroup(data));
+                toast.success(`Sub-group deleted successfully!`);
+            }
+        } catch (error) {
+            toast.error(`Error: sub-group could not be deleted. No server response or request rejected.`);
         }
         dispatch(loaderOff());
     }

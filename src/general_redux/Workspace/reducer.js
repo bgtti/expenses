@@ -5,6 +5,7 @@ const checkWorkspace = () => {
     let token = sessionStorage.getItem("access_token");
     let selectedWorkspace = sessionStorage.getItem("selectedWorkspace");
     let selectedWorkspaceGroups = sessionStorage.getItem("selectedWorkspaceGroups");
+    let selectedWorkspaceSubgroups = sessionStorage.getItem("selectedWorkspaceSubgroups");
     let selectedWorkspaceAccounts = sessionStorage.getItem("selectedWorkspaceAccounts");
     let selectedWorkspaceTags = sessionStorage.getItem("selectedWorkspaceTags");
     let selectedWorkspaceExpenseCategories = sessionStorage.getItem("selectedWorkspaceExpenseCategories");
@@ -15,6 +16,9 @@ const checkWorkspace = () => {
     }
     if (selectedWorkspaceGroups) {
         selectedWorkspaceGroups = JSON.parse(selectedWorkspaceGroups);
+    }
+    if (selectedWorkspaceSubgroups) {
+        selectedWorkspaceSubgroups = JSON.parse(selectedWorkspaceSubgroups);
     }
     if (selectedWorkspaceAccounts) {
         selectedWorkspaceAccounts = JSON.parse(selectedWorkspaceAccounts);
@@ -32,6 +36,7 @@ const checkWorkspace = () => {
         return {
             selectedWorkspace: selectedWorkspace,
             selectedWorkspaceGroups: selectedWorkspaceGroups,
+            selectedWorkspaceSubgroups: selectedWorkspaceSubgroups,
             selectedWorkspaceAccounts: selectedWorkspaceAccounts,
             selectedWorkspaceTags: selectedWorkspaceTags,
             selectedWorkspaceExpenseCategories: selectedWorkspaceExpenseCategories,
@@ -41,6 +46,7 @@ const checkWorkspace = () => {
         return {
             selectedWorkspace: undefined,
             selectedWorkspaceGroups: undefined,
+            selectedWorkspaceSubgroups: undefined,
             selectedWorkspaceAccounts: undefined,
             selectedWorkspaceTags: undefined,
             selectedWorkspaceExpenseCategories: undefined,
@@ -55,6 +61,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: action.selectedWorkspace,
                 selectedWorkspaceGroups: action.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: action.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: action.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: action.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: action.selectedWorkspaceExpenseCategories,
@@ -64,6 +71,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: undefined,
                 selectedWorkspaceGroups: undefined,
+                selectedWorkspaceSubgroups: undefined,
                 selectedWorkspaceAccounts: undefined,
                 selectedWorkspaceTags: undefined,
                 selectedWorkspaceExpenseCategories: undefined,
@@ -73,6 +81,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: action.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
@@ -82,6 +91,17 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: action.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
+                selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+                selectedWorkspaceTags: state.selectedWorkspaceTags,
+                selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
+                selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
+            }
+        case 'SET_SELECTED_WORKSPACE_SUBGROUP':
+            return {
+                selectedWorkspace: state.selectedWorkspace,
+                selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: action.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
@@ -91,6 +111,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: action.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
@@ -100,6 +121,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: action.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
@@ -109,6 +131,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: action.selectedWorkspaceExpenseCategories,
@@ -118,6 +141,7 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,

@@ -1,8 +1,8 @@
 :root {
   --cGray: rgb(59, 59, 59);
   --cMidGray: #81868a;
-  --cLightGray: rgb(203, 203, 203);
-  --cSuperLightGray: rgb(241, 242, 247);
+  --cLightGray: #cbcbcb;
+  --cSuperLightGray: #f1f2f7;
   /* new ones: https: //m2.material.io/design/color/applying-color-to-ui.html#top-and-bottom-app-bars */
   /* Primary: cBlueDark, secondary: cOrange, tertiary: cBlueLight */
   /* use cBlueDark for darkmode background */

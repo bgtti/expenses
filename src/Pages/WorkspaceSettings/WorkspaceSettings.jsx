@@ -2,21 +2,6 @@ import React, { lazy, Suspense, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../Components/Loader";
 import Tag from "../../Components/Tag";
-// import ModalEditWorkspace from "../User/ModalEditWorkspace/ModalEditWorkspace";
-// import ModalAddGroup from "./ModalAddGroup";
-// import ModalAddAccount from "./ModalAddAccount";
-// import ModalAddTag from "./ModalAddTag";
-// import ModalEditTag from "./ModalEditTag";
-// import ModalAddExpenseCategory from "./ModalAddExpenseCategory";
-// import ModalEditGroup from "./ModalEditGroup";
-// import ModalEditAccount from "./ModalEditAccount"
-// import ModalEditExpenseCategory from "./ModalEditExpenseCategory";
-// import ModalDeleteGroup from "./ModalDeleteGroup";
-// import ModalDeleteAccount from "./ModalDeleteAccount";
-// import ModalDeleteTag from "./ModalDeleteTag";
-// import ModalDeleteExpenseCategory from "./ModalDeleteExpenseCategory";
-// import ModalSetExpenseNumbering from "./ModalSetExpenseNumbering";
-//import { ExpenseNumberingFormat } from "../../constants/enums";
 import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
 import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
@@ -29,6 +14,8 @@ const ModalAddGroup = lazy(() => import("./ModalAddGroup"));
 const ModalEditGroup = lazy(() => import("./ModalEditGroup"));
 const ModalDeleteGroup = lazy(() => import("./ModalDeleteGroup"));
 const ModalAddSubgroup = lazy(() => import("./ModalAddSubgroup"));
+const ModalEditSubgroup = lazy(() => import("./ModalEditSubgroup"));
+const ModalDeleteSubgroup = lazy(() => import("./ModalDeleteSubgroup"));
 const ModalAddAccount = lazy(() => import("./ModalAddAccount"));
 const ModalEditAccount = lazy(() => import("./ModalEditAccount"));
 const ModalDeleteAccount = lazy(() => import("./ModalDeleteAccount"));
@@ -47,13 +34,17 @@ const THIS_MONTH = (new Date().getMonth() + 1).toString()
 //Component:
 function WorkspaceSettings() {
     // Note the word 'account' bellow refers to the object belonging to the WS, not the user's account
+
+    //Redux State:
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
+    const selectedWorkspaceSubgroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceSubgroups);
     const selectedWorkspaceAccounts = useSelector((state) => state.selectedWorkspace.selectedWorkspaceAccounts);
     const selectedWorkspaceTags = useSelector((state) => state.selectedWorkspace.selectedWorkspaceTags);
     const selectedWorkspaceExpenseCategories = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseCategories);
     const selectedWorkspaceExpenseNumberingFormat = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseNumberingFormat);
-    const [currentNumFormatState, setCurrentNumFormat] = useState('2023-01-0001');
+
+    // Modal status:
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
     const [modalAddSubgroupStatus, setModalAddSubgroupStatus] = useState(false);
@@ -61,28 +52,41 @@ function WorkspaceSettings() {
     const [modalAddTagStatus, setModalAddTagStatus] = useState(false);
     const [modalAddExpenseCategoryStatus, setModalAddExpenseCategoryStatus] = useState(false);
     const [modalEditGroupStatus, setModalEditGroupStatus] = useState(false);
+    const [modalEditSubgroupStatus, setModalEditSubgroupStatus] = useState(false);
     const [modalEditAccountStatus, setModalEditAccountStatus] = useState(false);
     const [modalEditTagStatus, setModalEditTagStatus] = useState(false);
     const [modalEditExpenseCategoryStatus, setModalEditExpenseCategoryStatus] = useState(false);
     const [modalSetExpenseNumberingStatus, setModalSetExpenseNumberingStatus] = useState(false);
-    const [groupToEditUuid, setGroupToEditUuid] = useState("");
-    const [accountToEditUuid, setAccountToEditUuid] = useState("");
-    const [tagToEditUuid, setTagToEditUuid] = useState("");
-    const [expenseCategoryToEditUuid, setExpenseCategoryToEditUuid] = useState("");
     const [modalDeleteGroupStatus, setModalDeleteGroupStatus] = useState(false);
+    const [modalDeleteSubgroupStatus, setModalDeleteSubgroupStatus] = useState(false);
     const [modalDeleteAccountStatus, setModalDeleteAccountStatus] = useState(false);
     const [modalDeleteTagStatus, setModalDeleteTagStatus] = useState(false);
     const [modalDeleteExpenseCategoryStatus, setModalDeleteExpenseCategoryStatus] = useState(false);
+
+    //Other state:
+    const [groupToEditUuid, setGroupToEditUuid] = useState("");
     const [groupToDeleteUuid, setGroupToDeleteUuid] = useState("");
+    const [subgroupToEditUuid, setSubgroupToEditUuid] = useState("");
+    const [subgroupToDeleteUuid, setSubgroupToDeleteUuid] = useState("");
+    const [accountToEditUuid, setAccountToEditUuid] = useState("");
     const [accountToDeleteUuid, setAccountToDeleteUuid] = useState("");
+    const [tagToEditUuid, setTagToEditUuid] = useState("");
     const [tagToDeleteUuid, setTagToDeleteUuid] = useState("");
+    const [expenseCategoryToEditUuid, setExpenseCategoryToEditUuid] = useState("");
     const [expenseCategoryToDeleteUuid, setExpenseCategoryToDeleteUuid] = useState("");
+    const [currentNumFormatState, setCurrentNumFormat] = useState('2023-01-0001');
 
     useEffect(() => {
         if (modalEditGroupStatus === false) {
             setGroupToEditUuid("");
         }
     }, [modalEditGroupStatus])
+
+    useEffect(() => {
+        if (modalEditSubgroupStatus === false) {
+            setSubgroupToEditUuid("");
+        }
+    }, [modalEditSubgroupStatus])
 
     useEffect(() => {
         if (modalEditAccountStatus === false) {
@@ -156,6 +160,9 @@ function WorkspaceSettings() {
     function editGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditGroupStatus(false) : setModalEditGroupStatus(true);
     }
+    function editSubgroupModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalEditSubgroupStatus(false) : setModalEditSubgroupStatus(true);
+    }
     function editAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalEditAccountStatus(false) : setModalEditAccountStatus(true);
     }
@@ -167,6 +174,9 @@ function WorkspaceSettings() {
     }
     function deleteGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteGroupStatus(false) : setModalDeleteGroupStatus(true);
+    }
+    function deleteSubgroupModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalDeleteSubgroupStatus(false) : setModalDeleteSubgroupStatus(true);
     }
     function deleteAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalDeleteAccountStatus(false) : setModalDeleteAccountStatus(true);
@@ -258,6 +268,20 @@ function WorkspaceSettings() {
                     </Suspense>
                 )
             }
+            {subgroupToEditUuid &&
+                (
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalEditSubgroupStatus && (
+                                <ModalEditSubgroup
+                                    className={modalEditSubgroupStatus === false ? "Common-hidden" : ""}
+                                    editSubgroupModalToggler={editSubgroupModalToggler} uuid={subgroupToEditUuid}>
+                                </ModalEditSubgroup>
+                            )
+                        }
+                    </Suspense>
+                )
+            }
             {accountToEditUuid &&
                 (
                     <Suspense fallback={<Loader />}>
@@ -309,6 +333,20 @@ function WorkspaceSettings() {
                                     className={modalDeleteGroupStatus === false ? "Common-hidden" : ""}
                                     deleteGroupModalToggler={deleteGroupModalToggler} uuid={groupToDeleteUuid}>
                                 </ModalDeleteGroup>
+                            )
+                        }
+                    </Suspense>
+                )
+            }
+            {subgroupToDeleteUuid &&
+                (
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalDeleteSubgroupStatus && (
+                                <ModalDeleteSubgroup
+                                    className={modalDeleteSubgroupStatus === false ? "Common-hidden" : ""}
+                                    deleteSubgroupModalToggler={deleteSubgroupModalToggler} uuid={subgroupToDeleteUuid}>
+                                </ModalDeleteSubgroup>
                             )
                         }
                     </Suspense>
@@ -415,7 +453,7 @@ function WorkspaceSettings() {
                                                             <td className={group.description ? "" : "Common-Table-tdInfo"}>
                                                                 {group.description ? group.description : "-"}
                                                             </td>
-                                                            <td className={group.description ? "" : "Common-Table-tdInfo"}>
+                                                            <td className={group.code ? "" : "Common-Table-tdInfo"}>
                                                                 {group.code ? group.code : "-"}
                                                             </td>
                                                             <td className="Common-Table-tdIcon">
@@ -444,6 +482,42 @@ function WorkspaceSettings() {
                                             <AddButton name="Add Sub-Group" className="Common-button-primary" onClickFunction={addSubgroupModalToggler}>
                                                 <img src={AddIcon} alt="Add icon" />
                                             </AddButton>
+                                        )
+                                }
+                                {
+                                    (!selectedWorkspaceSubgroups || selectedWorkspaceSubgroups.length === 0) ?
+                                        (<p className="Common-PSInfo-P">You have no groups yet.</p>) :
+                                        (
+                                            <table className="Common-Table ">
+                                                <tbody>
+                                                    <tr >
+                                                        <th>Group</th>
+                                                        <th>Subgroup</th>
+                                                        <th>Description</th>
+                                                        <th>Code</th>
+                                                    </tr>
+                                                    {selectedWorkspaceSubgroups.map((subgroup, index) => (
+                                                        <tr key={index}>
+                                                            <td className="Common-Table-tdBullet Common-Table-tdInfo"><div className="Common-Table-YellowDiv"></div>{subgroup.groupName}</td>
+                                                            <td>{subgroup.name}</td>
+                                                            <td className={subgroup.description ? "" : "Common-Table-tdInfo"}>
+                                                                {subgroup.description ? subgroup.description : "-"}
+                                                            </td>
+                                                            <td className={subgroup.code ? "" : "Common-Table-tdInfo"}>
+                                                                {subgroup.code ? subgroup.code : "-"}
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={editIcon} alt="edit element" className="Common-Icon"
+                                                                    onClick={() => { setSubgroupToEditUuid(`${subgroup.uuid}`); editSubgroupModalToggler("open"); }} />
+                                                            </td>
+                                                            <td className="Common-Table-tdIcon">
+                                                                <img role="button" src={trashIcon} alt="delete element" className="Common-Icon"
+                                                                    onClick={() => { setSubgroupToDeleteUuid(`${subgroup.uuid}`); deleteSubgroupModalToggler("open"); }} />
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
                                         )
                                 }
                             </div>
