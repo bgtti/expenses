@@ -19,6 +19,7 @@ function ModalDeleteAccount(props) {
     const formSubmitHandlerDeleteAccount = (event) => {
         event.preventDefault();
         dispatch(deleteSelectedWorkspaceAccount(theAccount.uuid));
+        closeThisModal()
     };
 
     return (
@@ -44,7 +45,7 @@ function ModalDeleteAccount(props) {
                         (<p><b>Account not found.</b></p>)
                 }
                 <p>This action cannot be undone. Are you sure you want to proceed?</p>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Delete account</button>
+                <button type="submit" className="Modal-PrimaryBtn">Delete account</button>
             </form>
         </ModalWrapper>
     )

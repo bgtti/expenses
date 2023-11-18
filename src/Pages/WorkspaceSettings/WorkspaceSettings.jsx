@@ -28,6 +28,7 @@ const ModalEditWorkspace = lazy(() => import("../User/ModalEditWorkspace/ModalEd
 const ModalAddGroup = lazy(() => import("./ModalAddGroup"));
 const ModalEditGroup = lazy(() => import("./ModalEditGroup"));
 const ModalDeleteGroup = lazy(() => import("./ModalDeleteGroup"));
+const ModalAddSubgroup = lazy(() => import("./ModalAddSubgroup"));
 const ModalAddAccount = lazy(() => import("./ModalAddAccount"));
 const ModalEditAccount = lazy(() => import("./ModalEditAccount"));
 const ModalDeleteAccount = lazy(() => import("./ModalDeleteAccount"));
@@ -55,6 +56,7 @@ function WorkspaceSettings() {
     const [currentNumFormatState, setCurrentNumFormat] = useState('2023-01-0001');
     const [modalEditWorkspaceStatus, setModalEditWorkspaceStatus] = useState(false);
     const [modalAddGroupStatus, setModalAddGroupStatus] = useState(false);
+    const [modalAddSubgroupStatus, setModalAddSubgroupStatus] = useState(false);
     const [modalAddAccountStatus, setModalAddAccountStatus] = useState(false);
     const [modalAddTagStatus, setModalAddTagStatus] = useState(false);
     const [modalAddExpenseCategoryStatus, setModalAddExpenseCategoryStatus] = useState(false);
@@ -136,6 +138,9 @@ function WorkspaceSettings() {
     function addGroupModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddGroupStatus(false) : setModalAddGroupStatus(true);
     }
+    function addSubgroupModalToggler(openOrClose) {
+        openOrClose === "close" ? setModalAddSubgroupStatus(false) : setModalAddSubgroupStatus(true);
+    }
     function addAccountModalToggler(openOrClose) {
         openOrClose === "close" ? setModalAddAccountStatus(false) : setModalAddAccountStatus(true);
     }
@@ -194,6 +199,14 @@ function WorkspaceSettings() {
                                     className={modalAddGroupStatus === false ? "Common-hidden" : ""}
                                     addGroupModalToggler={addGroupModalToggler}>
                                 </ModalAddGroup>
+                            )
+                        }
+                        {
+                            modalAddSubgroupStatus && (
+                                <ModalAddSubgroup
+                                    className={modalAddSubgroupStatus === false ? "Common-hidden" : ""}
+                                    addSubgroupModalToggler={addSubgroupModalToggler}>
+                                </ModalAddSubgroup>
                             )
                         }
                         {
@@ -428,7 +441,7 @@ function WorkspaceSettings() {
                                     (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) ?
                                         (<p className="Common-PSInfo-P">You first need a group to be able to create sub-groups.</p>) :
                                         (
-                                            <AddButton name="Add Sub-Group" className="Common-button-primary" onClickFunction={""}>
+                                            <AddButton name="Add Sub-Group" className="Common-button-primary" onClickFunction={addSubgroupModalToggler}>
                                                 <img src={AddIcon} alt="Add icon" />
                                             </AddButton>
                                         )

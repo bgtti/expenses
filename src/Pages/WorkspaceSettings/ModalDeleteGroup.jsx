@@ -17,6 +17,7 @@ function ModalDeleteGroup(props) {
     const formSubmitHandlerDeleteGroup = (event) => {
         event.preventDefault();
         dispatch(deleteSelectedWorkspaceGroup(theGroup.uuid));
+        closeThisModal()
     };
 
     return (
@@ -42,7 +43,7 @@ function ModalDeleteGroup(props) {
                         (<p><b>Group not found.</b></p>)
                 }
                 <p>This action cannot be undone. Are you sure you want to proceed?</p>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Delete group</button>
+                <button type="submit" className="Modal-PrimaryBtn">Delete group</button>
             </form>
         </ModalWrapper>
     )

@@ -73,8 +73,8 @@ function ModalAddGroup(props) {
         if (codeField.length > 10) {
             return toast.error(`Error: code invalid. Code should have up to 10 characters.`);
         }
-
         dispatch(addSelectedWorkspaceGroup(selectedWorkspace.uuid, nameField, descriptionField, codeField));
+        closeThisModal()
     };
 
     return (
@@ -101,7 +101,7 @@ function ModalAddGroup(props) {
                     <label htmlFor="addGroupCode">Code:</label>
                     <input id="addGroupCode" name="addGroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Add group</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Add group</button>
             </form>
         </ModalWrapper>
     )

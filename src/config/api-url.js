@@ -8,6 +8,9 @@ const GET_WORKSPACE_SETTINGS = '/api/workspace_settings/all_settings'
 const ADD_GROUP = '/api/workspace_settings/add_group';
 const EDIT_GROUP = '/api/workspace_settings/edit_group';
 const DELETE_GROUP = '/api/workspace_settings/delete_group';
+const ADD_SUBGROUP = '/api/workspace_settings/add_subgroup';
+const EDIT_SUBGROUP = '/api/workspace_settings/edit_subgroup';
+const DELETE_SUBGROUP = '/api/workspace_settings/delete_subgroup';
 const ADD_ACCOUNT = '/api/workspace_settings/add_account';
 const ADD_TAG = '/api/workspace_settings/add_tag';
 const EDIT_TAG = '/api/workspace_settings/edit_tag';
@@ -30,6 +33,9 @@ const APIURL = {
     ADD_GROUP,
     EDIT_GROUP,
     DELETE_GROUP,
+    ADD_SUBGROUP,
+    EDIT_SUBGROUP,
+    DELETE_SUBGROUP,
     ADD_ACCOUNT, //Accounts from WS, not user's account
     EDIT_ACCOUNT, //Accounts from WS, not user's account
     DELETE_ACCOUNT, //Accounts from WS, not user's account

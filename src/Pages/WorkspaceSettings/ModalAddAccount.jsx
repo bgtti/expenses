@@ -75,6 +75,7 @@ function ModalAddAccount(props) {
         }
 
         dispatch(addSelectedWorkspaceAccount(selectedWorkspace.uuid, nameField, descriptionField, codeField));
+        closeThisModal()
     };
 
     return (
@@ -101,7 +102,7 @@ function ModalAddAccount(props) {
                     <label htmlFor="addAccountCode">Code:</label>
                     <input id="addAccountCode" name="addAccountCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Add account</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Add account</button>
             </form>
         </ModalWrapper>
     )

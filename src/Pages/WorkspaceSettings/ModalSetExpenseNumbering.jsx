@@ -186,7 +186,10 @@ function ModalSetExpenseNumbering(props) {
             toast.error(`Error: the length of your prefix is invalid.`);
             return;
         }
+
         dispatch(addSelectedExpenseNumberingPreference(selectedWorkspace.uuid, parseInt(numDigitsSelected), expenseNumberTypeSelected, parseInt(startNumState.value), parseInt(yearDigitsSelected), numberSeparatorSelected, prefixState.value));
+
+        closeThisModal()
     };
 
     return (
@@ -293,7 +296,7 @@ function ModalSetExpenseNumbering(props) {
                     )}
                 </div>
 
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Select format</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Select format</button>
 
             </form>
         </ModalWrapper>

@@ -67,6 +67,7 @@ function ModalEditExpenseCategory(props) {
         }
 
         dispatch(editSelectedExpenseCategory(categoryUuid, nameField, descriptionField, codeField));
+        closeThisModal();
     };
 
     return (
@@ -93,7 +94,7 @@ function ModalEditExpenseCategory(props) {
                     <label htmlFor="editExpenseCategoryCode">Code:</label>
                     <input id="editExpenseCategoryCode" name="editExpenseCategoryCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Edit category</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Edit category</button>
             </form>
         </ModalWrapper>
     )

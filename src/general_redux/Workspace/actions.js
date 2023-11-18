@@ -229,6 +229,35 @@ export const deleteSelectedWorkspaceGroup = (groupUuid) => {
         dispatch(loaderOff());
     }
 }
+//*********** SUBGROUPS ***********
+// Add group
+export const addSelectedWorkspaceSubgroup = (groupUuid, subgroupName, subgroupDescription, subgroupCode) => {
+    store.dispatch(loaderOn())
+    return async (dispatch) => {
+        const requestData = {
+            group_uuid: groupUuid,
+            name: subgroupName,
+            description: subgroupDescription,
+            code: subgroupCode
+        };
+        const config = getAuthHeader()
+        try {
+            const response = await api.post(APIURL.ADD_SUBGROUP, requestData, config);
+
+            if (response.status !== 200) {
+                toast.error(`Error: subgroup could not be added. Server response status ${response.status}.`);
+            } else {
+                const data = response.data;
+                sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data));
+                dispatch(setSelectedWorkspaceGroup(data));
+                toast.success(`Subgroup added successfully!`);
+            }
+        } catch (error) {
+            toast.error(`Error: subgroup could not be added. No server response or request rejected.`);
+        }
+        dispatch(loaderOff());
+    }
+}
 
 //*********** ACCOUNTS ***********
 //Getting account information

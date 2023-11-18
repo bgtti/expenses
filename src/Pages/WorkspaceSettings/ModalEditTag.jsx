@@ -68,6 +68,7 @@ function ModalEditTag(props) {
     }
 
     dispatch(editSelectedWorkspaceTag(theTag.uuid, nameField, colourField));
+    closeThisModal();
   };
 
   return (
@@ -92,7 +93,7 @@ function ModalEditTag(props) {
         </div>
         <p>Preview:</p>
         <Tag colour={colourFieldState} name={nameFieldState.value}></Tag>
-        <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Edit tag</button>
+        <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Edit tag</button>
       </form>
     </ModalWrapper>
   )

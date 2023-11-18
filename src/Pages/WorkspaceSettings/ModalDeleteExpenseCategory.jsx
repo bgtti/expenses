@@ -18,6 +18,7 @@ function ModalDeleteExpenseCategory(props) {
     const formSubmitHandlerDeleteExpenseCategory = (event) => {
         event.preventDefault();
         dispatch(deleteSelectedWorkspaceExpenseCategories(theCategory.uuid));
+        closeThisModal()
     };
 
     return (
@@ -43,7 +44,7 @@ function ModalDeleteExpenseCategory(props) {
                         (<p><b>Category not found.</b></p>)
                 }
                 <p>This action cannot be undone. Are you sure you want to proceed?</p>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Delete category</button>
+                <button type="submit" className="Modal-PrimaryBtn">Delete category</button>
             </form>
         </ModalWrapper>
     )

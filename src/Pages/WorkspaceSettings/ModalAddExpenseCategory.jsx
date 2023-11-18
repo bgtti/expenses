@@ -75,6 +75,7 @@ function ModalAddExpenseCategory(props) {
         }
 
         dispatch(addSelectedExpenseCategory(selectedWorkspace.uuid, nameField, descriptionField, codeField));
+        closeThisModal()
     };
 
     return (
@@ -101,7 +102,7 @@ function ModalAddExpenseCategory(props) {
                     <label htmlFor="addExpenseCategoryCode">Code:</label>
                     <input id="addExpenseCategoryCode" name="addExpenseCategoryCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Add category</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Add category</button>
             </form>
         </ModalWrapper>
     )

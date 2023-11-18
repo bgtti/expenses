@@ -66,6 +66,7 @@ function ModalEditGroup(props) {
             return toast.error(`Error: code invalid. Code should have up to 10 characters.`);
         }
         dispatch(editSelectedWorkspaceGroup(groupUuid, nameField, descriptionField, codeField));
+        closeThisModal()
     };
 
     return (
@@ -92,7 +93,7 @@ function ModalEditGroup(props) {
                     <label htmlFor="editGroupCode">Code:</label>
                     <input id="editGroupCode" name="editGroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
                 </div>
-                <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal} disabled={!formIsValid}>Edit group</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Edit group</button>
             </form>
         </ModalWrapper>
     )
