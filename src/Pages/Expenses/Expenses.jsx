@@ -2,6 +2,7 @@ import { useState, lazy, Suspense } from "react";
 // import ModalAddExpense from "./ModalAddExpense";
 import ExpensesTable from "./ExpensesTable"
 import ExpensesFilter from "./ExpensesFilter";
+import Loader from "../../Components/Loader";
 import AddButton from "../../Components/AddButton";
 import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
 import "./Expenses.css"
@@ -21,7 +22,7 @@ function Expenses(props) {
 
     return (
         <section className={`Expenses ${props.className} Common-expand-flex-1 Common-padding`}>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loader />}>
                 {modalAddExpenseStatus && (
                     <ModalAddExpense
                         className={modalAddExpenseStatus === false ? "modalAddExpenseHidden" : ""}

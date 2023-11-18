@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import React, { lazy, Suspense, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Loader from "../../Components/Loader";
 import Tag from "../../Components/Tag";
-import ModalEditWorkspace from "../User/ModalEditWorkspace/ModalEditWorkspace";
-import ModalAddGroup from "./ModalAddGroup";
-import ModalAddAccount from "./ModalAddAccount";
-import ModalAddTag from "./ModalAddTag";
-import ModalEditTag from "./ModalEditTag";
-import ModalAddExpenseCategory from "./ModalAddExpenseCategory";
-import ModalEditGroup from "./ModalEditGroup";
-import ModalEditAccount from "./ModalEditAccount"
-import ModalEditExpenseCategory from "./ModalEditExpenseCategory";
-import ModalDeleteGroup from "./ModalDeleteGroup";
-import ModalDeleteAccount from "./ModalDeleteAccount";
-import ModalDeleteTag from "./ModalDeleteTag";
-import ModalDeleteExpenseCategory from "./ModalDeleteExpenseCategory";
-import ModalSetExpenseNumbering from "./ModalSetExpenseNumbering";
+// import ModalEditWorkspace from "../User/ModalEditWorkspace/ModalEditWorkspace";
+// import ModalAddGroup from "./ModalAddGroup";
+// import ModalAddAccount from "./ModalAddAccount";
+// import ModalAddTag from "./ModalAddTag";
+// import ModalEditTag from "./ModalEditTag";
+// import ModalAddExpenseCategory from "./ModalAddExpenseCategory";
+// import ModalEditGroup from "./ModalEditGroup";
+// import ModalEditAccount from "./ModalEditAccount"
+// import ModalEditExpenseCategory from "./ModalEditExpenseCategory";
+// import ModalDeleteGroup from "./ModalDeleteGroup";
+// import ModalDeleteAccount from "./ModalDeleteAccount";
+// import ModalDeleteTag from "./ModalDeleteTag";
+// import ModalDeleteExpenseCategory from "./ModalDeleteExpenseCategory";
+// import ModalSetExpenseNumbering from "./ModalSetExpenseNumbering";
 //import { ExpenseNumberingFormat } from "../../constants/enums";
 import AddButton from "../../Components/AddButton";
 import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
@@ -22,9 +23,27 @@ import editIcon from '../../Assets/Images/editing.png' // Modify icons created b
 import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
 import "../../Assets/Styles/Common.css"
 
+//Lady load modals:
+const ModalEditWorkspace = lazy(() => import("../User/ModalEditWorkspace/ModalEditWorkspace"));
+const ModalAddGroup = lazy(() => import("./ModalAddGroup"));
+const ModalEditGroup = lazy(() => import("./ModalEditGroup"));
+const ModalDeleteGroup = lazy(() => import("./ModalDeleteGroup"));
+const ModalAddAccount = lazy(() => import("./ModalAddAccount"));
+const ModalEditAccount = lazy(() => import("./ModalEditAccount"));
+const ModalDeleteAccount = lazy(() => import("./ModalDeleteAccount"));
+const ModalAddTag = lazy(() => import("./ModalAddTag"));
+const ModalEditTag = lazy(() => import("./ModalEditTag"));
+const ModalDeleteTag = lazy(() => import("./ModalDeleteTag"));
+const ModalAddExpenseCategory = lazy(() => import("./ModalAddExpenseCategory"));
+const ModalEditExpenseCategory = lazy(() => import("./ModalEditExpenseCategory"));
+const ModalDeleteExpenseCategory = lazy(() => import("./ModalDeleteExpenseCategory"));
+const ModalSetExpenseNumbering = lazy(() => import("./ModalSetExpenseNumbering"));
+
+//Constants:
 const THIS_YEAR = (new Date().getFullYear()).toString();
 const THIS_MONTH = (new Date().getMonth() + 1).toString()
 
+//Component:
 function WorkspaceSettings() {
     // Note the word 'account' bellow refers to the object belonging to the WS, not the user's account
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
@@ -160,96 +179,170 @@ function WorkspaceSettings() {
         <section className={`WorkspaceSettings Common-padding Common-expand-flex-1`}>
             {selectedWorkspace.uuid &&
                 (<>
-                    <ModalEditWorkspace
-                        className={modalEditWorkspaceStatus === false ? "Common-hidden" : ""}
-                        editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={selectedWorkspace.uuid}>
-                    </ModalEditWorkspace>
-                    <ModalAddGroup
-                        className={modalAddGroupStatus === false ? "Common-hidden" : ""}
-                        addGroupModalToggler={addGroupModalToggler}>
-                    </ModalAddGroup>
-                    <ModalAddAccount
-                        className={modalAddAccountStatus === false ? "Common-hidden" : ""}
-                        addAccountModalToggler={addAccountModalToggler}>
-                    </ModalAddAccount>
-                    <ModalAddTag
-                        className={modalAddTagStatus === false ? "Common-hidden" : ""}
-                        addTagModalToggler={addTagModalToggler}>
-                    </ModalAddTag>
-                    <ModalAddExpenseCategory className={modalAddExpenseCategoryStatus === false ? "Common-hidden" : ""}
-                        addExpenseCategoryModalToggler={addExpenseCategoryModalToggler}>
-                    </ModalAddExpenseCategory>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalEditWorkspaceStatus && (
+                                <ModalEditWorkspace
+                                    className={modalEditWorkspaceStatus === false ? "Common-hidden" : ""}
+                                    editWorkspaceModalToggler={editWorkspaceModalToggler} uuid={selectedWorkspace.uuid}>
+                                </ModalEditWorkspace>
+                            )
+                        }
+                        {
+                            modalAddGroupStatus && (
+                                <ModalAddGroup
+                                    className={modalAddGroupStatus === false ? "Common-hidden" : ""}
+                                    addGroupModalToggler={addGroupModalToggler}>
+                                </ModalAddGroup>
+                            )
+                        }
+                        {
+                            modalAddAccountStatus && (
+                                <ModalAddAccount
+                                    className={modalAddAccountStatus === false ? "Common-hidden" : ""}
+                                    addAccountModalToggler={addAccountModalToggler}>
+                                </ModalAddAccount>
+                            )
+                        }
+                        {
+                            modalAddTagStatus && (
+                                <ModalAddTag
+                                    className={modalAddTagStatus === false ? "Common-hidden" : ""}
+                                    addTagModalToggler={addTagModalToggler}>
+                                </ModalAddTag>
+                            )
+                        }
+                        {
+                            modalAddExpenseCategoryStatus && (
+                                <ModalAddExpenseCategory className={modalAddExpenseCategoryStatus === false ? "Common-hidden" : ""}
+                                    addExpenseCategoryModalToggler={addExpenseCategoryModalToggler}>
+                                </ModalAddExpenseCategory>
+                            )
+                        }
+                        {
+                            modalSetExpenseNumberingStatus && (
+                                <ModalSetExpenseNumbering
+                                    className={modalSetExpenseNumberingStatus === false ? "Common-hidden" : ""}
+                                    expenseNumberingModalToggler={expenseNumberingModalToggler}>
+                                </ModalSetExpenseNumbering>
+                            )
+                        }
+                    </Suspense>
                 </>
                 )
             }
             {groupToEditUuid &&
                 (
-                    <ModalEditGroup
-                        className={modalEditGroupStatus === false ? "Common-hidden" : ""}
-                        editGroupModalToggler={editGroupModalToggler} uuid={groupToEditUuid}>
-                    </ModalEditGroup>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalEditGroupStatus && (
+                                <ModalEditGroup
+                                    className={modalEditGroupStatus === false ? "Common-hidden" : ""}
+                                    editGroupModalToggler={editGroupModalToggler} uuid={groupToEditUuid}>
+                                </ModalEditGroup>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {accountToEditUuid &&
                 (
-                    <ModalEditAccount
-                        className={modalEditAccountStatus === false ? "Common-hidden" : ""}
-                        editAccountModalToggler={editAccountModalToggler} uuid={accountToEditUuid}>
-                    </ModalEditAccount>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalEditAccountStatus && (
+                                <ModalEditAccount
+                                    className={modalEditAccountStatus === false ? "Common-hidden" : ""}
+                                    editAccountModalToggler={editAccountModalToggler} uuid={accountToEditUuid}>
+                                </ModalEditAccount>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {tagToEditUuid &&
                 (
-                    <ModalEditTag
-                        className={modalEditTagStatus === false ? "Common-hidden" : ""}
-                        editTagModalToggler={editTagModalToggler} uuid={tagToEditUuid}>
-                    </ModalEditTag>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalEditTagStatus && (
+                                <ModalEditTag
+                                    className={modalEditTagStatus === false ? "Common-hidden" : ""}
+                                    editTagModalToggler={editTagModalToggler} uuid={tagToEditUuid}>
+                                </ModalEditTag>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {expenseCategoryToEditUuid &&
                 (
-                    <ModalEditExpenseCategory
-                        className={modalEditExpenseCategoryStatus === false ? "Common-hidden" : ""}
-                        editExpenseCategoryModalToggler={editExpenseCategoryModalToggler} uuid={expenseCategoryToEditUuid}>
-                    </ModalEditExpenseCategory>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalEditExpenseCategoryStatus && (
+                                <ModalEditExpenseCategory
+                                    className={modalEditExpenseCategoryStatus === false ? "Common-hidden" : ""}
+                                    editExpenseCategoryModalToggler={editExpenseCategoryModalToggler} uuid={expenseCategoryToEditUuid}>
+                                </ModalEditExpenseCategory>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {groupToDeleteUuid &&
                 (
-                    <ModalDeleteGroup
-                        className={modalDeleteGroupStatus === false ? "Common-hidden" : ""}
-                        deleteGroupModalToggler={deleteGroupModalToggler} uuid={groupToDeleteUuid}>
-                    </ModalDeleteGroup>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalDeleteGroupStatus && (
+                                <ModalDeleteGroup
+                                    className={modalDeleteGroupStatus === false ? "Common-hidden" : ""}
+                                    deleteGroupModalToggler={deleteGroupModalToggler} uuid={groupToDeleteUuid}>
+                                </ModalDeleteGroup>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {accountToDeleteUuid &&
                 (
-                    <ModalDeleteAccount
-                        className={modalDeleteAccountStatus === false ? "Common-hidden" : ""}
-                        deleteAccountModalToggler={deleteAccountModalToggler} uuid={accountToDeleteUuid}>
-                    </ModalDeleteAccount>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalDeleteAccountStatus && (
+                                <ModalDeleteAccount
+                                    className={modalDeleteAccountStatus === false ? "Common-hidden" : ""}
+                                    deleteAccountModalToggler={deleteAccountModalToggler} uuid={accountToDeleteUuid}>
+                                </ModalDeleteAccount>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {tagToDeleteUuid &&
                 (
-                    <ModalDeleteTag
-                        className={modalDeleteTagStatus === false ? "Common-hidden" : ""}
-                        deleteTagModalToggler={deleteTagModalToggler} uuid={tagToDeleteUuid}>
-                    </ModalDeleteTag>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalDeleteTagStatus && (
+                                <ModalDeleteTag
+                                    className={modalDeleteTagStatus === false ? "Common-hidden" : ""}
+                                    deleteTagModalToggler={deleteTagModalToggler} uuid={tagToDeleteUuid}>
+                                </ModalDeleteTag>
+                            )
+                        }
+                    </Suspense>
                 )
             }
             {expenseCategoryToDeleteUuid &&
                 (
-                    <ModalDeleteExpenseCategory
-                        className={modalDeleteExpenseCategoryStatus === false ? "Common-hidden" : ""}
-                        deleteExpenseCategoryModalToggler={deleteExpenseCategoryModalToggler} uuid={expenseCategoryToDeleteUuid}>
-                    </ModalDeleteExpenseCategory>
+                    <Suspense fallback={<Loader />}>
+                        {
+                            modalDeleteExpenseCategoryStatus && (
+                                <ModalDeleteExpenseCategory
+                                    className={modalDeleteExpenseCategoryStatus === false ? "Common-hidden" : ""}
+                                    deleteExpenseCategoryModalToggler={deleteExpenseCategoryModalToggler} uuid={expenseCategoryToDeleteUuid}>
+                                </ModalDeleteExpenseCategory>
+                            )
+                        }
+                    </Suspense>
                 )
             }
-            <ModalSetExpenseNumbering
-                className={modalSetExpenseNumberingStatus === false ? "Common-hidden" : ""}
-                expenseNumberingModalToggler={expenseNumberingModalToggler}>
-            </ModalSetExpenseNumbering>
 
             <h2>Workspace Settings</h2>
             {(!selectedWorkspace) ?
@@ -324,6 +417,20 @@ function WorkspaceSettings() {
                                                     ))}
                                                 </tbody>
                                             </table>
+                                        )
+                                }
+                            </div>
+                            <br />
+                            <div>
+                                <h4>Sub-Groups</h4>
+                                <p>You can further divide groups into sub-groups.</p>
+                                {
+                                    (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) ?
+                                        (<p className="Common-PSInfo-P">You first need a group to be able to create sub-groups.</p>) :
+                                        (
+                                            <AddButton name="Add Sub-Group" className="Common-button-primary" onClickFunction={""}>
+                                                <img src={AddIcon} alt="Add icon" />
+                                            </AddButton>
                                         )
                                 }
                             </div>
@@ -459,18 +566,6 @@ function WorkspaceSettings() {
                                 </AddButton>
                             </div>
                         </section>
-                        {/* <hr />
-            <section>
-                <h3>Income Settings</h3>
-                <p>income settings here...</p>
-            </section>
-            <hr />
-            <section>
-                <h3>Other Settings</h3>
-                <br />
-                <h4>Persons</h4>
-                <p>If persons in your business collect cash payments or a partner in the company deposits money in the company's bank account you can add 'persons' to track such transactions.</p>
-            </section> */}
                     </>
                 )
             }
