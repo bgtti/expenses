@@ -486,13 +486,13 @@ function WorkspaceSettings() {
                                 }
                                 {
                                     (!selectedWorkspaceSubgroups || selectedWorkspaceSubgroups.length === 0) ?
-                                        (<p className="Common-PSInfo-P">You have no groups yet.</p>) :
+                                        (<p className="Common-PSInfo-P">You have no sub-groups yet.</p>) :
                                         (
                                             <table className="Common-Table ">
                                                 <tbody>
                                                     <tr >
                                                         <th>Group</th>
-                                                        <th>Subgroup</th>
+                                                        <th>Sub-group</th>
                                                         <th>Description</th>
                                                         <th>Code</th>
                                                     </tr>

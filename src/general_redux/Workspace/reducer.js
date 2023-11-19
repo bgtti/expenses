@@ -91,22 +91,22 @@ export const workspaceReducer = (state = workspaceInitialState, action) => {
             return {
                 selectedWorkspace: state.selectedWorkspace,
                 selectedWorkspaceGroups: action.selectedWorkspaceGroups,
-                selectedWorkspaceSubgroups: state.selectedWorkspaceSubgroups,
-                selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
-                selectedWorkspaceTags: state.selectedWorkspaceTags,
-                selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
-                selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
-            }
-        case 'SET_SELECTED_WORKSPACE_SUBGROUP':
-            return {
-                selectedWorkspace: state.selectedWorkspace,
-                selectedWorkspaceGroups: state.selectedWorkspaceGroups,
                 selectedWorkspaceSubgroups: action.selectedWorkspaceSubgroups,
                 selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
                 selectedWorkspaceTags: state.selectedWorkspaceTags,
                 selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
                 selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
             }
+        // case 'SET_SELECTED_WORKSPACE_SUBGROUP':
+        //     return {
+        //         selectedWorkspace: state.selectedWorkspace,
+        //         selectedWorkspaceGroups: state.selectedWorkspaceGroups,
+        //         selectedWorkspaceSubgroups: action.selectedWorkspaceSubgroups,
+        //         selectedWorkspaceAccounts: state.selectedWorkspaceAccounts,
+        //         selectedWorkspaceTags: state.selectedWorkspaceTags,
+        //         selectedWorkspaceExpenseCategories: state.selectedWorkspaceExpenseCategories,
+        //         selectedWorkspaceExpenseNumberingFormat: state.selectedWorkspaceExpenseNumberingFormat,
+        //     }
         case 'SET_SELECTED_WORKSPACE_ACCOUNT':
             return {
                 selectedWorkspace: state.selectedWorkspace,

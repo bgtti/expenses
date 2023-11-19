@@ -144,11 +144,12 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
             dispatch({
                 type: ActionTypes.SET_SELECTED_WORKSPACE_GROUP,
                 selectedWorkspaceGroups: undefined,
-            })
-            dispatch({
-                type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
                 selectedWorkspaceSubgroups: undefined,
             })
+            // dispatch({
+            //     type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
+            //     selectedWorkspaceSubgroups: undefined,
+            // })
         }
     };
     let subgroups = []
@@ -160,12 +161,13 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
     return (dispatch) => {
         dispatch({
             type: ActionTypes.SET_SELECTED_WORKSPACE_GROUP,
-            selectedWorkspaceGroups: selectedWorkspaceGroups
+            selectedWorkspaceGroups: selectedWorkspaceGroups,
+            selectedWorkspaceSubgroups: subgroups
         });
-        dispatch({
-            type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
-            selectedWorkspaceGroups: subgroups
-        });
+        // dispatch({
+        //     type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
+        //     selectedWorkspaceGroups: subgroups
+        // });
     }
 }
 
