@@ -15,7 +15,7 @@ export const selectedWorkspaceSetAsUndefined = () => {
         sessionStorage.setItem("selectedWorkspaceGroups", undefined);
         sessionStorage.setItem("selectedWorkspaceSubgroups", undefined);
         sessionStorage.setItem("selectedWorkspaceAccounts", undefined);
-        sessionStorage.getItem("selectedWorkspaceTags", undefined);
+        sessionStorage.setItem("selectedWorkspaceTags", undefined);
         sessionStorage.setItem("selectedWorkspaceExpenseCategories", undefined);
         sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", undefined);
         dispatch({
@@ -57,7 +57,7 @@ export const setSelectedWorkspace = (selectedWorkspace, selectedWorkspaceSetting
     sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(selectedWorkspaceSettings.groups));
     sessionStorage.setItem("selectedWorkspaceSubgroups", JSON.stringify(subgroups));
     sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(selectedWorkspaceSettings.accounts));
-    sessionStorage.getItem("selectedWorkspaceTags", JSON.stringify(selectedWorkspaceSettings.tags));
+    sessionStorage.setItem("selectedWorkspaceTags", JSON.stringify(selectedWorkspaceSettings.tags));
     sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(selectedWorkspaceSettings.expense_categories));
     sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(selectedWorkspaceSettings.expense_numbering_settings));
     return (dispatch) => {
@@ -109,7 +109,7 @@ export const getAllWorkspaceSettings = (selectedWorkspace) => {
                 sessionStorage.setItem("selectedWorkspace", JSON.stringify(selectedWorkspace));
                 sessionStorage.setItem("selectedWorkspaceGroups", JSON.stringify(data.groups));
                 sessionStorage.setItem("selectedWorkspaceAccounts", JSON.stringify(data.accounts));
-                sessionStorage.getItem("selectedWorkspaceTags", JSON.stringify(data.tags));
+                sessionStorage.setItem("selectedWorkspaceTags", JSON.stringify(data.tags));
                 sessionStorage.setItem("selectedWorkspaceExpenseCategories", JSON.stringify(data.expense_categories));
                 sessionStorage.setItem("selectedWorkspaceExpenseNumberingFormat", JSON.stringify(data.expense_numbering_settings));
                 let subgroups = []

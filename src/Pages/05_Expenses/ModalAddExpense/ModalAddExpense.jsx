@@ -1,19 +1,21 @@
-import { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import Select, { createFilter } from 'react-select'
 import { MultiSelect } from "react-multi-select-component";
 // import { filterConfigforReactSelectComponent } from "../../utils/helpersSelectElement"
-import Tag from "../../Components/Tag";
-import ExpensesData from "../../Data/ExpenseData"
-import ModalWrapper from "../../Components/ModalWrapper";
-import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
-import trashIcon from '../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
-import editIcon from '../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
-import "../../Assets/Styles/Modal.css"
-import { ActionTypes } from "../../general_redux/types";
-import Groups from "./ModalAddExpenseComponents/Groups";
+import Tag from "../../../Components/Tag";
+import ExpensesData from "../../../Data/ExpenseData"
+import ModalWrapper from "../../../Components/ModalWrapper";
+import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import AddIcon from "../../../Assets/Images/add.png"; //Source: Plus icons created by dmitri13 - Flaticon, at https://www.flaticon.com/free-icons/plus
+import trashIcon from '../../../Assets/Images/trash.png' // Source: Delete icons created by bqlqn - Flaticon, from https://www.flaticon.com/free-icons/delete
+import editIcon from '../../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
+import "../../../Assets/Styles/Modal.css"
+import { ActionTypes } from "../../../general_redux/types";
+import Supplier from "./Supplier"
+import Groups from "./Groups";
+import Subgroup from "./Subgroups"
 
 //Search select element built with react-select using label instead of value
 const filterConfigforReactSelectComponent = createFilter({
@@ -22,51 +24,8 @@ const filterConfigforReactSelectComponent = createFilter({
 })
 //De-bugging orstyling react-select component: add menuIsOpen to the component
 
-//DELETE FOLLOWING WHEN BACKEND FIXED
-const SUBGROUPS = [
-    {
-        uuid: "123456",
-        name: "sub1",
-        group_uuid: "652aabfdd8224264a2d2f8c602136918"
-    },
-    {
-        uuid: "234567",
-        name: "sub2",
-        group_uuid: "652aabfdd8224264a2d2f8c602136918"
-    },
-    {
-        uuid: "345678",
-        name: "sub3",
-        group_uuid: "652aabfdd8224264a2d2f8c602136918"
-    },
-    {
-        uuid: "456789",
-        name: "subX",
-        group_uuid: "503664b7625046c29adc27c89d47dbf5"
-    }
-]
-const SUPPLIERS = [
-    {
-        uuid: "987654",
-        name: "John",
-        common_description: "Rent"
-    },
-    {
-        uuid: "876543",
-        name: "Laugh & co.",
-        common_description: "Mask supplies"
-    },
-    {
-        uuid: "765432",
-        name: "MGM",
-        common_description: ""
-    }
-]
 
 
-function supplierDataReducer(state, action) {
-    //WRITE LOGIC FOR supplier data here ---CONSIDER MAKING SEPARATE COMPONENT
-}
 
 //dont forget: if total of the expense is changed, do not update the amounts of groups, but warn user.
 //place button for re-calculating the division.
@@ -79,23 +38,13 @@ function ModalAddExpense(props) {
     const selectedWorkspaceAccounts = useSelector((state) => state.selectedWorkspace.selectedWorkspaceAccounts);
     const selectedWorkspaceTags = useSelector((state) => state.selectedWorkspace.selectedWorkspaceTags);
     const selectedWorkspaceExpenseCategories = useSelector((state) => state.selectedWorkspace.selectedWorkspaceExpenseCategories);
-    const selectedSuppliers = SUPPLIERS; //CHANGE LATER
-    const selectedSubgroups = SUBGROUPS; //CHANGE LATER
     //STATE:
     //Date:
     const [enteredDate, setDate] = useState(new Date().toISOString().substring(0, 10));
     //Amount:
     const [enteredAmount, setAmount] = useState('');
     //Supplier:
-    const [selectSupplierOptions, setSelectSupplierOptions] = useState(''); //Supplier options to be fed to Select element
-    const [supplierSelection, setSupplierSelection] = useState('');//selected from select element
-    const [supplierData, dispatchSupplierData] = useReducer(supplierDataReducer, {
-        supplierSelected: false,
-        suppliersUuid: '',
-        isNewSupplier: false,
-        isOneTimeSupplier: false,
-        suppliersName: ''
-    });
+    // gone
     //Description:
     const [enteredDescription, setDescription] = useState('');
     //Account:
@@ -141,28 +90,6 @@ function ModalAddExpense(props) {
         customNumber: '',
     });
 
-
-    //Show available suppliers as options in Select element 
-    useEffect(() => {
-        if (selectedSuppliers && selectedSuppliers.length !== 0) {
-            let supplierOptions = [{
-                value: "newSupplier",
-                label: "New supplier"
-            },
-            {
-                value: "oneTimeSupplier",
-                label: "One-time supplier"
-            }]
-            selectedSuppliers.forEach(supplier => {
-                let supplierObj = {
-                    value: supplier.uuid,
-                    label: supplier.name
-                };
-                supplierOptions.push(supplierObj)
-            })
-            setSelectSupplierOptions(supplierOptions)
-        }
-    }, [selectedSuppliers])
 
     //Show available tags as options in Select element 
     useEffect(() => {
@@ -283,26 +210,7 @@ function ModalAddExpense(props) {
                         value={enteredAmount} onChange={amountChangeHandler} />
                 </div>
                 {/* SUPPLIER */}
-                <div className="Modal-InputContainer">
-                    <label htmlFor="supplier">Paid to:</label>
-                    <Select
-                        name="supplier"
-                        id="supplier"
-                        className="basic-single"
-                        classNamePrefix="select Modal-MultiSelect-Select"
-                        isClearable={true}
-                        theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 0,
-                            colors: {
-                                ...theme.colors,
-                                primary25: '#f1f2f7',
-                                primary: 'black',
-                            },
-                        })}
-                        options={selectSupplierOptions}
-                        filterOption={filterConfigforReactSelectComponent} />
-                </div>
+                <Supplier></Supplier>
                 {/* DESCRIPTION */}
                 <div className="Modal-InputContainer">
                     <label htmlFor="expenseDescription">Description:</label>
@@ -323,6 +231,7 @@ function ModalAddExpense(props) {
                 </div>
                 {/* GROUP*/}
                 <Groups passInfo={groupChangeHandler} enteredAmount={enteredAmount} clearSelection={enteredGroups.clearGroupSelection}></Groups>
+                <Subgroup></Subgroup>
                 {/* ACCOUNT */}
                 <div className="Modal-InputContainer">
                     <label htmlFor="account">Account:</label>
@@ -373,7 +282,7 @@ function ModalAddExpense(props) {
                 <div>
                     <div className="Modal-CheckboxContainer">
                         <input type="checkbox" id="selectPeriod" name="selectPeriod" value="selectPeriod" checked={periodSelected} onChange={periodSelectedHandler} />
-                        <label htmlFor="selectPeriod"> Define period</label>
+                        <label htmlFor="selectPeriod"> Define period manually</label>
                     </div>
                     {periodSelected && (
                         <div className="Modal-DropdownContainerForFurtherInput">
@@ -388,11 +297,27 @@ function ModalAddExpense(props) {
                         </div>
                     )}
                 </div>
+                {/* FOREIGN CURRENCY */}
+                {/* to be completed... */}
+                <div>
+                    <div className="Modal-CheckboxContainer">
+                        <input type="checkbox" id="selectForeignCurrency" name="selectForeignCurrency" value="selectForeignCurrency" />
+                        <label htmlFor="selectForeignCurrency"> Original amount in foreign currency</label>
+                    </div>
+                </div>
+                {/* INCLUDE VAT */}
+                {/* to be completed... */}
+                <div>
+                    <div className="Modal-CheckboxContainer">
+                        <input type="checkbox" id="selectVAT" name="selectVAT" value="selectVAT" />
+                        <label htmlFor="selectVAT"> Include VAT amount</label>
+                    </div>
+                </div>
                 {/* RECURRING */}
                 <div>
                     <div className="Modal-CheckboxContainer">
                         <input type="checkbox" id="selectRecurring" name="selectRecurring" value="selectRecurring" checked={isRecurringSelected} onChange={isRecurringSelectedHandler} />
-                        <label htmlFor="selectPeriod"> Expense is recurring</label>
+                        <label htmlFor="selectRecurring"> Expense is recurring</label>
                     </div>
                     {isRecurringSelected && (
                         <div className="Modal-InformationGroupingDiv Modal-DropdownContainerForFurtherInput">
@@ -428,6 +353,22 @@ function ModalAddExpense(props) {
                             </div>
                         </div>
                     )}
+                </div>
+                {/* CUSTOM INVOICE NUMBER */}
+                {/* to be completed... */}
+                <div>
+                    <div className="Modal-CheckboxContainer">
+                        <input type="checkbox" id="selectCustomInvoiceNumber" name="selectCustomInvoiceNumber" value="selectCustomInvoiceNumber" />
+                        <label htmlFor="selectCustomInvoiceNumber"> Custom invoice number</label>
+                    </div>
+                </div>
+                {/* NOTE */}
+                {/* to be completed... */}
+                <div>
+                    <div className="Modal-CheckboxContainer">
+                        <input type="checkbox" id="selectNote" name="selectNote" value="selectNote" />
+                        <label htmlFor="selectNote">Add a note</label>
+                    </div>
                 </div>
                 {/* SUBMIT */}
                 <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Add expense</button>

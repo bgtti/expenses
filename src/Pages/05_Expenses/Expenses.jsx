@@ -8,7 +8,7 @@ import AddIcon from "../../Assets/Images/add.png"; //Source: Plus icons created 
 import "./Expenses.css"
 
 // Lazy load ModalAddExpense component
-const ModalAddExpense = lazy(() => import("./ModalAddExpense"));
+const ModalAddExpense = lazy(() => import("./ModalAddExpense/ModalAddExpense"));
 
 function Expenses(props) {
     // const styleClasses = 'Expenses ' + props.className;
