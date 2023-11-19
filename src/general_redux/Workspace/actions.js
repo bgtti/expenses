@@ -146,10 +146,6 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
                 selectedWorkspaceGroups: undefined,
                 selectedWorkspaceSubgroups: undefined,
             })
-            // dispatch({
-            //     type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
-            //     selectedWorkspaceSubgroups: undefined,
-            // })
         }
     };
     let subgroups = []
@@ -164,10 +160,6 @@ export const setSelectedWorkspaceGroup = (selectedWorkspaceGroups) => {
             selectedWorkspaceGroups: selectedWorkspaceGroups,
             selectedWorkspaceSubgroups: subgroups
         });
-        // dispatch({
-        //     type: ActionTypes.SET_SELECTED_WORKSPACE_SUBGROUP,
-        //     selectedWorkspaceGroups: subgroups
-        // });
     }
 }
 
@@ -312,7 +304,7 @@ export const editSelectedWorkspaceSubgroup = (groupUuid, subgroupUuid, subgroupN
         dispatch(loaderOff());
     }
 }
-// Delete group
+// Delete subgroup
 export const deleteSelectedWorkspaceSubgroup = (subgroupUuid) => {
     store.dispatch(loaderOn())
     return async (dispatch) => {

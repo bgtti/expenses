@@ -1,13 +1,13 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addSelectedWorkspaceSubgroup } from '../../general_redux/Workspace/actions';
 import { toast } from 'react-toastify';
-import ModalWrapper from "../../Components/ModalWrapper";
-import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-import "../../Assets/Styles/Modal.css"
+import { editSelectedWorkspaceSubgroup } from '../../../general_redux/Workspace/actions';
+import ModalWrapper from "../../../Components/ModalWrapper";
+import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import "../../../Assets/Styles/Modal.css"
 
-//We are only validating the form for Name, since 'Description' and 'Code' are not required fields
-function ModalAddSubgroup(props) {
+//We are only validating the form for Name, since 'Description' and 'Code' are not required fields 
+function ModalEditSubgroup(props) {
     const nameFieldReducer = (state, action) => {
         if (action.type === 'USER_INPUT') {
             return { value: action.val, isValid: (action.val && action.val !== "" && action.val.trim().length > 0 && action.val.length < 31 ? true : false) }
@@ -15,26 +15,29 @@ function ModalAddSubgroup(props) {
         if (action.type === 'INPUT_BLUR') {
             return { value: state.value, isValid: (state.value && state.value !== "" && state.value.trim().length > 0 && state.value.length < 31 ? true : false) }
         }
-        if (action.type === 'CLEAR') {
-            return { value: '', isValid: null }
-        }
         return { value: '', isValid: false };
     };
     const dispatch = useDispatch();
     const styleClasses = props.className;
     const selectedWorkspace = useSelector((state) => state.selectedWorkspace.selectedWorkspace);
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
-    const [enteredGroup, setGroup] = useState(selectedWorkspaceGroups[0].uuid);
+    const allSubgroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceSubgroups);
+    const subgroupUuid = props.uuid;
+    const theSubgroup = allSubgroups.find(group => group.uuid === subgroupUuid);
+    const [enteredGroup, setGroup] = useState(theSubgroup.groupUuid);
     const [formIsValid, setFormIsValid] = useState(false);
-    const [nameFieldState, dispatchNameField] = useReducer(nameFieldReducer, { value: "", isValid: true });
+    const [nameFieldState, dispatchNameField] = useReducer(nameFieldReducer, { value: theSubgroup.name, isValid: true });
     const { isValid: nameFieldIsValid } = nameFieldState;
-    const [descriptionFieldState, setDescriptionFieldState] = useState("");
-    const [codeFieldState, setCodeFieldState] = useState("");
+    const [descriptionFieldState, setDescriptionFieldState] = useState(theSubgroup.description);
+    const [codeFieldState, setCodeFieldState] = useState(theSubgroup.code);
 
     useEffect(() => {
         setFormIsValid(nameFieldIsValid);
     }, [nameFieldIsValid])
 
+    function groupChangeHandler(e) {
+        setGroup(e.target.value);
+    }
     const nameFieldChangeHandler = (event) => {
         dispatchNameField({ type: 'USER_INPUT', val: event.target.value });
     };
@@ -47,27 +50,15 @@ function ModalAddSubgroup(props) {
     const handleCodeInput = (e) => {
         setCodeFieldState(e.target.value);
     };
-    const clearAllFields = () => {
-        dispatchNameField({ type: 'CLEAR' });
-        setDescriptionFieldState("");
-        setCodeFieldState("");
-        setGroup("");
-    };
-    function groupChangeHandler(e) {
-        setGroup(e.target.value);
-    }
     function closeThisModal() {
-        props.addSubgroupModalToggler("close"); ///PROPS
-        setTimeout(() => {
-            clearAllFields();
-        }, 150);
+        props.editSubgroupModalToggler("close"); ///PROPS
     };
-    const formSubmitHandlerAddGroup = (event) => {
+    const formSubmitHandlerEditSubgroup = (event) => {
         event.preventDefault();
         let group = enteredGroup;
         let nameField = nameFieldState.value.trim();
-        let descriptionField = event.target.addGroupDescription.value.trim();
-        let codeField = event.target.addGroupCode.value.trim();
+        let descriptionField = event.target.editSubgroupDescription.value.trim();
+        let codeField = event.target.editSubgroupCode.value.trim();
         if (!group) {
             return toast.error(`Error: group selection is required.`);
         }
@@ -83,16 +74,16 @@ function ModalAddSubgroup(props) {
         if (codeField.length > 10) {
             return toast.error(`Error: code invalid. Code should have up to 10 characters.`);
         }
+        dispatch(editSelectedWorkspaceSubgroup(group, subgroupUuid, nameField, descriptionField, codeField));
         closeThisModal()
-        dispatch(addSelectedWorkspaceSubgroup(group, nameField, descriptionField, codeField));
     };
 
     return (
         <ModalWrapper className={styleClasses}>
-            <form className="Modal-Container" onSubmit={formSubmitHandlerAddGroup}>
+            <form className="Modal-Container" onSubmit={formSubmitHandlerEditSubgroup}>
 
                 <div className="Modal-Heading">
-                    <h2>Add Sub-Group</h2>
+                    <h2>Edit Sub-Group</h2>
                     <div>
                         <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
                     </div>
@@ -112,27 +103,27 @@ function ModalAddSubgroup(props) {
                 </div>
 
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupName">Name*:</label>
-                    <input value={nameFieldState.value} id="addGroupName" name="addGroupName" type="text" minLength="1" maxLength="30"
+                    <label htmlFor="editSubgroupName">Name*:</label>
+                    <input value={nameFieldState.value} id="editSubgroupName" name="editSubgroupName" type="text" minLength="1" maxLength="30"
                         className={`${nameFieldState.isValid === false ? 'Modal-InputField-invalid' : ''}`}
                         onChange={nameFieldChangeHandler} onBlur={validateNameFieldHandler} />
                 </div>
 
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupDescription">Description:</label>
-                    <input id="addGroupDescription" name="addGroupDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100" />
+                    <label htmlFor="editSubgroupDescription">Description:</label>
+                    <input id="editSubgroupDescription" name="editSubgroupDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100" />
                 </div>
 
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addGroupCode">Code:</label>
-                    <input id="addGroupCode" name="addGroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
+                    <label htmlFor="editSubgroupCode">Code:</label>
+                    <input id="editSubgroupCode" name="editSubgroupCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
                 </div>
 
-                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Add sub-group</button>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Edit subgroup</button>
 
             </form>
         </ModalWrapper>
     )
 }
 
-export default ModalAddSubgroup;
+export default ModalEditSubgroup;

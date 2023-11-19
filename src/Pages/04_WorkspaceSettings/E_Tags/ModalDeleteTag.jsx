@@ -1,9 +1,10 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteSelectedWorkspaceTag } from '../../general_redux/Workspace/actions';
-import ModalWrapper from "../../Components/ModalWrapper";
-import Tag from "../../Components/Tag";
-import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
-import "../../Assets/Styles/Modal.css"
+import { deleteSelectedWorkspaceTag } from '../../../general_redux/Workspace/actions';
+import Tag from "../../../Components/Tag";
+import ModalWrapper from "../../../Components/ModalWrapper";
+import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import "../../../Assets/Styles/Modal.css"
 
 // Note this modal deletes an tag belonging to the WS, not the user's tag
 

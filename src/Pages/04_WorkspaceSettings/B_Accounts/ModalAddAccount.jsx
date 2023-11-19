@@ -1,14 +1,13 @@
 import { useState, useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addSelectedWorkspaceTag } from '../../general_redux/Workspace/actions';
-import Tag from "../../Components/Tag";
-import ModalWrapper from "../../Components/ModalWrapper";
-import closeIcon from "../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import { addSelectedWorkspaceAccount } from '../../../general_redux/Workspace/actions';
 import { toast } from 'react-toastify';
-import "../../Assets/Styles/Modal.css"
+import ModalWrapper from "../../../Components/ModalWrapper";
+import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
+import "../../../Assets/Styles/Modal.css"
 
 //We are only validating the form for Name, since 'Description' and 'Code' are not required fields
-function ModalAddTag(props) {
+function ModalAddAccount(props) {
     const nameFieldReducer = (state, action) => {
         if (action.type === 'USER_INPUT') {
             return { value: action.val, isValid: (action.val && action.val !== "" && action.val.trim().length > 0 && action.val.length < 31 ? true : false) }
@@ -27,7 +26,8 @@ function ModalAddTag(props) {
     const [formIsValid, setFormIsValid] = useState(false);
     const [nameFieldState, dispatchNameField] = useReducer(nameFieldReducer, { value: "", isValid: true });
     const { isValid: nameFieldIsValid } = nameFieldState;
-    const [colourFieldState, setColourFieldState] = useState("#595d66");
+    const [descriptionFieldState, setDescriptionFieldState] = useState("");
+    const [codeFieldState, setCodeFieldState] = useState("");
 
     useEffect(() => {
         setFormIsValid(nameFieldIsValid);
@@ -39,61 +39,73 @@ function ModalAddTag(props) {
     const validateNameFieldHandler = () => {
         dispatchNameField({ type: 'INPUT_BLUR' });
     };
-    const handleColourInput = (e) => {
-        setColourFieldState(e.target.value);
+    const handleDescriptionInput = (e) => {
+        setDescriptionFieldState(e.target.value);
     };
-
+    const handleCodeInput = (e) => {
+        setCodeFieldState(e.target.value);
+    };
     const clearAllFields = () => {
         dispatchNameField({ type: 'CLEAR' });
-        setColourFieldState("#595d66");
+        setDescriptionFieldState("");
+        setCodeFieldState("");
     };
     function closeThisModal() {
-        props.addTagModalToggler("close"); ///PROPS
+        props.addAccountModalToggler("close"); ///PROPS
         setTimeout(() => {
             clearAllFields();
         }, 150);
     };
-    const formSubmitHandlerAddTag = (event) => {
+    const formSubmitHandlerAddAccount = (event) => {
         event.preventDefault();
         let nameField = nameFieldState.value.trim();
-        let colourField = event.target.addTagColour.value;
+        let descriptionField = event.target.addAccountDescription.value.trim();
+        let codeField = event.target.addAccountCode.value.trim();
         if (!nameField) {
             return toast.error(`Error: name is a required field.`);
         }
         if (nameField.length < 1 || nameField.length > 30) {
             return toast.error(`Error: name invalid. Name should have between 1 and 30 characters.`);
         }
+        if (descriptionField.length > 100) {
+            return toast.error(`Error: description field invalid. Description should have up to 100 characters.`);
+        }
+        if (codeField.length > 10) {
+            return toast.error(`Error: code invalid. Code should have up to 10 characters.`);
+        }
 
-        dispatch(addSelectedWorkspaceTag(selectedWorkspace.uuid, nameField, colourField));
+        dispatch(addSelectedWorkspaceAccount(selectedWorkspace.uuid, nameField, descriptionField, codeField));
         closeThisModal()
     };
 
     return (
         <ModalWrapper className={styleClasses}>
-            <form className="Modal-Container" onSubmit={formSubmitHandlerAddTag}>
+            <form className="Modal-Container" onSubmit={formSubmitHandlerAddAccount}>
                 <div className="Modal-Heading">
-                    <h2>Add Tag</h2>
+                    <h2>Add Account</h2>
                     <div>
                         <img src={closeIcon} alt="close modal" className="Modal-CloseModalIcon" onClick={closeThisModal} />
                     </div>
                 </div>
                 <p className="Modal-SubHeading-Info">Workspace: {selectedWorkspace.abbreviation.toUpperCase()} | {selectedWorkspace.name}</p>
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addTagName">Name*:</label>
-                    <input value={nameFieldState.value} id="addTagName" name="addTagName" type="colour" minLength="1" maxLength="30"
+                    <label htmlFor="addAccountName">Name*:</label>
+                    <input value={nameFieldState.value} id="addAccountName" name="addAccountName" type="text" minLength="1" maxLength="30"
                         className={`${nameFieldState.isValid === false ? 'Modal-InputField-invalid' : ''}`}
                         onChange={nameFieldChangeHandler} onBlur={validateNameFieldHandler} />
                 </div>
                 <div className="Modal-InputContainer">
-                    <label htmlFor="addTagDescription">Pick a colour:</label>
-                    <input id="addTagColour" name="addTagColour" value={colourFieldState} onChange={handleColourInput} type="color" className="Modal-InputColorPicker" />
+                    <label htmlFor="addAccountDescription">Description:</label>
+                    <input id="addAccountDescription" name="addAccountDescription" value={descriptionFieldState} onChange={handleDescriptionInput} type="text" minLength="1" maxLength="100" />
                 </div>
-                <p>Preview:</p>
-                <Tag colour={colourFieldState} name={nameFieldState.value}></Tag>
-                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Add tag</button>
+                <div className="Modal-InputContainer">
+                    <label htmlFor="addAccountCode">Code:</label>
+                    <input id="addAccountCode" name="addAccountCode" value={codeFieldState} onChange={handleCodeInput} type="text" minLength="1" maxLength="10" />
+                </div>
+                <button type="submit" className="Modal-PrimaryBtn" disabled={!formIsValid}>Add account</button>
             </form>
         </ModalWrapper>
     )
 }
 
-export default ModalAddTag;
+export default ModalAddAccount;
