@@ -3,9 +3,39 @@ import { useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import Select, { createFilter } from 'react-select'
 import { MultiSelect } from "react-multi-select-component";
+import { PropTypes } from 'prop-types';
 
 
 import { isAmountEqual, divideAmount } from "./helpers";
+
+
+
+//Explanation:
+//The user can choose how the total expense amount is allocated to groups or subgroups
+//Assuming the user has both groups and subgroups, the user's choices are:
+//1) equally between sub-groups
+//2) equally between groups
+//3) specify amount per sub-group
+//4) specify amount per group
+//5) do not allocate costs
+
+//If the user has no groups (and thus, no subgroups), the default should be option 5)
+//If the user has groups but no subgroups, the default should be option 2)
+//If the user has both groups and subgroups, the default should be option 1)
+
+//Option 1 will divide the total expense amount between the number of subgroups the user has. The groups these subgroups belong to will then inherit the sum of the amount of its children.
+//Option 2 will divide the total expense amount between the number of groups the user has. The group's amount will then be divided among it's children.
+//Option 3 will allow the user to specify amount per selected subgroup. The parents of the subgroups selected will inherit their amounts from the sum of amounts of its children.
+//Option 4 will allow the user to specify the amount per selected group. The children (subgroups) of the selected parents will have the parent's amount divided equally among them.
+//Option 5 will not allocate any cost to either groups or subgroups
+
+const COST_ALLOCATION_OPTIONS = {
+    NO_ALLOCATION: "none",
+    EQUAL_AMONG_SUBGROUPS: "equalSubgroup",
+    EQUAL_AMONG_GROUPS: "equalGroup",
+    SPECIFIC_BY_SUBGROUP: "specificSubgroup",
+    SPECIFIC_BY_GROUP: "specificGroup"
+}
 
 const ACTIONS = {
     SELECTED: 'selected',
@@ -173,15 +203,46 @@ function multipleGroupReducer(state, action) {
     }
 }
 
-function Groups(props) {
+function SelectGroups(props) {
+    //Props
     const enteredAmount = props.enteredAmount;
     const clearSelection = props.clearSelection;
     const passInfoToParentComponent = (groupsArray, isValid, clearSelection) => {
         props.passInfo(groupsArray, isValid, clearSelection)
     }
+    //Redux Groups & Subgroups
     const selectedWorkspaceGroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceGroups);
-    const [selectGroupOptions, setSelectGroupOptions] = useState([]); //Group options to be fed to Multi-Select element
+    const selectedWorkspaceSubgroups = useSelector((state) => state.selectedWorkspace.selectedWorkspaceSubgroups);
+
+    //Component state
+
+    //Decides whether group or subgroup have assigned cost
+    const [costAssignmentTo, setCostAssignmentTo] = useState(() => {
+        if (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) {
+            return COST_ALLOCATION_OPTIONS.NO_ALLOCATION;
+        } else if (selectedWorkspaceSubgroups.length > 0) {
+            return COST_ALLOCATION_OPTIONS.EQUAL_AMONG_SUBGROUPS;
+        } else if (selectedWorkspaceSubgroups.length === 0 && selectedWorkspaceGroups.length > 0) {
+            return COST_ALLOCATION_OPTIONS.EQUAL_AMONG_GROUPS;
+        } else {
+            // Default value if none of the conditions match
+            return COST_ALLOCATION_OPTIONS.NO_ALLOCATION;
+        }
+    });
+
+    function changeCostAssignmentHandler(event) {
+        setCostAssignmentTo(event.target.value);
+    }
+
+    //Group options to be fed to Multi-Select element:
+    const [selectGroupOptions, setSelectGroupOptions] = useState(
+        selectedWorkspaceGroups?.map((group) => ({
+            value: group.uuid,
+            label: group.name,
+        })) || []
+    );
     const [enteredGroup, setGroup] = useState([]); //Multi-Select modal stores selected Groups here
+
     const [multipleGroupSelection, dispatchMultipleGroupSelection] = useReducer(multipleGroupReducer, {
         groupsChosen: [], //objects with group uuid, name, amount
         sumOfAmounts: 0,
@@ -189,20 +250,6 @@ function Groups(props) {
         allowRecalculation: false //use to control button to re-divide group amounts
     })//State to manage selected groups and amounts set per group
 
-    //Group options to be used in MultiSelect element
-    useEffect(() => {
-        if (selectedWorkspaceGroups && selectedWorkspaceGroups.length !== 0) {
-            let groupOptions = []
-            selectedWorkspaceGroups.forEach(group => {
-                let groupObj = {
-                    value: group.uuid,
-                    label: group.name
-                };
-                groupOptions.push(groupObj)
-            })
-            setSelectGroupOptions(groupOptions)
-        }
-    }, [selectedWorkspaceGroups])
 
     // Manage amount per group when group selection changes
     useEffect(() => {
@@ -247,31 +294,66 @@ function Groups(props) {
             type: ACTIONS.USER_INPUT_BLUR,
             val: { amount: event.target.value, uuid: event.target.dataset.uuid, totalAmount: enteredAmount }
         })
-        console.log("USER_INPUT_BLUR")
-        console.log(multipleGroupSelection)
     }
 
     return (
         <>
             <div className="Modal-InputContainer">
-                <label htmlFor="group">Assign to group:</label>
+                <label htmlFor="costAllocationGroups">Assign cost to:</label>
                 {
-                    (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) ?
-                        (
-                            <select name="group" id="group" value="" disabled>
-                                <option value="">no groups</option>
-                            </select>
-                        ) :
-                        (
-                            <MultiSelect
-                                options={selectGroupOptions}
-                                value={enteredGroup}
-                                onChange={setGroup}
-                                labelledBy="SelectGroup"
-                            />
-                        )
+                    (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) && (
+                        <select name="costAllocationGroups" id="costAllocationGroups" value="none" disabled>
+                            <option value="none">no groups</option>
+                        </select>
+                    )
+                }
+                {
+                    selectedWorkspaceGroups && selectedWorkspaceGroups.length > 0 && (
+                        <select name="costAllocationGroups" id="costAllocationGroups" onChange={changeCostAssignmentHandler} value={costAssignmentTo}>
+                            {
+                                selectedWorkspaceSubgroups && selectedWorkspaceSubgroups.length > 0 && (
+                                    <option value="equalSubgroup">equally among sub-groups</option>
+                                )
+                            }
+                            <option value="equalGroup">equally among groups</option>
+                            {
+                                selectedWorkspaceSubgroups && selectedWorkspaceSubgroups.length > 1 && (
+                                    <option value="specificSubgroup">specify per sub-group</option>
+                                )
+                            }
+                            {
+                                selectedWorkspaceGroups.length > 1 && (
+                                    <option value="specificGroup">specify per group</option>
+                                )
+                            }
+                            <option value="none">do not allocate cost</option>
+                        </select>
+                    )
                 }
             </div>
+            {
+                costAssignmentTo === COST_ALLOCATION_OPTIONS.SPECIFIC_BY_GROUP && (
+                    <div className="Modal-InputContainer">
+                        <label htmlFor="group">Select group:</label>
+                        {
+                            (!selectedWorkspaceGroups || selectedWorkspaceGroups.length === 0) ?
+                                (
+                                    <select name="group" id="group" value="" disabled>
+                                        <option value="">no groups</option>
+                                    </select>
+                                ) :
+                                (
+                                    <MultiSelect
+                                        options={selectGroupOptions}
+                                        value={enteredGroup}
+                                        onChange={setGroup}
+                                        labelledBy="SelectGroup"
+                                    />
+                                )
+                        }
+                    </div>
+                )
+            }
             {
                 multipleGroupSelection.groupsChosen.length > 0 && (
                     <div>
@@ -295,12 +377,12 @@ function Groups(props) {
                                 ))}
                                 <tr className="Common-Table-GrayRow Common-Table-InfoRow">
                                     <td>Sum:</td>
-                                    <td>{isNaN(Number(multipleGroupSelection.sumOfAmounts)) ?
-                                        "typing..." : parseInt(multipleGroupSelection.sumOfAmounts).toFixed(2)}</td>
+                                    <td>{enteredAmount === "" || isNaN(Number(multipleGroupSelection.sumOfAmounts)) ?
+                                        "-" : parseInt(multipleGroupSelection.sumOfAmounts).toFixed(2)}</td>
                                 </tr>
                                 <tr className="Common-Table-InfoRow">
                                     <td><i>Total Expense Amount:</i></td>
-                                    <td><i>{isNaN(Number(enteredAmount)) ?
+                                    <td><i>{enteredAmount === "" || isNaN(Number(enteredAmount)) ?
                                         "-" : parseInt(enteredAmount).toFixed(2)}</i></td>
                                 </tr>
                                 <tr className="Common-Table-InfoRow">
@@ -321,6 +403,12 @@ function Groups(props) {
             }
         </>
     )
-}
+};
 
-export default Groups 
+SelectGroups.propTypes = {
+    enteredAmount: PropTypes.string,
+    clearSelection: PropTypes.bool,
+    passInfo: PropTypes.func.isRequired
+};
+
+export default SelectGroups 

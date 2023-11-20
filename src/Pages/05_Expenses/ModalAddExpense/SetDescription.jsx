@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import Select, { createFilter } from 'react-select'
 import { MultiSelect } from "react-multi-select-component";
 // import { filterConfigforReactSelectComponent } from "../../utils/helpersSelectElement"
-import Tag from "../../../Components/Tag";
 import ExpensesData from "../../../Data/ExpenseData"
 import ModalWrapper from "../../../Components/ModalWrapper";
 import closeIcon from "../../../Assets/Images/close.png" //Source: Close icons created by Pixel perfect - Flaticon, available at https://www.flaticon.com/free-icons/close
@@ -13,38 +12,26 @@ import trashIcon from '../../../Assets/Images/trash.png' // Source: Delete icons
 import editIcon from '../../../Assets/Images/editing.png' // Modify icons created by Freepik - Flaticon, from https://www.flaticon.com/free-icons/modify
 import "../../../Assets/Styles/Modal.css"
 import { ActionTypes } from "../../../general_redux/types";
+import SelectSupplier from "./SelectSupplier"
+import SelectGroups from "./SelectGroups";
+import Subgroup from "./Subgroups"
+import SelectTags from "./SelectTags"
+
+function SetDescription() {
+ //Description:
+ const [enteredDescription, setDescription] = useState('');
+
+ function descriptionChangeHandler(e) {
+  setDescription(e.target.value);
+ }
 
 
-//DELETE FOLLOWING WHEN BACKEND FIXED
-const SUBGROUPS = [
-    {
-        uuid: "123456",
-        name: "sub1",
-        group_uuid: "652aabfdd8224264a2d2f8c602136918"
-    },
-    {
-        uuid: "234567",
-        name: "sub2",
-        group_uuid: "652aabfdd8224264a2d2f8c602136918"
-    },
-    {
-        uuid: "345678",
-        name: "sub3",
-        group_uuid: "652aabfdd8224264a2d2f8c602136918"
-    },
-    {
-        uuid: "456789",
-        name: "subX",
-        group_uuid: "503664b7625046c29adc27c89d47dbf5"
-    }
-]
-
-function Subgroup() {
-    const selectedSubgroups = SUBGROUPS; //CHANGE LATER
-
-    return (
-        <p>subgroups</p>
-    )
+ return (
+  <div className="Modal-InputContainer">
+   <label htmlFor="expenseDescription">Description:</label>
+   <input id="expenseDescription" name="expenseDescription" type="text" minLength="1" maxLength="100" value={enteredDescription} onChange={descriptionChangeHandler} />
+  </div>
+ )
 }
 
-export default Subgroup
+export default SetDescription

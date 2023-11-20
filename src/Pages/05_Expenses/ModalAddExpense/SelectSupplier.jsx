@@ -43,28 +43,19 @@ const SUPPLIERS = [
     }
 ]
 
-function Supplier() {
+function SelectSupplier() {
     const selectedSuppliers = SUPPLIERS; //CHANGE LATER
     const [selectSupplierOptions, setSelectSupplierOptions] = useState(''); //Supplier options to be fed to Select element
     const [supplierSelection, setSupplierSelection] = useState('');//selected from select element
     const [supplierData, dispatchSupplierData] = useReducer(supplierDataReducer, {
         supplierSelected: false,
         suppliersUuid: '',
-        isNewSupplier: false,
-        isOneTimeSupplier: false,
         suppliersName: ''
     });
     //Show available suppliers as options in Select element 
     useEffect(() => {
         if (selectedSuppliers && selectedSuppliers.length !== 0) {
-            let supplierOptions = [{
-                value: "newSupplier",
-                label: "New supplier"
-            },
-            {
-                value: "oneTimeSupplier",
-                label: "One-time supplier"
-            }]
+            let supplierOptions = []
             selectedSuppliers.forEach(supplier => {
                 let supplierObj = {
                     value: supplier.uuid,
@@ -116,4 +107,4 @@ function Supplier() {
     )
 }
 
-export default Supplier
+export default SelectSupplier
