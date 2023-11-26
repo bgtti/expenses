@@ -82,5 +82,3 @@ export function divideEquallyAmongObjects(totalAmount, arrayOfObjects) {
 
     return newArrayOfObjects;
 }
-
-
