@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { PropTypes } from "prop-types";
 import { divideWithPrecision } from "../../../utils/precisionCalculations";
 import currency_list from "../../../Data/currencyList";
@@ -17,37 +18,35 @@ import currency_list from "../../../Data/currencyList";
 function DefineForeignCurrency(props) {
     const { enteredAmount } = props;
 
+    const selectedWorkspaceCurrency = useSelector((state) => state.selectedWorkspace.selectedWorkspace.currency);
+
     const [isForeignCurrency, setForeignCurrency] = useState({
         isForeign: false,
         currency: "",
         amount: "",
         exchangeRate: "",
-        useAmount: true, // Added state for user's choice
+        isValid: true, // false if isForeign is true but no input on other statements
     });
 
-    const [exchangeRate, setExchangeRate] = useState("");
+    const [showSetAmountBtn, setShowSetAmountBtn] = useState(false);
 
     useEffect(() => {
-        // Calculate and set the exchange rate when the foreign amount or currency changes
-        if (isForeignCurrency.isForeign && isForeignCurrency.currency && isForeignCurrency.amount && isForeignCurrency.useAmount) {
-            const foreignAmount = parseFloat(isForeignCurrency.amount);
-            const userAmount = parseFloat(enteredAmount);
-
-            if (!isNaN(foreignAmount) && !isNaN(userAmount) && userAmount !== 0) {
-                const calculatedExchangeRate = foreignAmount / userAmount;
-                setExchangeRate(calculatedExchangeRate.toFixed(4));
+        if (isForeignCurrency.isForeign) {
+            if (enteredAmount !== "" && isForeignCurrency.amount !== "" && isForeignCurrency.exchangeRate === "") {
+                //if amount set and original amount set, but no exchange rate, set exchange rate = amount/original amount
+                //division, 8 digs after dot. unless too many 0 digits...?
+                // const suggestExchangeRate = divideWithPrecision()
+            } else if (enteredAmount !== "" && isForeignCurrency.amount === "" && isForeignCurrency.exchangeRate !== "") {
+                //if amount set and exchange rate set, but no original amount set, set original amount = amount/exchange rate
+            } else if (enteredAmount === "" && isForeignCurrency.amount !== "" && isForeignCurrency.exchangeRate !== "") {
+                //if original amount set and exchange rate set, but no amount: suggest amount = original amount * exchange rate and show button to set this as amount.
+                setShowSetAmountBtn(true);
+            } else {
+                //check if isForeignCurrency is valid
             }
-        } else if (isForeignCurrency.isForeign && isForeignCurrency.currency && isForeignCurrency.exchangeRate && !isForeignCurrency.useAmount) {
-            const enteredExchangeRate = parseFloat(isForeignCurrency.exchangeRate);
-
-            if (!isNaN(enteredExchangeRate) && enteredExchangeRate !== 0) {
-                const calculatedAmount = enteredExchangeRate * parseFloat(enteredAmount);
-                setForeignCurrency(prevState => ({ ...prevState, amount: calculatedAmount.toFixed(2) }));
-            }
-        } else {
-            setExchangeRate("");
         }
-    }, [isForeignCurrency.isForeign, isForeignCurrency.currency, isForeignCurrency.amount, isForeignCurrency.exchangeRate, enteredAmount, isForeignCurrency.useAmount]);
+
+    }, [enteredAmount, isForeignCurrency.amount, isForeignCurrency.exchangeRate]);
 
     function isForeignChangeHandler(e) {
         setForeignCurrency(prevState => ({
@@ -77,12 +76,6 @@ function DefineForeignCurrency(props) {
         }));
     }
 
-    function toggleUseAmountHandler(e) {
-        setForeignCurrency(prevState => ({
-            ...prevState,
-            useAmount: !prevState.useAmount,
-        }));
-    }
 
     return (
         <div>
@@ -94,7 +87,7 @@ function DefineForeignCurrency(props) {
                 isForeignCurrency.isForeign && (
                     <div className="Modal-DropdownContainerForFurtherInput">
                         <div className="Modal-InputContainer-Dropdown">
-                            <label htmlFor="foreignCurrency">Original currency:</label>
+                            <label htmlFor="foreignCurrency">Original currency:*</label>
                             <select id="foreignCurrency" name="foreignCurrency" onChange={currencyChangeHandler} value={isForeignCurrency.currency}>
                                 <option key={-1} value="">(select an option)</option>
                                 {currency_list.map((currency, index) => (
@@ -102,27 +95,23 @@ function DefineForeignCurrency(props) {
                                 ))}
                             </select>
                         </div>
-                        <div className="Modal-InputContainer-Dropdown">
-                            {isForeignCurrency.useAmount ? (
+                        {
+                            isForeignCurrency.currency !== "" && (
                                 <>
-                                    <label htmlFor="setAmount">Original amount:</label>
-                                    <input type="number" id="setAmount" name="setAmount" value={isForeignCurrency.amount} onChange={amountChangeHandler} />
+                                    <div className="Modal-InputContainer-Dropdown">
+                                        <label htmlFor="setAmount">Original amount:</label>
+                                        <input type="number" id="setAmount" name="setAmount" value={isForeignCurrency.amount} onChange={amountChangeHandler} />
+                                    </div>
+                                    <div className="Modal-InputContainer-Dropdown">
+                                        <label htmlFor="exchangeRate">Exchange rate:</label>
+                                        <input type="number" id="exchangeRate" name="exchangeRate" value={isForeignCurrency.exchangeRate} onChange={exchangeRateChangeHandler} />
+                                    </div>
+                                    <div>
+                                        <p>1 {selectedWorkspaceCurrency} = X {isForeignCurrency.currency}</p>
+                                    </div>
                                 </>
-                            ) : (
-                                <>
-                                    <label htmlFor="exchangeRate">Exchange Rate:</label>
-                                    <input type="number" id="exchangeRate" name="exchangeRate" value={isForeignCurrency.exchangeRate} onChange={exchangeRateChangeHandler} />
-                                </>
-                            )}
-                        </div>
-                        <div>
-                            {/* Display exchange rate */}
-                            {exchangeRate && <p>Exchange Rate: {exchangeRate}</p>}
-                        </div>
-                        <div>
-                            <input type="checkbox" id="useAmount" name="useAmount" checked={isForeignCurrency.useAmount} onChange={toggleUseAmountHandler} />
-                            <label htmlFor="useAmount"> Use Amount</label>
-                        </div>
+                            )
+                        }
                     </div>
                 )
             }

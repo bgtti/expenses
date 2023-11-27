@@ -16,6 +16,8 @@ npm install
 npm start
 ```
 
+run tests with: npm run test
+
 ## State management
 
 Global state is managed using redux. This is found in the genral_redux folder where the store file combines the different reducers.
