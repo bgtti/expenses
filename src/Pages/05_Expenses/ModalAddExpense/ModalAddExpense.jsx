@@ -70,6 +70,22 @@ function ModalAddExpense(props) {
     })
 
     //Foreign Currency
+    const [isForeignCurrency, setForeignCurrency] = useState({
+        isForeign: false,
+        currency: "",
+        amount: "",
+        exchangeRate: "",
+        isValid: true, // false if isForeign is true but no input on other statements
+        expenseAmountChanged: false //enteredAmout re-checked after onBlur
+    });
+
+    //VAT
+    const [VAT, setVAT] = useState({
+        hasVAT: false,
+        amount: "",
+        isValid: true,
+        expenseAmountChanged: false //enteredAmout re-checked after onBlur
+    });
 
     //CONTINUE HERE
 
@@ -86,6 +102,21 @@ function ModalAddExpense(props) {
 
     function amountChangeHandler(e) {
         setAmount(e.target.value);
+    }
+
+    function amountOnBlurHandler() {
+        if (isForeignCurrency.isForeign) {
+            setForeignCurrency(prevState => ({
+                ...prevState,
+                expenseAmountChanged: true,
+            }));
+        }
+        if (VAT.hasVAT) {
+            setVAT(prevState => ({
+                ...prevState,
+                expenseAmountChanged: true,
+            }));
+        }
     }
 
     function groupChangeHandler(groupArray, isValid, allocationOptionChosen, clearSelection) {
@@ -135,7 +166,7 @@ function ModalAddExpense(props) {
                 <div className="Modal-InputContainer">
                     <label htmlFor="expenseAmount">Amount:*</label>
                     <input id="expenseAmount" name="expenseAmount" type="number" min="0.00" step=".01"
-                        value={enteredAmount} onChange={amountChangeHandler} />
+                        value={enteredAmount} onChange={amountChangeHandler} onBlur={amountOnBlurHandler} />
                 </div>
 
                 {/* SUPPLIER */}
@@ -180,11 +211,14 @@ function ModalAddExpense(props) {
 
                 {/* FOREIGN CURRENCY */}
                 <DefineForeignCurrency
-                    enteredAmount={enteredAmount}>
+                    enteredAmount={enteredAmount} setAmount={setAmount}
+                    isForeignCurrency={isForeignCurrency} setForeignCurrency={setForeignCurrency}>
                 </DefineForeignCurrency>
 
                 {/* INCLUDE VAT */}
-                <DefineVAT></DefineVAT>
+                <DefineVAT
+                    enteredAmount={enteredAmount} VAT={VAT} setVAT={setVAT}>
+                </DefineVAT>
 
                 {/* RECURRING */}
                 <DefineRecurring></DefineRecurring>
