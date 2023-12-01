@@ -1,70 +1,54 @@
-import React, { useEffect, useState, useReducer } from "react";
-import { PropTypes } from 'prop-types';
+import React from "react";
+import { PropTypes } from "prop-types";
 
-function DefineRecurring() {
-
-    //Recurring:
-    const [isRecurringSelected, setIsRecurringSelected] = useState(false);
-    const [isRecurringInterval, setIsRecurringInterval] = useState('monthly');
-    const [isRecurringPeriod, setIsRecurringPeriod] = useState('current');
+function DefineRecurring(props) {
+    const { isRecurring, setIsRecurring } = props;
 
     function isRecurringSelectedHandler(event) {
-        if (event.target.checked) {
-            setIsRecurringSelected(true);
-        } else {
-            setIsRecurringSelected(false);
-        }
+        setIsRecurring({
+            isRecurringSelected: event.target.checked,
+            isRecurringInterval: "monthly"
+        })
     }
     function isRecurringIntervalHandler(event) {
-        setIsRecurringInterval(event.target.value);
+        setIsRecurring(prevState => ({
+            ...prevState,
+            isRecurringInterval: event.target.value
+        }))
     }
-    function isRecurringPeriodHandler(event) {
-        setIsRecurringPeriod(event.target.value);
-    }
-
 
     return (
         <div>
             <div className="Modal-CheckboxContainer">
-                <input type="checkbox" id="selectRecurring" name="selectRecurring" value="selectRecurring" checked={isRecurringSelected} onChange={isRecurringSelectedHandler} />
+                <input type="checkbox" id="selectRecurring" name="selectRecurring" value="selectRecurring" checked={isRecurring.isRecurringSelected} onChange={isRecurringSelectedHandler} />
                 <label htmlFor="selectRecurring"> Expense is recurring</label>
             </div>
-            {isRecurringSelected && (
+            {isRecurring.isRecurringSelected && (
                 <div className="Modal-InformationGroupingDiv Modal-DropdownContainerForFurtherInput">
                     <div className="Modal-Modal-DropdownContainerForFurtherInput-SubDiv">
                         <p>Interval:</p>
                         <div className="Modal-RadioBtnContainer">
-                            <input type="radio" id="weekly" name="weekly" value="weekly" checked={isRecurringInterval === 'weekly'} onChange={isRecurringIntervalHandler} />
+                            <input type="radio" id="weekly" name="weekly" value="weekly" checked={isRecurring.isRecurringInterval === 'weekly'} onChange={isRecurringIntervalHandler} />
                             <label htmlFor="weekly">weekly</label>
                         </div>
                         <div className="Modal-RadioBtnContainer">
-                            <input type="radio" id="monthly" name="monthly" value="monthly" checked={isRecurringInterval === 'monthly'} onChange={isRecurringIntervalHandler} />
+                            <input type="radio" id="monthly" name="monthly" value="monthly" checked={isRecurring.isRecurringInterval === 'monthly'} onChange={isRecurringIntervalHandler} />
                             <label htmlFor="monthly">monthly</label>
                         </div>
                         <div className="Modal-RadioBtnContainer">
-                            <input type="radio" id="yearly" name="yearly" value="yearly" checked={isRecurringInterval === 'yearly'} onChange={isRecurringIntervalHandler} />
+                            <input type="radio" id="yearly" name="yearly" value="yearly" checked={isRecurring.isRecurringInterval === 'yearly'} onChange={isRecurringIntervalHandler} />
                             <label htmlFor="yearly">yearly</label>
-                        </div>
-                    </div>
-                    <div className="Modal-Modal-DropdownContainerForFurtherInput-SubDiv">
-                        <p>Period:</p>
-                        <div className="Modal-RadioBtnContainer">
-                            <input type="radio" id="pre" name="pre" value="pre" checked={isRecurringPeriod === 'pre'} onChange={isRecurringPeriodHandler} />
-                            <label htmlFor="pre">predate</label>
-                        </div>
-                        <div className="Modal-RadioBtnContainer">
-                            <input type="radio" id="as" name="as" value="as" checked={isRecurringPeriod === 'as'} onChange={isRecurringPeriodHandler} />
-                            <label htmlFor="as">as date</label>
-                        </div>
-                        <div className="Modal-RadioBtnContainer">
-                            <input type="radio" id="post" name="post" value="post" checked={isRecurringPeriod === 'post'} onChange={isRecurringPeriodHandler} />
-                            <label htmlFor="post">postdate</label>
                         </div>
                     </div>
                 </div>
             )}
         </div>
     )
-}
+};
 
-export default DefineRecurring
+DefineRecurring.propTypes = {
+    isRecurring: PropTypes.object.isRequired,
+    setIsRecurring: PropTypes.func.isRequired,
+};
+
+export default DefineRecurring;

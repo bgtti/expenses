@@ -87,13 +87,23 @@ function ModalAddExpense(props) {
         expenseAmountChanged: false //enteredAmout re-checked after onBlur
     });
 
-    //CONTINUE HERE
+    //Recurring
+    const [isRecurring, setIsRecurring] = useState({
+        isRecurringSelected: false,
+        isRecurringInterval: "monthly"
+    })
 
+    //Custom Expense number
+    const [customNumber, setCustomNumber] = useState({
+        hasCustomNumber: false,
+        customNumber: '',
+    });
 
-    // useEffect(() => {
-    //     console.log(definedPeriod)
-    // }, [definedPeriod])
-
+    //Note
+    const [note, setNote] = useState({
+        hasNote: false,
+        note: '',
+    });
 
     // Change handlers
     function dateChangeHandler(e) {
@@ -221,14 +231,19 @@ function ModalAddExpense(props) {
                 </DefineVAT>
 
                 {/* RECURRING */}
-                <DefineRecurring></DefineRecurring>
+                <DefineRecurring
+                    isRecurring={isRecurring} setIsRecurring={setIsRecurring}>
+                </DefineRecurring>
 
                 {/* CUSTOM EXPENSE NUMBER */}
-
-                <DefineExpNum></DefineExpNum>
+                <DefineExpNum
+                    customNumber={customNumber} setCustomNumber={setCustomNumber}>
+                </DefineExpNum>
 
                 {/* NOTE */}
-                <DefineNote></DefineNote>
+                <DefineNote
+                    note={note} setNote={setNote}>
+                </DefineNote>
 
                 {/* SUBMIT */}
                 <button type="submit" className="Modal-PrimaryBtn" onClick={closeThisModal}>Add expense</button>
@@ -236,6 +251,7 @@ function ModalAddExpense(props) {
         </ModalWrapper >
     )
 };
+
 ModalAddExpense.propTypes = {
     addExpenseModalToggler: PropTypes.func.isRequired
 };
